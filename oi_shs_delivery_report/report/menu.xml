@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <report
+            string="SC Material Out"
+            id="action_material_our"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="oi_shs_delivery_report.sc_material_out"
+            file="oi_shs_delivery_report.sc_material_out"
+            print_report_name="'SC Material Out - %s - %s' % (object.partner_id.name or '', object.name)"
+        />
+        <!-- <report
+            string="GRN Report"
+            id="action_grn_report"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="itara_shs_delivery_report.grn_report_deliveryslip"
+            file="itara_shs_delivery_report.grn_report_deliveryslip"
+            print_report_name="'GRN Report - %s - %s' % (object.partner_id.name or '', object.name)"
+        /> -->
+    </data>
+</odoo>
+

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="report_material_out_document">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+               
+
+                <h5 style="text-align: center;">
+MATERIAL OUT                </h5>
+                <div class="page">
+                    <tr>
+                        <div>Customer Name :
+                            <span t-field="o.partner_id.name"/>
+                        </div>
+                        <div t-if="o.partner_id.street">
+                            <span t-field="o.partner_id.street"/>
+                        </div>
+                        <div t-if="o.partner_id.street2">
+                            <span t-field="o.partner_id.street2"/>
+                        </div>
+                        <div t-if="o.partner_id.city">
+                            <span t-field="o.partner_id.city"/>
+                            <span t-field="o.partner_id.state_id.name"/>
+                            <span t-field="o.partner_id.zip"/>
+                        </div>
+                        <div t-if="o.partner_id.phone">
+                            <span t-field="o.partner_id.phone"/>
+                        </div>
+                    </tr>
+                    <tr>
+                        <div>GSTIN :
+                            <span t-field="o.partner_id.vat"/>
+                        </div>
+                        <div>
+                            State Name :
+                            <span t-field="o.partner_id.state_id.name"/>
+                            State code :
+                            <span t-field="o.partner_id.state_id.code"/>
+                        </div>
+                        <div>
+                            E-mail ID :
+                            <span t-field="o.partner_id.email"/>
+                        </div>
+                    </tr>
+                    <table class="table table-sm mt48" style="width: 100%; background-color: white; line-height: 100%;">
+                            <tr>
+                                <td >Challan No</td>
+                                <td style="background-color: white;">
+                                    <span t-field="o.name"/>
+                                </td>
+                            </tr>
+                         <tr>
+                                <td >Date</td>
+                                <td style="background-color: white;">
+                                    <span t-field="o.scheduled_date" t-options='{"format": "dd/MM/yyyy hh:mm:ss"}'/>
+                                </td>
+                            </tr>
+                        <tr>
+                                <td >Supplier's Ref</td>
+                                <td style="background-color: white;">
+                                    <span t-field="o.supplier_ref"/>
+                                </td>
+                            </tr>
+
+                        <tr>
+                                <td>Buyer's Order No</td>
+                                <td style="background-color: white;">
+                                <span t-field="o.buyer_order_no"/>
+                                </td>
+                            </tr>
+                       
+                        <tr>
+                                <td>Destination</td>
+                                <td style="background-color: white;">
+                                <span t-field="o.destination"/>
+
+                                </td>
+                            </tr>
+                        <tr>
+                                <td>Moto Vehicle No</td>
+                                <td style="background-color: white;">
+                                    <span t-field="o.motor_vehicle_no"/>
+                                </td>
+                            </tr>
+                        <tr>
+                                <td >Nature of Processing</td>
+                                <td style="background-color: white;">
+                                        <span t-field="o.nature_of_process"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td >Duration of Processing</td>
+                                <td style="background-color: white;">
+                                        <span t-field="o.duration_of_process"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Drawing No</td>
+                                <td style="background-color: white;">
+                                        <span t-field="o.drawing_no"/>
+                                </td>
+                            </tr>
+                            <!-- <tr>
+                                <td ><span t-if="o.mrp_id">MO No.</span></td>
+                                <td style="background-color: white;">
+                                     <span t-field="o.mrp_id.name"/>
+                                </td>
+                            </tr> -->
+                    </table>
+
+                    <table class="table table-sm mt48">
+                        <thead>
+                            <tr class="text-center">
+                                <th><strong>SI.No</strong></th>
+                                <th><strong>Description of Goods</strong></th>
+                                <th class="text-left"><strong>UOM</strong></th>
+
+                                <th class="text-center"><strong>Quantity</strong></th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.move_ids_without_package" t-as="move_line">
+                                <td class="text-center">
+                                    <span t-esc="move_line_index + 1"/>
+                                </td>
+                                <td>
+                                    <span t-if="move_line.product_id.l10n_in_hsn_code">  <span t-field="move_line.product_id.l10n_in_hsn_code"/> - </span> 
+                                    <span t-field="move_line.product_id"/>
+                                    <span t-if="move_line.product_id.weight"> - <span t-field="move_line.product_id.weight"/></span> 
+                                    <span t-if="move_line.description"> - <span t-field="move_line.description"/></span>  
+                                   
+                                </td>
+                                <td>
+                                    <span t-field="move_line.product_uom.name"/>
+                                </td>
+                               
+                                <td class="text-center" style="background-color: white;">
+
+                                    <t t-esc="move_line.quantity_done" t-options='{"widget": "float", "precision": 3}'/>
+                                </td>
+                               
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th>
+                                </th>
+                                <th>
+                                </th>
+                                <th class="text-right">
+                                    <strong>Total</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>
+
+                                        <t t-set="i" t-value="0"/>
+                                        <t t-foreach="o.move_ids_without_package" t-as="l">
+                                            <t t-set="i" t-value="i+l.quantity_done"/>
+                                        </t>
+                                        <t t-esc="(i)" t-options='{"widget": "float", "precision": 3}'></t>
+                                    </strong>
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                    </table>
+<br/>
+
+					<div t-if="o.note">
+                        <span>Remarks:</span><span t-field="o.note"/>
+                       
+                    </div>
+                        <![CDATA[&nbsp;]]>
+
+                    <div class="text-right" style="line-height: 50px; font-weight: bold; font-size: 15px;">For
+                        <span t-field="o.company_id.name"/>
+                        <br/>
+                        <br/>
+                        Authorised Signatory
+                    </div>
+                </div>
+            </t>
+         </t>
+    </template>
+
+    <template id="sc_material_out">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="oi_shs_delivery_report.report_material_out_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </template>
+
+</odoo>
