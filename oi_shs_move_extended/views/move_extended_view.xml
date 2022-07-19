@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record model="ir.ui.view" id="account_move_inherit_view_form">
+	        <field name="name">account.move.inherit.form</field>
+	        <field name="model">account.move</field>
+	        <field name="inherit_id" ref="account.view_move_form"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="after">
+               		<field name="part_no"/>
+               		<field name="po_no"/>
+	            </xpath>
+	         <!--    <xpath expr="//field[@name='line_ids']/tree/field[@name='account_id']" position="before">
+               		<field name="part_no" invisible="1"/>
+               		<field name="po_no" invisible="1"/>
+	            </xpath> -->
+	            <xpath expr="//notebook/page/group/group/field[@name='ref']" position="after">
+               		<field name="despatched_through"/>
+	            	<field name="country_of_origin"/>
+               		<field name="delivery_terms"/>
+               		<field name="notify_party"/>
+               		<field name="delivery_ref"/>
+               		<field name="description_goods"/>
+	            </xpath>
+	            <xpath expr="//notebook/page/group/group/field[@name='to_check']" position="after">
+					<field name="destination"/>
+					<field name="port_of_loading"/>
+					<field name="place_of_delivery"/>
+					<field name="port_of_discharge"/>
+					<field name="vessel_no"/>
+					<field name="hs_code"/>
+               		<field name="delivery_date"/>
+	            </xpath>
+	        </field>
+	    </record>
+	</data>
+</odoo>
