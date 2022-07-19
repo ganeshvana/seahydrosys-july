@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_payment_order"
+                string="Payment Advice"
+                model="account.payment"
+                report_type="qweb-pdf"
+                file="oi_shs_payment_report.report_payments_template_report"
+                name="oi_shs_payment_report.report_payments_template_report"
+        />
+
+
+        <report
+                id="action_payment_receipt_report"
+                string="Payment Receipt"
+                model="account.payment"
+                report_type="qweb-pdf"
+                file="oi_shs_payment_report.payment_receipt_report"
+                name="oi_shs_payment_report.payment_receipt_report"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="replace_header" inherit_id="web.internal_layout">
+        <xpath expr="//div[@class='header']" position="replace">
+            <div class="header">
+            <div class="row">
+                <div class="col-3">
+                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                </div>
+                <div class="col-2 offset-2 text-center">
+                    <span t-esc="company.name"/><br/>
+                     <t t-if="data['form']['date_from']">Period:<t t-esc="data['form']['date_from']" t-options="{'widget': 'date'}"/></t> - 
+                    <t t-if="data['form']['date_to']"><t t-esc="data['form']['date_to']" t-options="{'widget': 'date'}"/></t>
+                </div>
+                <div class="col-2 offset-3 text-right">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><span class="page"/></li>
+                        <li class="list-inline-item">/</li>
+                        <li class="list-inline-item"><span class="topage"/></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </xpath>
+    </template>
+
+    <template id="report_journal_inherits" inherit_id="account.report_journal">
+        <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="9"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+                    <t t-call="web.internal_layout">
+
+        <table class="table table-sm">
+            <tr>
+                <th>S.No</th>
+                <th>Journal</th>
+                <th>Total Count</th>
+                <th>Total Debit</th>
+                <th>Total Credit</th>
+            </tr>
+            <t t-foreach="docs" t-as="l">
+                <tr>
+                    <td><t t-esc="l_index+1" /></td>
+                    <td><t t-esc="l.name"/></td>
+                    <td><t t-esc="len(lines[l.id])" /></td>
+                    <td><span t-esc="sum_debit(data, l)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                    <td><span t-esc="sum_credit(data, l)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                </tr>
+            </t>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><b>Grand Total</b></td>
+                    <td>
+                        <t t-set="i" t-value="0"/>
+                            <t t-foreach="docs" t-as="l">
+                                <t t-set="i" t-value="i+sum_debit(data, l)"/>
+                            </t>
+                            <b><t t-esc="(i)" t-options='{"widget": "float", "precision": 2}'></t></b>
+                    </td>
+                    <td>
+                        <t t-set="i" t-value="0"/>
+                            <t t-foreach="docs" t-as="l">
+                                <t t-set="i" t-value="i+sum_credit(data, l)"/>
+                            </t>
+                            <b><t t-esc="(i)" t-options='{"widget": "float", "precision": 2}'></t></b>
+                    </td>
+                </tr>
+        </table>
+
+        <t t-foreach="docs" t-as="o">
+
+                <div class="page">
+
+
+                    <h2><t t-esc="o.name"/> Journal</h2>
+
+                    <div class="row mt32">
+                        <div class="col-3">
+                            <strong>Company:</strong>
+                            <p t-esc="(company_id or res_company).name"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Journal:</strong>
+                            <p t-esc="o.name"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Entries Sorted By:</strong>
+                            <p t-if="data['form'].get('sort_selection') == 'move_name'">Journal Entry Number</p>
+                            <p t-if="data['form'].get('sort_selection') == 'date'">Date</p>
+                        </div>
+                        <div class="col-3">
+                            <strong>Target Moves:</strong>
+                            <p t-if="data['form']['target_move'] == 'all'">All Entries</p>
+                            <p t-if="data['form']['target_move'] == 'posted'">All Posted Entries</p>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Move</th>
+                                <th>Date</th>
+                                <th>Account</th>
+                                <th>Partner</th>
+                                <th>Label</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th t-if="data['form']['amount_currency']">Currency</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="lines[o.id]" t-as="aml">
+                                <td><span t-esc="aml.move_id.name != '/' and aml.move_id.name or ('*'+str(aml.move_id.id))"/></td>
+                                <td><span t-field="aml.date"/></td>
+                                <td><span t-field="aml.account_id.code"/></td>
+                                <td><span t-esc="aml.sudo().partner_id and aml.sudo().partner_id.name and aml.sudo().partner_id.name[:23] or ''"/></td>
+                                <td><span t-esc="aml.name and aml.name[:35]"/></td>
+                                <td><span t-esc="aml.debit" t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"/></td>
+                                <td><span t-esc="aml.credit" t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"/></td>
+                                <td t-if="data['form']['amount_currency'] and aml.amount_currency">
+                                    <span t-esc="aml.amount_currency" t-options="{'widget': 'monetary', 'display_currency': aml.currency_id}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row justify-content-end">
+                        <div class="col-4">
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Total</strong></td>
+                                    <td><span t-esc="sum_debit(data, o)" t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"/></td>
+                                    <td><span t-esc="sum_credit(data, o)" t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr><th colspan="3">Tax Declaration</th></tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Base Amount</th>
+                                        <th>Tax Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="taxes" t-value="get_taxes(data, o)"/>
+                                    <tr t-foreach="taxes" t-as="tax">
+                                        <td><span t-esc="tax.name"/></td>
+                                        <td><span t-esc="taxes[tax]['base_amount']" t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"/></td>
+                                        <td><span t-esc="taxes[tax]['tax_amount']" t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </t>
+        </xpath>
+    </template>
+    <!-- <template id="report_journal_inherits" inherit_id="account.report_journal">
+        <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <t t-call="web.html_container">
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <t t-set="data_report_dpi" t-value="110"/>
+            <t t-call="web.internal_layout">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>S.No</th>
+                            <th>Journal</th>
+                            <th>Total Count</th>
+                            <th>Total Debit</th>
+                            <th>Total Credit</th>
+                        </tr>
+                        <t t-foreach="docs" t-as="l">
+                            <tr>
+                                <td><t t-esc="l_index+1" /></td>
+                                <td><t t-esc="l.name"/></td>
+                                <td><t t-esc="len(lines[l.id])" /></td>
+                                <td><span t-esc="sum_debit(data, l)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                                <td><span t-esc="sum_credit(data, l)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            </tr>
+                        </t>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><b>Grand Total</b></td>
+                                <td>
+                                    <t t-set="i" t-value="0"/>
+                                        <t t-foreach="docs" t-as="l">
+                                            <t t-set="i" t-value="i+sum_debit(data, l)"/>
+                                        </t>
+                                        <b><t t-esc="(i)" t-options='{"widget": "float", "precision": 2}'></t></b>
+                                </td>
+                                <td>
+                                    <t t-set="i" t-value="0"/>
+                                        <t t-foreach="docs" t-as="l">
+                                            <t t-set="i" t-value="i+sum_credit(data, l)"/>
+                                        </t>
+                                        <b><t t-esc="(i)" t-options='{"widget": "float", "precision": 2}'></t></b>
+                                </td>
+                            </tr>
+                    </table>
+                
+                <t t-foreach="docs" t-as="o">
+
+                <div class="page" style="page-break-inside:avoid;">
+                    <h2><t t-esc="o.name"/> Journal</h2><br/>
+                        <h5>Journal Count: <t t-esc="len(lines[o.id])" /></h5>
+                    <div class="row mt32">
+                        <div class="col-3">
+                            <strong>Company:</strong>
+                            <p t-esc="res_company.name"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Journal:</strong>
+                            <p t-esc="o.name"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Narration:</strong>
+                            <p t-esc="o.narration"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Entries Sorted By:</strong>
+                            <p t-if="data['form'].get('sort_selection') != 'l.date'">Journal Entry Number</p>
+                            <p t-if="data['form'].get('sort_selection') == 'l.date'">Date</p>
+                        </div>
+                        <div class="col-3">
+                            <strong>Target Moves:</strong>
+                            <p t-if="data['form']['target_move'] == 'all'">All Entries</p>
+                            <p t-if="data['form']['target_move'] == 'posted'">All Posted Entries</p>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Move (Bill No)</th>
+                                <th>Date</th>
+                                <th>Account</th>
+                                <th>Partner</th>
+                                <th>Label</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th t-if="data['form']['amount_currency']">Currency</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="lines[o.id]" t-as="aml">
+                                <td><span t-esc="aml.move_id.name != '/' and aml.move_id.name or ('*'+str(aml.move_id.id))"/> (<span t-field="aml.invoice_id.number"/>)</td>
+                                <td><span t-field="aml.date"/></td>
+                                <td><span t-field="aml.account_id.code"/></td>
+                                <td><span t-esc="aml.sudo().partner_id and aml.sudo().partner_id.name and aml.sudo().partner_id.name[:23] or ''"/></td>
+                                <td><span t-esc="aml.name and aml.name[:35]"/></td>
+                                <td><span t-esc="aml.debit" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                                <td><span t-esc="aml.credit" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                                <td t-if="data['form']['amount_currency'] and aml.amount_currency">
+                                    <span t-esc="aml.amount_currency" t-options="{'widget': 'monetary', 'display_currency': aml.currency_id}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row justify-content-end">
+                        <div class="col-4">
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Total</strong></td>
+                                    <td><span t-esc="sum_debit(data, o)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                                    <td><span t-esc="sum_credit(data, o)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr><th colspan="3">Tax Declaration</th></tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Base Amount</th>
+                                        <th>Tax Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="taxes" t-value="get_taxes(data, o)"/>
+                                    <tr t-foreach="taxes" t-as="tax">
+                                        <td><span t-esc="tax.name"/></td>
+                                        <td><span t-esc="taxes[tax]['base_amount']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                                        <td><span t-esc="taxes[tax]['tax_amount']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </t>
+
+        </xpath>
+    </template> -->
+</odoo>

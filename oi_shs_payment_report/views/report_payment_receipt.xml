@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payment_receipt_report_document">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context({'lang': lang})"/>
+            <div class="page">
+                <style>
+                        table, td, th, tr{
+                        padding : 3px;
+                        border: 1px solid black;
+                        width: 100%;
+                </style>
+
+                <h3><strong>Payment Receipt: <span t-field="o.name"/></strong></h3>
+                <div class="row mt64">
+                    <div class="col-6" t-if="o.date">
+                        <strong>Receipt Date: </strong> <span t-field="o.date"/>
+                    </div>
+                    <!-- <div class="col-6" t-if="o.communication">
+                        <strong>Memo: </strong><span t-field="o.communication"/>
+                     </div> -->
+                     <div class="col-6" t-if="o.ref">
+                        <strong>Memo: </strong><span t-field="o.ref"/>
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-6" t-if="o.partner_type">
+                        <t t-if="o.partner_type == 'customer'">
+                            <strong>Customer: </strong>
+                        </t>
+                        <span t-field="o.partner_id"/>
+                    </div>
+                    <div class="col-6" t-if="o.amount">
+                        <strong>Payment Amount: </strong><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                     </div>
+                    
+                    <!-- </div> -->
+                    
+                    <!-- <div class="col-6" t-if="o.payment_method_id">
+                        <strong>Payment Method: </strong><span t-field="o.payment_method_id.name"/>
+                    </div> -->
+                </div>
+                <br/>
+                <br/>
+                <!-- <div class="row mb64">
+                    
+                </div> -->
+                <div>
+                    <b style="font-size=14px;color:#008B8B">Receipt Details</b>
+                </div>
+                <table  class="table table-sm" style="border:1px solid black;">
+                    <tr>
+                        <th class="text-center" style="width:15%;font-size:16px;color:#875A7B"><span>Doc.Date</span></th>
+                        <th class="text-center" style="width:25%;font-size:16px;color:#875A7B"><span>Doc.Number</span></th>
+                        <th class="text-center" style="width:15%;font-size:16px;color:#875A7B" ><span>Original Amount</span></th>
+                        <th class="text-center" style="width:15%;font-size:16px;color:#875A7B" ><span>Total Amount Paid</span></th>
+                        <th class="text-center" style="width:15%;font-size:16px;color:#875A7B"><span>Payment</span></th>
+
+                        <th class="text-center" style="width:15%;font-size:16px;color:#875A7B"><span>Balance</span></th>
+                    </tr>
+                
+                    <tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
+                        <td style="width:15%"><span t-field="inv.invoice_date"/></td>
+                        <td style="width:25%"><span t-field="inv.name"/></td>
+                        
+                        <td style="width:15%" class="text-right"><span t-field="inv.amount_total"/></td>
+                        
+                        <td style="width:15%" class="text-right"><span t-esc="inv.amount_total - inv.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
+                        <td style="width:15%" class="text-right">
+                            <t t-set="payments_vals" t-value="inv._get_reconciled_info_JSON_values()"/>
+                                <t t-foreach="payments_vals" t-as="payment_vals">
+                                    <t  t-esc="payment_vals['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+
+                                    </t>
+                        </td>
+                        <td style="width:15%" class="text-right"><span t-field="inv.amount_residual"/></td>
+                    </tr>
+                    
+                </table>
+
+                <div style="margin-top:30px;">
+                    <h5 class="text-center" style="font-size=14px;color:#008B8B">
+                        <strong>For any queries, Please  write to ARqueries@seahydro.odoo.com</strong>
+                    </h5>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+    <template id="payment_receipt_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="oi_shs_payment_report.payment_receipt_report_document" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>
