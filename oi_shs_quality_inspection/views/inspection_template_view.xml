@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_inspection_template_form">
+            <field name="name">view.inspection.template.form</field>
+            <field name="model">inspection.template</field>
+            <field name="arch" type="xml">
+                <form string="Inspection">
+                    <!-- <header >
+                        <button name="action_confirm_transfer" states="draft" string="Validate" type="object" class="oe_highlight"/>
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header> -->
+                    <sheet>
+                        <h1>
+                            <field name="name" force_save="1"/>
+                        </h1>
+                       
+                        <notebook>
+                        <page name="Lines" string="Template Lines">
+                            <field name="template_line_ids" widget="one2many">
+                                <tree editable="bottom">
+                                    <field name="dimension"/>
+                                    <field name="values"/>
+                                    <field name="range_one"/>
+                                    <field name="range_two"/>
+                                    <field name="inspection_method"/>
+                                   
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="Lines" string="Template1 Lines">
+                            <field name="template1_line_ids" widget="one2many">
+                                <tree editable="bottom">
+                                    <field name="dimension"/>
+                                    <field name="values"/>
+                                    <field name="range_one"/>
+                                    <field name="range_two"/>
+                                    <field name="inspection_method"/>
+                                   
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                    <!-- <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                    </div> -->
+                </form>
+            </field>
+        </record>
+
+        <record id="view_inspection_template_tree" model="ir.ui.view">
+            <field name="name">view.inspection.template.tree</field>
+            <field name="model">inspection.template</field>
+            <field name="arch" type="xml">
+                <tree string="Inspection Template">
+                    <field name="name"/>
+                    
+                </tree>
+            </field>
+        </record>
+
+        
+       
+        <record id="action_view_inspection_template" model="ir.actions.act_window">
+            <field name="name">Inspection Template</field>
+            <field name="res_model">inspection.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_inspection_template_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new record
+                </p>
+            </field>
+        </record>
+       
+         
+
+         <menuitem id="menu_parent_inspection" name="Inspection" parent="quality_control.menu_quality_configuration" sequence="30"/>
+
+         <menuitem action="action_view_inspection_template" id="menu_inspection_template" name="Inspection Template" sequence="1" parent="menu_parent_inspection"/>
+
+
+        <!--  <record model="ir.ui.view" id="view_drawing_master_form">
+            <field name="name">view.drawing.master.form</field>
+            <field name="model">drawing.master</field>
+            <field name="arch" type="xml">
+                <form string="Drawing Master">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="code"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_drawing_master_tree" model="ir.ui.view">
+            <field name="name">view.drawing.master.tree</field>
+            <field name="model">drawing.master</field>
+            <field name="arch" type="xml">
+                <tree string="Drawing Master">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_view_drawing_master" model="ir.actions.act_window">
+            <field name="name">Drawing Master</field>
+            <field name="res_model">drawing.master</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_drawing_master_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new record
+                </p>
+            </field>
+        </record>
+
+         <menuitem action="action_view_drawing_master" id="menu_drawing_master" name="Drawing Master" sequence="2" parent="menu_parent_inspection"/>
+ -->
+
+         <record model="ir.ui.view" id="view_defect_type_form">
+            <field name="name">view.defect.type.form</field>
+            <field name="model">defect.type.master</field>
+            <field name="arch" type="xml">
+                <form string="Defect Type">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="code"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_defect_type_tree" model="ir.ui.view">
+            <field name="name">view.defect.type.tree</field>
+            <field name="model">defect.type.master</field>
+            <field name="arch" type="xml">
+                <tree string="Defect Type">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_view_defect_type" model="ir.actions.act_window">
+            <field name="name">Defect Type</field>
+            <field name="res_model">defect.type.master</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_defect_type_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new record
+                </p>
+            </field>
+        </record>
+
+         <menuitem action="action_view_defect_type" id="menu_defect_type" name="Defect Type" sequence="3" parent="menu_parent_inspection"/>
+
+    </data>
+</odoo>

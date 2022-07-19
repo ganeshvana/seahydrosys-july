@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_inherit_stockaa" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.stock</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='move_type']" position="before">
+                <field name="supplier_ref"/>
+                <field name="buyer_order_no"/>
+                <field name="nature_of_process"/>
+                <field name="despatched_through"/>
+                <field name="drawing_no"/>
+                <field name="motor_vehicle_no"/>
+                <field name="duration_of_process"/>                
+                <field name="destination"/>
+            </xpath>
+
+            <xpath expr="/form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
+                <field name="description"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record id="view_picking_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.tree.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock_picking_batch.vpicktree_inherit_stock_picking_batch"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='status']" position="before">
+                <field name="fcl_weight"/>             
+            </xpath>           
+        </field>
+    </record> -->
+
+    <!-- <record id="view_quant_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.quant.tree.inherit</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='reserved_quantity']" position="replace">
+                <field name="reserved_quantity" sum="Reserved"/>             
+            </xpath>
+
+            <xpath expr="//field[@name='quantity']" position="replace">
+                <field name="quantity" sum="On Hand"/>             
+            </xpath>            
+        </field>
+    </record> -->
+
+</odoo>

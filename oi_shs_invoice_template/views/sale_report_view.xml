@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+       
+        <report
+                id="action_report_saleorder_wp"
+                string="Quotation / Order - Without Price"
+                model="sale.order"
+                report_type="qweb-pdf"
+                file="oi_shs_sale_document.report_saleorder_wp"
+                name="oi_shs_sale_document.report_saleorder_wp"
+        />
+    </data>
+</odoo>

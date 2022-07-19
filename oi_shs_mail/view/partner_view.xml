@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    
+    <record id="view_inherit_partner_field" model="ir.ui.view">
+         <field name="name">view.inherit.partner.field</field>
+         <field name="model">res.partner</field>
+         <field name="inherit_id" ref="base.view_partner_form"/>
+         <field name="arch" type="xml">
+             <xpath expr="//form/sheet" position="before">
+                 <header>
+                    
+                    <button name="action_ledger_send" string="Send by Email" type="object" class="btn-primary" data-hotkey="l"/>
+                   
+                </header>      
+             </xpath>
+         </field>
+     </record>
+
+    <record id="mrp_form_inherit_view_form_packing" model="ir.ui.view">
+        <field name="name">mrp.form.view.inherit.packing</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group/group/field[@name='user_id']" position="after">
+                <field name="deadline_alert"/> 
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="product_template_tree_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.tree.view.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='list_price']" position="after">
+                <field name="weight"/> 
+            </xpath>
+
+        </field>
+    </record>
+     
+    
+                
+</odoo>

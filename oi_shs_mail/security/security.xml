@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="group_product_creation" model="res.groups">
+		<field name="name">Product Creation</field>		
+	</record>
+	
+	<record id="group_product_cost" model="res.groups">
+		<field name="name">Product Cost</field>		
+	</record>
+	
+	<record id="group_no_backorder_creation" model="res.groups">
+		<field name="name">No Backorder Creation</field>		
+	</record>
+</odoo>

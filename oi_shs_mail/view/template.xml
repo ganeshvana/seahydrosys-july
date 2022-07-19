@@ -1,0 +1,141 @@
+<odoo>
+	<data>
+        <record id="ir_cron_module_mo_deadline" model="ir.cron">
+            <field name="name">MO - Deadline Reminder</field>
+            <field name="model_id" ref="mrp.model_mrp_production"/>
+            <field name="state">code</field>
+            <field name="code"> model.check_for_deadline()</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+
+        <record id="mail_template_mo_deadline_reminder" model="mail.template">
+            <field name="name">MO - Deadline Reminder</field>
+            <field name="model_id" ref="model_mrp_production"/>
+            <field name="email_from">testodoo595@gmail.com</field>
+            <field name="subject">Manufacturing Deadline Reminder</field>
+            <field name="email_to">ramya@odooimplementers.com</field>
+            <field name="body_html" type="html">
+                <p>
+                    Please find the list of manufacturing orders for which the deadline is about 2days
+                    <br/>
+
+                </p>
+            </field>
+        </record>
+
+		<record id="customer_code" model="ir.sequence">
+            <field name="name">customer.code.seq</field>
+            <field name="code">customer.code.seq</field>
+            <field name="active">True</field>
+            <field name="prefix">SHS</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">4</field>
+        </record>
+        
+	
+		<record id="mail_template_new_customer_vendor" model="mail.template">
+            <field name="name">Customer &amp; Vendor Creation</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="email_from"></field>
+            <field name="subject">New Customer Notification</field>
+            <field name="email_to"></field>
+            <field name="body_html" type="html">
+                <p>
+                    Partner <t t-esc="object.name"/> is created.
+                </p>
+                 <p>
+                     GST Treatment  <t t-esc="object.l10n_in_gst_treatment"/> 
+                </p>
+                <p>
+                   GSTIN <t t-esc="object.vat"/>
+                </p>
+                <p>
+                   Account Receivable   
+                       <t t-esc="object.property_account_receivable_id"/> 
+                </p>
+                 <p>
+                    Account Payable 
+                         <t t-esc="object.property_account_payable_id"/>
+                </p>
+                <p>
+                    Accounts Team, Please ensure following inputs are verified:
+
+                        Accounting Entries Mapping
+                        If Supplier is GST Registered. Copy of GST Certificate to be attached.
+                        If Supplier is MSME. Copy of Udayam Certificate to be attached.
+                        If the above requirements are verified, please reply to this email with a confirmation.
+
+                    This is an automated email. 
+                </p>
+            </field>
+        </record>
+
+       
+
+        <record id="mail_template_product_category" model="mail.template">
+            <field name="name">Product Category Creation</field>
+            <field name="model_id" ref="model_product_category"/>
+            <field name="email_from"></field>
+            <field name="subject">New Product Category</field>
+            <field name="email_to"></field>
+            <field name="body_html" type="html">
+                <p>
+                Product Category <t t-esc="object.name"/> is created.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="mail_template_partner_ledger" model="mail.template">
+            <field name="name">Partner Ledger</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="email_from"></field>
+            <field name="subject">Partner Ledger</field>
+            <field name="email_to"></field>
+            <field name="body_html" type="html">
+                <p>
+                    Dear <t t-esc="object.name"/> <br/> Attached Partner Ledger for your reference.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="email_template_sale_order_confirm" model="mail.template">
+            <field name="name">Sales Order Confirmation</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">New Sale Order {{ object.name }} {{ object.partner_id.name }}</field>
+            <field name="email_from"></field>
+            <field name="body_html" type="html">
+                <p>
+                    Dear Team, We have a New Sale Order. Details are as follows:<br/>
+                    <br/>
+
+                    Sale Order Number
+                                  <t t-esc="object.name"/> 
+                </p>
+                <p>
+                    Customer Name
+                                  <t t-esc="object.partner_id.name"/> 
+                </p>
+                 <p>
+                     Customer Reference No
+
+                                  <t t-esc="object.client_order_ref"/> 
+                </p>
+                 <p>
+                     Delivery Date
+                                   <t t-esc="object.commitment_date"/> 
+                </p>
+
+            </field>
+        </record>
+        
+     
+	</data>
+</odoo>

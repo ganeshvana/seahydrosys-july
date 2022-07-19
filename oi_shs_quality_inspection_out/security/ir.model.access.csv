@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_quality_inspection_out_user,quality.inspection.out.user,model_quality_inspection_out,stock.group_stock_user,1,1,1,1
+access_quality_inspection_out_manager,quality.inspection.out.manager,model_quality_inspection_out,stock.group_stock_manager,1,1,1,1
+access_inspection_template_out_user,inspection.template.out.user,model_inspection_template_out,stock.group_stock_user,1,1,1,1
+access_inspection_template_out_manager,inspection.template.out.manager,model_inspection_template_out,stock.group_stock_manager,1,1,1,1
+access_inspection_template_out_line_user,inspection.template.out.line.user,model_inspection_template_out_line,stock.group_stock_user,1,1,1,1
+access_inspection_template_out_line_manager,inspection.template.out.line.manager,model_inspection_template_out_line,stock.group_stock_manager,1,1,1,1
+access_out_inspection_line_user,Out.inspection.line.user,model_out_inspection_line,stock.group_stock_user,1,1,1,1
+access_out_inspection_line_manager,Out.inspection.line.manager,model_out_inspection_line,stock.group_stock_manager,1,1,1,1
+access_inspection_template_out_line_char_user,inspection.template.out.line.char.user,model_inspection_template_out_line_char,stock.group_stock_user,1,1,1,
+access_inspection_template_out_line_char_manager,inspection.template.out.line.char.manager,model_inspection_template_out_line_char,stock.group_stock_manager,1,1,1,
+access_out_inspection_line_char_user,Out.inspection.line.char.user,model_out_inspection_line_char,stock.group_stock_user,1,1,1,
+access_out_inspection_line_char_manager,Out.inspection.line.char.manager,model_out_inspection_line_char,stock.group_stock_manager,1,1,1,

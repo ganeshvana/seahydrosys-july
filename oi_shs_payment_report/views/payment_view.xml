@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+     <!--    <template id="external_layout_replace" inherit_id="web.external_layout_background">
+            <xpath expr="//div[1]" position="replace">
+                <div class="header">
+                    <div class="o_background_header">
+                    <div class="float-right">
+                        <h3 class="mt0 text-right" t-field="company.report_header"/>
+                    </div>
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>
+                    <div class="float-left company_address">
+                        <div>
+                            <strong t-field="company.partner_id.name"/><br/>
+                            <span  t-if="o.company_id.street">
+                            <span t-field="o.company_id.street"/>
+                            </span>
+                            <span t-if="o.company_id.street2">
+                                <span t-field="o.company_id.street2"/>
+                            </span><br/>
+                            <span t-if="o.company_id.city">
+                                <span t-field="o.company_id.city" />
+                            </span>
+                            <span t-if="o.company_id.zip">
+                                <span t-field="o.company_id.zip" />
+                            </span>,
+                            <span t-if="o.company_id.state_id">
+                                <span t-field="o.company_id.state_id.name" />
+                            </span>
+                            
+                            <span t-if="o.company_id.country_id">
+                                <span t-field="o.company_id.country_id" />
+                            </span>
+                            <br />
+                            
+                            <span t-if="o.company_id.vat">
+                                <span><b>GSTIN:</b> </span><span t-field="o.company_id.vat" />
+                            </span><![CDATA[&nbsp;]]>
+                            <span t-if="o.company_id.cin_no">
+                                <span><b>CIN No:</b> </span><span t-field="o.company_id.cin_no" />
+                            </span>
+                            <br/>
+                        </div>
+                        
+                    </div>
+                    <div class="clearfix mb8"/>
+                    </div>
+                </div>
+            </xpath> -->
+
+            <!-- <xpath expr="//div[3]" position="replace">
+                <div class="footer o_background_footer">
+                    <div class="text-center">
+                        <ul class="list-inline">
+                            <li t-if="company.phone" class="list-inline-item"><i class="fa fa-phone" role="img" aria-label="Phone" title="Phone"/> <span t-field="company.phone"/></li>
+                            <li t-if="company.email" class="list-inline-item"><i class="fa fa-at" role="img" aria-label="Email" title="Email"/> <span t-field="company.email"/></li>
+                            <li t-if="company.website" class="list-inline-item"><i class="fa fa-globe" role="img" aria-label="Website" title="Website"/> <span t-field="company.website"/></li>
+                            
+                        </ul>
+                        <div t-field="company.report_footer"/>
+                        <div t-if="report_type == 'pdf'" class="text-muted">
+                            Page:
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath> -->
+
+        <!-- </template> -->
+
+        <template id="report_payment_report_doc">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                            <div class="oe_structure"/>
+
+                            <!-- <h4 class="text-center">
+                                <strong>Payment Advice</strong>
+                            </h4> -->
+
+                            <div class="page">
+                                <style>
+                                        table, td, th, tr{
+                                        padding : 3px;
+                                        border: 1px solid black;
+                                        width: 100%;
+                                </style>
+
+
+                                <div style="margin-top:30px;">
+
+                                    <div style="margin-top:30px;">
+                                        <h4><strong>Payment Advice No: <span t-field="o.name"/></strong></h4>
+                                    </div>
+
+                                    
+                                    <table>
+                                        <tr>
+                                            <td style="width:50%;"><b>Payer</b></td>
+                                            <td style="width:50%;">
+                                                <span t-field="o.company_id.name" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:50%;"><b>Payee</b></td>
+                                            <td style="width:50%;">
+                                                <span t-field="o.partner_id.name" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:50%;"><b>Payee Address</b></td>
+                                            <td style="width:50%;">
+                                                <span t-field="o.partner_id.street" />
+                                                <span t-field="o.partner_id.street2" />
+                                                <span t-field="o.partner_id.city" />
+                                                <span t-field="o.partner_id.state_id.name" />
+                                                <span t-field="o.partner_id.zip" />
+                                                <span t-field="o.partner_id.country_id.name" />
+                                                
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="width:50%;"><b>Payee Bank Details</b></td>
+                                            <td style="width:50%;">
+                                                <div t-if="o.partner_id.bank_ids">
+                                                <span t-field="o.partner_id.bank_ids[0].acc_number" />,
+                                                <span t-field="o.partner_id.bank_ids[0].bank_id.name" />,
+                                                <span t-field="o.partner_id.bank_ids[0].bank_id.bic" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+
+                                <div style="margin-top:30px;">
+                                    <div>
+                                        <b style="font-size=14px;color:#008B8B">The Following Payment has been made</b>
+                                    </div>
+                                    <table>
+                                        <tr>
+                                            <td style="width:50%;"><b>Payment Date</b></td>
+                                            <td style="width:50%;">
+                                                <span t-field="o.date" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:50%;"><b>Payment Currency</b></td>
+                                            <td style="width:50%;">
+                                                <span t-field="o.currency_id.name" />       
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:50%;"><b>Payment</b></td>
+                                            <td style="width:50%;">
+                                                <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id} " />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:50%;"><b>Memo</b></td>
+                                            <td style="width:50%;">
+                                                <span t-field="o.ref"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div style="margin-top:30px;">
+                                    <div>
+                                        <b style="font-size=14px;color:#008B8B">Payment Details</b>
+                                    </div>
+                                    <table  class="table table-sm" style="border:1px solid black;">
+                                            <tr>
+                                                <th class="text-center" style="width:15%;font-size:16px;color:#875A7B"><span>Doc.Date</span></th>
+                                                <th class="text-center" style="width:25%;font-size:16px;color:#875A7B"><span>Doc.Number</span></th>
+                                                <th class="text-center" style="width:25%;font-size:16px;color:#875A7B"><span>Bill Number</span></th>
+                                                <th class="text-center" style="width:15%;font-size:16px;color:#875A7B" ><span>Original Amount</span></th>
+                                                <th class="text-center" style="width:15%;font-size:16px;color:#875A7B" ><span>Total Amount Paid</span></th>
+                                                <th class="text-center" style="width:15%;font-size:16px;color:#875A7B"><span>Payment</span></th>
+
+                                                <th class="text-center" style="width:15%;font-size:16px;color:#875A7B"><span>Balance</span></th>
+                                            </tr>
+                                        
+                                            <tr t-foreach="o.reconciled_bill_ids" t-as="inv">
+                                                <td style="width:15%"><span t-field="inv.invoice_date"/></td>
+                                                <td style="width:25%"><span t-field="inv.ref"/></td>
+
+                                                <td style="width:25%"><span t-field="inv.name"/></td>
+                                                
+                                                <td style="width:15%" class="text-right"><span t-field="inv.amount_total"/></td>
+                                                
+                                                <td style="width:15%" class="text-right"><span t-esc="inv.amount_total - inv.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
+                                                <td style="width:15%" class="text-right">
+                                                    <t t-set="payments_vals" t-value="inv._get_reconciled_info_JSON_values()"/>
+                                                        <t t-foreach="payments_vals" t-as="payment_vals">
+                                                            <t t-if ="payment_vals['date']==o.date" t-esc="payment_vals['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+
+                                                            </t>
+                                                </td>
+                                                <td style="width:15%" class="text-right"><span t-field="inv.amount_residual"/></td>
+                                            </tr>
+                                            
+                                    </table>
+                                </div>
+
+                                <div style="margin-top:30px;">
+                                    <h5 class="text-center" style="font-size=14px;color:#008B8B">
+                                        <strong>For any queries, Please  write to APqueries@seahydro.odoo.com</strong>
+                                    </h5>
+                                </div>
+
+
+
+                            </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+        <template id="report_payments_template_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="oi_shs_payment_report.report_payment_report_doc" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+	</data>
+</odoo>

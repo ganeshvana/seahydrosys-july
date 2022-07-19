@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+       <record id="inherit_view_purchase_form" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[@name='purchase_delivery_invoice']/group/group/field[@name='fiscal_position_id']" position="after">
+                    <field name="tax_country_id"/>
+                    <field name="despatch_through"/>
+                    <field name="sail_date"/>
+                </xpath>
+                <field name="date_order" position="after">
+                    <field name="due_date"/>
+                </field>
+             
+            </field>
+        </record>
+        
+        <!-- <record id="inherit_vpicktree" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">                
+                <field name="state" position="after">
+                    <field name="todo_date" optional="hide" widget="remaining_days"/>
+                </field>
+             
+            </field>
+        </record> -->
+
+      <!--   <record model="ir.ui.view" id="show_button_sale_view_order_form">
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_cancel']" position="replace">
+                    <button name="button_cancel" states="draft,to approve,sent" string="Cancel" type="object" />
+                    <button name="button_cancel" states="purchase" groups="itara_purchase_report_extend.group_cancel_manager" string="Cancel" type="object" />
+                </xpath>
+            </field>
+        </record> -->
+
+  <!--   <record id="purchase_search_view_inherit" model="ir.ui.view">
+        <field name="name">purchase.search.view.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[@name='user_id']" position="after">
+                <field name="origin"/>
+            </xpath>   
+               
+        </field>
+    </record>
+
+    <record model="ir.module.category" id="module_category_cancel_manager">
+        <field name="name">Purchase Button Restriction</field>
+        <field name="description">Purchase Button Restriction</field>
+        <field name="sequence">8</field>
+    </record>
+
+    <record id="group_cancel_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_cancel_manager"/>
+    </record>
+    <record id="group_cancel_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_cancel_manager"/>
+    </record> -->
+    </data>
+</odoo>

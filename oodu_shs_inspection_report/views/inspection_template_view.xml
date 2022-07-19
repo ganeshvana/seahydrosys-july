@@ -1,0 +1,626 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+
+        <template id="report_inspection_document">
+            <t t-call="web.basic_layout">
+                <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                      
+                        <table>
+                            <style>
+                                table, td, th {
+                                border: 1px solid black;
+                                width: 1250px;
+                                }
+                                p, h1, h2, h3, h4, h5, h6 {
+                                font-family: "Times New Roman";
+                                }
+                                td{
+                                padding-left:15px;
+                                padding-top:5px;
+                                }
+                            </style>
+
+                          
+                        </table>
+                            
+                      
+                        <table>
+                            <tr style="border-bottom:hidden;margin-top:100px;height:2cm">
+                                <td style="width:169px;border-right:hidden">
+                                    <div>
+                                       <!--  <img t-if="o.partner_id.image" t-att-src="image_data_uri(o.partner_id.image)" style="max-height: 45px;"
+                                     alt="Logo"/> -->
+                                    </div>
+
+                                </td>
+                                <td style="width:469px;">
+                                    <div>
+                                        <left><h6><b><span t-field="o.partner_id.name"/></b></h6></left>
+                                    </div>
+                                </td>
+                                <td style="width:450px;">
+                                    <div>
+                                        <center><h6><b>INCOMING INSPECTION REPORT</b></h6></center>
+                                    </div>
+                                </td>
+                                <td style="width:150px;">
+                                    <div>
+                                        <center><h6><b>QAD/R/01</b></h6></center>
+                                    </div>                                    
+                                </td>
+                            </tr>
+                        </table>
+
+                            <!-- <table>
+                                <tr style="border-bottom:hidden">
+                                    <td style="width:469px">
+                                        <b>
+                                            <span>Consignor:</span>
+                                        </b>
+                                        <p>
+                                        	<span t-if="o.company_id.name">
+                                                <span t-field="o.company_id.name"/>
+                                                <br/>
+                                            </span>
+                                            <span t-if="o.company_id.street">
+                                                <span t-field="o.company_id.street"/>
+                                                <br/>
+                                            </span>
+
+                                            <span t-if="o.company_id.street2">
+                                                <span t-field="o.company_id.street2"/> ,
+                                            </span>
+                                            
+                                            <span t-if="o.company_id.city">-
+                                                <span t-field="o.company_id.city"/> - 
+                                            </span>
+                                            
+                                            <span t-if="o.company_id.zip">
+                                                <span t-field="o.company_id.zip"/>
+                                            </span>
+                                            <br/>
+
+                                            <span t-if="o.company_id.state_id"> 
+                                                <span t-field="o.company_id.state_id.name"/>,
+                                            </span>
+                                            
+
+                                            <span t-if="o.company_id.country_id">
+                                                <span t-field="o.company_id.country_id.name"/>
+                                            </span><br/>
+                                           
+                                            <span t-if="o.company_id.cin_no">
+                                                CIN NO: <span t-field="o.company_id.cin_no"/>
+                                            </span><br/>  
+                                            <span t-if="o.company_id.ie_code">
+                                                IE Code NO: <span t-field="o.company_id.ie_code"/>
+                                            </span><br/>  
+                                            <span t-if="o.company_id.ad_code">
+                                                AD Code NO: <span t-field="o.company_id.ad_code"/>
+                                            </span><br/>    
+                                           
+                                            <span>100% EOU CUSTOMS LICENSE NO: 3 DT 19.07.2010</span>
+                                           
+                                        </p>
+                                    </td>
+                                    <td style="width:450px">
+                                        <b>
+                                            <span>Consignee:</span><br/>
+                                            <span>Ship To:</span>
+                                        </b>
+                                        <p>
+                                            <span t-if="o.partner_shipping_id.name">
+                                                <span t-field="o.partner_shipping_id.name"/>
+                                                <br/>
+                                            </span>
+
+                                            <span t-if="o.partner_shipping_id.street">
+                                                <span t-field="o.partner_shipping_id.street"/>
+                                            </span> 
+
+                                            <span t-if="o.partner_shipping_id.street2"> 
+                                                <span t-field="o.partner_shipping_id.street2"/>,
+                                                <br/>
+                                            </span>
+                                            
+                                            <span t-if="o.partner_shipping_id.city">
+                                                <span t-field="o.partner_shipping_id.city"/>
+                                            </span>
+                                            
+                                            <span t-if="o.partner_shipping_id.zip">  
+                                                <span t-field="o.partner_shipping_id.zip"/> - 
+                                            </span>
+                                            <br/>
+
+                                           <span t-if="o.partner_shipping_id.state_id">
+                                                <span t-field="o.partner_shipping_id.state_id.name"/>,
+                                            </span>
+                                            
+
+                                            <span t-if="o.partner_shipping_id.country_id"> 
+                                                <span t-field="o.partner_shipping_id.country_id.name"/>
+                                            </span><br/>
+                                        </p>
+                                    </td>
+                                   
+                                </tr>
+                            </table>
+ -->
+                            <!-- <table>
+                                <tr style="border-bottom:hidden">
+                                    <td style="width:469px">
+                                        <b>
+                                            <span>Invoice No. &amp; Date</span>
+                                        </b>
+                                        <p>
+                                            <span t-if="o.date_invoice">
+                                                <span t-field="o.number"/> Dated
+                                                <span t-field="o.date_invoice" t-options='{"format": "dd/MM/yyyy"}'/>
+                                            </span>
+                                        </p>
+                                        <b>
+                                            <span>Buyer's order no. &amp; Date</span>
+                                        </b>
+                                        <p>
+                                            <span t-if="o.origin">
+                                                <span t-field="o.origin"/>, 
+                                                <span t-field="o.sale_id.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                            </span>
+                                        </p>
+                                         <b>
+                                            <span>HS CODE : <span t-field="o.hs_code"/></span>
+                                        </b>
+                                    </td>
+                                    <td style="width:450px">
+                                        <b><span>Consignee:</span><br/>
+                                           <span>Bill To:</span>
+                                        </b>
+                                         <p>
+                                            <span t-if="o.partner_id.name">
+                                                <span t-field="o.partner_id.name"/>
+                                                <br/>
+                                            </span>
+
+                                            <span t-if="o.partner_id.street">
+                                                <span t-field="o.partner_id.street"/>
+                                            </span>, 
+
+                                            <span t-if="o.partner_id.street2">
+                                                <span t-field="o.partner_id.street2"/>
+                                                <br/>
+                                            </span>
+                                            
+                                            <span t-if="o.partner_id.city">
+                                                <span t-field="o.partner_id.city"/> - 
+                                            </span>
+                                            
+                                            <span t-if="o.partner_id.zip">
+                                                <span t-field="o.partner_id.zip"/>
+                                            </span>
+                                            <br/>
+
+                                           <span t-if="o.partner_id.state_id"> 
+                                                <span t-field="o.partner_id.state_id.name"/>,
+                                            </span>
+                                            
+
+                                            <span t-if="o.partner_id.country_id"> 
+                                                <span t-field="o.partner_id.country_id.name"/>
+                                            </span><br/>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+ -->
+                            <table>
+                                <tr>
+                                    <td style="width:169px;">
+                                        <span>Inspection No</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.name"/>
+                                    </td>
+                                    
+                                    <td style="width:150px;">
+                                         <span>Operation Name</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.operation_name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:169px;">
+                                        <span>GRN No</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.picking_id"/>
+                                    </td>
+                                    <td style="width:150px;">
+                                        <span>Product</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.product_id"/>
+                                    </td>
+                                    
+
+                                   
+                                </tr>
+                                <tr>
+
+                                    <td style="width:169px;">
+                                        <span>GRN Date</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.grn_date"/>
+                                    </td>
+                                     <td style="width:150px;">
+                                         <span>Drawing No</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.drawing_no"/>
+                                    </td>
+                                    
+                                    
+                                </tr>
+                                <tr>
+                                    <td style="width:169px;">
+                                        <span>Supplier Name</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.partner_id"/>
+                                    </td>
+                                   
+                                    
+                                    <td style="width:150px;">
+                                         <span>Shift</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.shift"/>
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                     <td style="width:169px;">
+                                        <span>Inv No &amp; Date</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.inv_no_date"/>
+                                    </td>
+
+                                   
+                                    <td style="width:150px;">
+                                         <span>Inspection Date</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.inspection_date"/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td style="width:169px;">
+                                        <span>Template</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.template_id"/>
+                                    </td>
+                                    <td style="width:150px;">
+                                         <span>Inspected By</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.inspected_by.name"/>
+                                    </td>
+
+                                    
+                                </tr>
+                                 <tr>
+                                     <td style="width:169px;">
+                                        <span>Total Qty</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.total_qty"/>
+                                    </td>
+                                   
+                                    <td style="width:150px;">
+                                         <span>RM Test Certificate</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.supplier_test"/>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+
+                                    <td style="width:169px;">
+                                        <span>Sample Qty</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.sample_qty"/>
+                                    </td>
+                                    <td style="width:150px;">
+                                         <span>Rejection Qty</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.rejection_qty"/>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                     <td style="width:169px;">
+                                        <span>Supplier Inspection Report</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.supplier_inspection"/>
+                                    </td>
+                                   
+                                    <td style="width:150px;">
+                                         <span>Defect Type</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.defect_type_id"/>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+
+                                    <td style="width:169px;">
+                                        <span>Corrective Action Report</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.corrective_test"/>
+                                    </td>
+                                    <td style="width:150px;">
+                                         <span>Corrective Action</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.corrective_action"/>
+                                    </td>
+                                    
+                                </tr>
+                               <!--  <tr>
+                                    <td style="width:169px;">
+                                        <span>Template</span>
+                                    </td>
+                                    <td style="width:469px;">
+                                         <span t-field="o.template_id"/>
+                                    </td>
+                                    <td style="width:150px;">
+                                         <span>Corrective Action</span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span t-field="o.corrective_action"/>
+                                    </td>
+                                    
+                                </tr>
+    -->
+                                
+                            </table>
+
+                           
+                          
+                            <!-- <br/> -->
+                            <table>
+                                <thead>
+                                    <tr style="font-size:18px">
+                                        <!-- <th class="text-center" style="width:50px">
+                                            <span>S.No</span>
+                                        </th> -->
+                                        <th class="text-center" style="width:300px">
+                                            <span>Description</span>
+                                        </th>
+                                        
+                                        <th class="text-center" style="width:100px">
+                                            <span>Specification</span>
+                                        </th>
+                                        <th class="text-center" style="width:50px">
+                                            <span>Min</span>
+                                        </th>
+                                      
+                                        <th class="text-center" style="width:50px">
+                                            <span>Max</span>
+                                        </th>
+                                        <th class="text-center" style="width:138px">
+                                            <span>Inspection Method</span>
+                                        </th>
+                                        <th class="text-center" colspan="7" style="width:590px">
+                                            <span>Dimension Measured Values</span>
+                                        
+                                        </th>
+                                        
+                                        
+                                    </tr>
+                                    <tr style="font-size:14px;height:2cm">
+                                        <!-- <th class="text-center" style="width:50px"> -->
+                                            <!-- <span>S.No</span> -->
+                                        <!-- </th> -->
+                                        <th class="text-center" style="width:300px">
+                                            <!-- <span>Dimension</span> -->
+                                        </th>
+                                        
+                                        <th class="text-center" style="width:100px">
+                                            <!-- <span>Values</span> -->
+                                        </th>
+                                        <th class="text-center" style="width:50px">
+                                            <!-- <span>Range 1</span> -->
+                                        </th>
+                                      
+                                        <th class="text-center" style="width:50px">
+                                            <!-- <span>Range 2</span> -->
+                                        </th>
+                                        <th class="text-center" style="width:138px">
+                                            <!-- <span>Inspection Method</span> -->
+                                        </th>
+                                        <th class="text-center" style="width:50px">
+                                            <span>S</span>
+                                        </th>
+                                        <th class="text-center" style="width:50px">
+                                            <span>S</span>
+                                        </th>
+                                        <th class="text-center" style="width:50px">
+                                            <span>S</span>
+                                        </th>
+                                        <th class="text-center" style="width:50px">
+                                            <span>S</span>
+                                        </th>
+                                        <th class="text-center" style="width:50px">
+                                            <span>S</span>
+                                        </th>
+                                        <th class="text-center" style="width:200px">
+                                            <span>Remarks</span>
+                                        </th>
+                                        <th class="text-center" style="width:140px">
+                                            <span>Status</span>
+                                        </th>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr t-foreach="o.inspection_line_ids" t-as="l">
+                                        <!-- <td style="width:50px">
+                                            <span t-esc="l_index+1"/>
+                                        </td> -->
+                                      
+                                        <td style="width:300px">
+                                            <span t-field="l.dimension"/> 
+                                        </td>
+                                        <td style="width:100px">
+                                            <span t-field="l.values"/>
+                                        </td>
+                                        <td style="width:50px">
+                                            <span t-field="l.range_one"/>
+                                        </td>
+                                        <td style="width:50px">
+                                            <span t-field="l.range_two"/>
+                                        </td>
+                                        <td style="width:138px">
+                                            <span t-field="l.inspection_method"/>
+                                        </td>
+                                        <td style="width:50px">
+                                            <span t-if="l.s1!=0" t-field="l.s1"/>
+                                            <span t-if="l.s1==0"/>
+                                        </td>
+                                        <td style="width:50px">
+                                            <span t-if="l.s2!=0" t-field="l.s2"/>
+                                            <span t-if="l.s2==0"/>
+                                        </td>
+                                        <td style="width:50px">
+                                            <span t-if="l.s3!=0" t-field="l.s3"/>
+                                            <span t-if="l.s3==0"/>
+                                        </td>
+                                        <td style="width:50px">
+                                            <span t-if="l.s4!=0" t-field="l.s4"/>
+                                            <span t-if="l.s4==0"/>
+                                        </td>
+                                        <td style="width:50px">
+                                            <span t-if="l.s5!=0" t-field="l.s5"/>
+                                            <span t-if="l.s5==0"/>
+                                        </td>
+                                        <td style="width:200px">
+                                            <span t-field="l.remarks"/>
+                                        </td>
+                                        <td style="width:140px">
+                                            <span t-field="l.state"/>
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                          
+                                <!-- <tr style="border-bottom:hidden">
+                                    <td style="width:60px;">
+                                        <span></span>
+                                    </td>
+
+                                    <td style="width:440px;text-transform:uppercase;text-align:center">
+                                      
+                                        <b><span>Total</span></b>
+                                        
+                                    </td>
+                                    <td style="width:150px;">
+                                        <span></span>
+                                    </td>
+                                   
+                                    <td style="width:80px;text-align:center">
+                                            <t t-set="i" t-value="0"/>
+                                                <t t-foreach="o.invoice_line_ids" t-as="l">
+                                                    <t t-set="i" t-value="i+l.quantity"/>
+                                                </t>
+                                            <b>
+                                                <t t-esc="'%.0f'%(i)"></t>
+                                            </b>
+                                    </td>
+
+                                    <td style="width:120px;">
+                                        <span></span>
+                                    </td>
+
+                                    <td style="width:125px;">
+                                        <div class="text-right" style="padding-right:10px;">
+                                                <b>
+                                                    <span t-field="o.amount_total"/>
+                                                </b>
+                                        </div>
+                                    </td>
+                                </tr> -->
+                            </table>
+
+                            <!-- <table>
+                                <tr style="border-bottom:hidden">
+                                    <td style="text-transform: uppercase;">
+                                       <span t-if="o.comment">
+                                            <b><span t-field="o.comment"/></b>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <table>
+                                <tr style="border-bottom:hidden">
+                                    <td>
+                                        <b><span>Amount Chargeable : </span>
+                                            <span t-esc="o.currency_id.name"/> - 
+                                            <span t-esc="o.currency_id.amount_to_text(o.amount_total)"/> Only
+                                        </b>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr>
+                                    <td style="width:450px;">
+                                        <b><span>Declaration :</span></b> 
+                                        <span>We declare that this Invoice shows the actual price of the goods described and the particulars are true and correct</span>
+                                     </td>
+                                    <td style="width:450px; padding-right:10px;">
+                                        <div class="text-right">
+                                           <b> Signature &amp; Date : For <span t-field="o.company_id.name"/></b><br/>
+                                            <span></span><br/>
+                                            <span></span><br/>
+                                            <b><span>Authorised Signatory</span></b>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table> -->
+
+                    </div>
+                </t>
+            </t>
+
+        </template>
+
+        <template id="report_inspection">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="oodu_shs_inspection_report.report_inspection_document" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
