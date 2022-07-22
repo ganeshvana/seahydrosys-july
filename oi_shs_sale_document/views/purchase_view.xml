@@ -56,7 +56,7 @@
         <field name="arch" type="xml">
             <xpath expr="//search/field[@name='picking_type_id']" position="after">
                 <!-- <field name="origin"/> -->
-                <field name="move_line_ids_without_package" string="Category" filter_domain="[('move_ids_without_package.product_id.categ_id', 'ilike', self)]"/>
+                <field name="category_id" string="Category" filter_domain="[('product_id.categ_id', 'ilike', self)]"/>
             </xpath>   
                
         </field>
