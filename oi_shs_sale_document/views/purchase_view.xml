@@ -49,6 +49,19 @@
         </field>
     </record>
 
+    <record id="view_picking_line_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.line.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[@name='user_id']" position="after">
+                <!-- <field name="origin"/> -->
+                <field name="move_ids_without_package" string="Category" filter_domain="[('move_ids_without_package.product_id.categ_id', 'ilike', self)]"/>
+            </xpath>   
+               
+        </field>
+    </record>
+
    <!--  <record model="ir.module.category" id="module_category_cancel_manager">
         <field name="name">Purchase Button Restriction</field>
         <field name="description">Purchase Button Restriction</field>

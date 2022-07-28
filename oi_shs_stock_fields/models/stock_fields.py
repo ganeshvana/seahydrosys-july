@@ -48,10 +48,10 @@ class stock_move(models.Model):
     description = fields.Char('Description')
 
 
-class CurrencyRate(models.Model):
-    _inherit = 'res.currency.rate'
+# class CurrencyRate(models.Model):
+#     _inherit = 'res.currency.rate'
 
-    rate = fields.Float(digits=(12, 15), default=1.0, help='The rate of the currency to the currency of rate 1')
+#     rate = fields.Float(digits=(12, 15), default=1.0, help='The rate of the currency to the currency of rate 1')
 
   
 
