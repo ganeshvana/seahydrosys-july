@@ -70,7 +70,7 @@ class stock_move_inherit(models.Model):
                     else:
                         quants = self.env['stock.quant']._update_reserved_quantity(
                             self.product_id, location_id, taken_quantity, lot_id=lot_id,
-                            package_id=package_id, owner_id=owner_id, strict=strict
+                            package_id=package_id, owner_id=None, strict=strict
                         )
         except UserError:
             taken_quantity = 0
