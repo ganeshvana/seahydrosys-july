@@ -13,8 +13,8 @@ from datetime import datetime
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
     
-# class stock_move_inherit(models.Model):
-#     _inherit = 'stock.move'
+class stock_move_inherit(models.Model):
+    _inherit = 'stock.move'
 
 #     def _get_available_quantity(self, location_id, lot_id=None, package_id=None, owner_id=None, strict=False, allow_negative=False):
 #         self.ensure_one()
@@ -92,17 +92,17 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 #                     self.env['stock.move.line'].create(self._prepare_move_line_vals(quantity=quantity, reserved_quant=reserved_quant))
 #         return taken_quantity
 
-# class stock_picking_inherit(models.Model):
-#     _inherit = 'stock.picking'
+class stock_picking_inherit(models.Model):
+    _inherit = 'stock.picking'
 
-#     def action_view_inspection(self):
-#         ins_ids = []
-#         action = self.env.ref('oi_shs_quality_inspection.action_view_inspection').read()[0]
-#         ins_search = self.env['quality.inspection'].search([('picking_id','=',self.id)])
-#         for data in ins_search:
-#             ins_ids.append(data.id)
-#         action['domain'] = [('id','in',ins_ids)]
-#         return action
+    def action_view_inspection(self):
+        ins_ids = []
+        action = self.env.ref('oi_shs_quality_inspection.action_view_inspection').read()[0]
+        ins_search = self.env['quality.inspection'].search([('picking_id','=',self.id)])
+        for data in ins_search:
+            ins_ids.append(data.id)
+        action['domain'] = [('id','in',ins_ids)]
+        return action
 
     def _action_done(self):
         """Call `_action_done` on the `stock.move` of the `stock.picking` in `self`.
