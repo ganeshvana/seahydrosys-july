@@ -11,6 +11,17 @@
 from odoo import models, fields, api, _
 from datetime import datetime
     
+class stock_move_inherit(models.Model):
+    _inherit = 'stock.move'
+
+    def _get_available_quantity(self, location_id, lot_id=None, package_id=None, owner_id=None, strict=False, allow_negative=False):
+        self.ensure_one()
+        return True
+        # if location_id.should_bypass_reservation():
+        #     return self.product_qty
+        # return self.env['stock.quant']._get_available_quantity(self.product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict, allow_negative=allow_negative)
+
+
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
 
