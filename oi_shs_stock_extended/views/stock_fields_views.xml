@@ -17,6 +17,10 @@
                     attrs="{'invisible':[('picking_type_code','=','outgoing')]}"/>
 
             </xpath>
+            <xpath expr="//form/sheet/group/group[2]/field[@name='origin']" position="after">
+                <field name="vendor" attrs="{'invisible':[('picking_type_code','!=','internal')]}"/>
+            </xpath>
+
          
         </field>
     </record>

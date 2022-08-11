@@ -16,11 +16,11 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 class stock_move_inherit(models.Model):
     _inherit = 'stock.move'
 
-#     def _get_available_quantity(self, location_id, lot_id=None, package_id=None, owner_id=None, strict=False, allow_negative=False):
-#         self.ensure_one()
-#         if location_id.should_bypass_reservation():
-#             return self.product_qty
-#         return self.env['stock.quant']._get_available_quantity(self.product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=None, strict=strict, allow_negative=allow_negative)
+    def _get_available_quantity(self, location_id, lot_id=None, package_id=None, owner_id=None, strict=False, allow_negative=False):
+        self.ensure_one()
+        if location_id.should_bypass_reservation():
+            return self.product_qty
+        return self.env['stock.quant']._get_available_quantity(self.product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=None, strict=strict, allow_negative=allow_negative)
 
 #     def _update_reserved_quantity(self, need, available_quantity, location_id, lot_id=None, package_id=None, owner_id=None, strict=True):
 #         """ Create or update move lines.
@@ -104,32 +104,32 @@ class stock_picking_inherit(models.Model):
         action['domain'] = [('id','in',ins_ids)]
         return action
 
-    def _action_done(self):
-        """Call `_action_done` on the `stock.move` of the `stock.picking` in `self`.
-        This method makes sure every `stock.move.line` is linked to a `stock.move` by either
-        linking them to an existing one or a newly created one.
+    # def _action_done(self):
+    #     """Call `_action_done` on the `stock.move` of the `stock.picking` in `self`.
+    #     This method makes sure every `stock.move.line` is linked to a `stock.move` by either
+    #     linking them to an existing one or a newly created one.
 
-        If the context key `cancel_backorder` is present, backorders won't be created.
+    #     If the context key `cancel_backorder` is present, backorders won't be created.
 
-        :return: True
-        :rtype: bool
-        """
-        self._check_company()
+    #     :return: True
+    #     :rtype: bool
+    #     """
+    #     self._check_company()
 
-        todo_moves = self.mapped('move_lines').filtered(lambda self: self.state in ['draft', 'waiting', 'partially_available', 'assigned', 'confirmed'])
-        for picking in self:
-            if picking.owner_id:
-                picking.move_lines.write({'restrict_partner_id': picking.owner_id.id})
-                picking.move_line_ids.write({'owner_id': picking.owner_id.id})
-        todo_moves._action_done(cancel_backorder=self.env.context.get('cancel_backorder'))
-        self.write({'date_done': fields.Datetime.now(), 'priority': '0'})
+    #     todo_moves = self.mapped('move_lines').filtered(lambda self: self.state in ['draft', 'waiting', 'partially_available', 'assigned', 'confirmed'])
+    #     for picking in self:
+    #         if picking.owner_id:
+    #             picking.move_lines.write({'restrict_partner_id': picking.owner_id.id})
+    #             picking.move_line_ids.write({'owner_id': picking.owner_id.id})
+    #     todo_moves._action_done(cancel_backorder=self.env.context.get('cancel_backorder'))
+    #     self.write({'date_done': fields.Datetime.now(), 'priority': '0'})
 
-        # if incoming moves make other confirmed/partially_available moves available, assign them
-        done_incoming_moves = self.filtered(lambda p: p.picking_type_id.code == 'incoming').move_lines.filtered(lambda m: m.state == 'done')
-        done_incoming_moves._trigger_assign()
+    #     # if incoming moves make other confirmed/partially_available moves available, assign them
+    #     done_incoming_moves = self.filtered(lambda p: p.picking_type_id.code == 'incoming').move_lines.filtered(lambda m: m.state == 'done')
+    #     done_incoming_moves._trigger_assign()
 
-        self._send_confirmation_email()
-        return True
+    #     self._send_confirmation_email()
+    #     return True
         
     supplier_ref = fields.Char(string="Supplier's Ref")
     drawing_no = fields.Char(string='Drawing No.')
@@ -140,7 +140,18 @@ class stock_picking_inherit(models.Model):
     despatched_through = fields.Char('Despatched Through')
     buyer_order_no = fields.Char(string="Buyer's Order No")
     customer_reference = fields.Char(string="Customer Reference")
-   
+    vendor = fields.Many2one('res.partner',string='Partner',compute='_get_partner')
+
+    @api.depends('origin')
+    def _get_partner(self):
+        for record in self:
+            record.vendor = ''
+            if record.picking_type_id.code == 'internal':
+                pur_obj = self.env['purchase.order'].search([('name','=',record.origin)])
+                if pur_obj:
+                    record.vendor = pur_obj.partner_id
+                else:
+                    record.vendor = ''
   
 
 class sale_order(models.Model):
