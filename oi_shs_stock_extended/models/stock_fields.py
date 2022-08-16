@@ -14,22 +14,14 @@ from datetime import datetime
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
 
-    # @api.one
-    # @api.depends('move_ids_without_package')
-    # def _get_fcl_weight(self):
-    #     for pick in self:
-    #         weight = 0.00
-    #         for line in pick.move_ids_without_package:
-    #             weight += line.product_uom_qty * line.product_id.weight
-    #             self.fcl_weight = weight
-
-    # @api.one
-    # @api.depends('origin')
-    # def _get_mo(self):
-    #     for pick in self:
-    #         if self.origin:
-    #             mo = self.env['mrp.production'].search([('name', '=', self.origin)])
-    #             self.mrp_id = mo.id
+    def action_view_inspection(self):
+        ins_ids = []
+        action = self.env.ref('oi_shs_quality_inspection.action_view_inspection').read()[0]
+        ins_search = self.env['quality.inspection'].search([('picking_id','=',self.id)])
+        for data in ins_search:
+            ins_ids.append(data.id)
+        action['domain'] = [('id','in',ins_ids)]
+        return action
 
 
     supplier_ref = fields.Char(string="Supplier's Ref")

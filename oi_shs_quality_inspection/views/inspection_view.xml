@@ -22,7 +22,7 @@
                             <group>
                                 <!-- <field name="from_dates" attrs="{'readonly': [('state', '=', 'done')]}"/> -->
                                 <field name="picking_type_code" invisible="1"/>
-                                <field name="picking_id" domain="['&amp;',('picking_type_code','=','incoming'),('state','=','done')]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="picking_id" domain="[('picking_type_code','in',('incoming','internal'))]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="grn_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="product_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>

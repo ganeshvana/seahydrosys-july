@@ -13,18 +13,13 @@
                 
             </xpath>
 
-           <!--  <xpath expr="//form/sheet/notebook/page/[@name='extra']" position="inside">
-                <group string="Other Details" name="other_details">
-                    <field name="drawing_no"/>
-                    <field name="buyer_order_no"/>
-                    <field name="nature_of_process"/>
-                    <field name="despatched_through"/>
-                </group>
-            </xpath> -->
-             
-            <!-- <xpath expr="/form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
-                <field name="description"/>
-            </xpath> -->
+            <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                <button name="action_view_inspection" string="Inspection" type="object" class="oe_stat_button" icon="fa-list"
+                    attrs="{'invisible':[('picking_type_code','=','outgoing')]}"/>
+
+            </xpath>
+
+         
         </field>
     </record>
 
