@@ -113,7 +113,11 @@ class quality_inspection(models.Model):
             
                 product_ids_list.append(line.product_id.id)
                 # self.description = line.name
-            self.partner_id = self.picking_id.partner_id.id
+            if self.picking_id.partner_id.id:
+                self.partner_id = self.picking_id.partner_id.id
+            if self.picking_id.vendor.id:
+                self.partner_id = self.picking_id.vendor.id
+
             self.grn_date = self.picking_id.date_done
             self.inv_no_date = self.picking_id.supplier_ref
             self.scheduled_date = self.picking_id.scheduled_date

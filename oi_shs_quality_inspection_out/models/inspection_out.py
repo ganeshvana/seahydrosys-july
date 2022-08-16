@@ -90,13 +90,15 @@ class quality_inspection_out(models.Model):
 
     @api.onchange('picking_id')
     def onchange_picking_id(self):
-        print ("iiiiiiiiiiiiiiii")
         product_ids_list = []
         if self.picking_id:
             for line in self.picking_id.move_ids_without_package:
             
                 product_ids_list.append(line.product_id.id)
-            self.partner_id = self.picking_id.partner_id.id
+            if self.picking_id.partner_id.id:
+                self.partner_id = self.picking_id.partner_id.id
+            if self.picking_id.vendor.id:
+                self.partner_id = self.picking_id.vendor.id
             self.deliver_date = self.picking_id.date_done
             self.inv_no_date = self.picking_id.supplier_ref
             self.po_no = self.picking_id.buyer_order_no

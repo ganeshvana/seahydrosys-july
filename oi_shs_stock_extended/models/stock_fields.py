@@ -33,6 +33,19 @@ class stock_picking_inherit(models.Model):
     despatched_through = fields.Char('Despatched Through')
     buyer_order_no = fields.Char(string="Buyer's Order No")
     customer_reference = fields.Char(string="Customer Reference")
+    vendor = fields.Many2one('res.partner',string='Partner',compute='_get_partner')
+
+    @api.depends('origin')
+    def _get_partner(self):
+        for record in self:
+            record.vendor = ''
+            if record.picking_type_id.code == 'internal':
+                pur_obj = self.env['purchase.order'].search([('name','=',record.origin)])
+                if pur_obj:
+                    record.vendor = pur_obj.partner_id
+                else:
+                    record.vendor = ''
+  
     # fcl_weight = fields.Float('FCL Weight',compute="_get_fcl_weight")
     # mrp_id =  fields.Many2one('mrp.production','Mo',compute="_get_mo")
   
