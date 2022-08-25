@@ -16,12 +16,11 @@ class stock_picking_inherit(models.Model):
 
   
     def action_view_inspection(self):
-        ins_ids = []
-        action = self.env.ref('oi_shs_quality_inspection.action_view_inspection').read()[0]
-        ins_search = self.env['quality.inspection'].search([('picking_id','=',self.id)])
-        for data in ins_search:
-            ins_ids.append(data.id)
-        action['domain'] = [('id','in',ins_ids)]
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("oi_shs_quality_inspection.action_view_inspection")
+        ins_search = self.env['quality.inspection'].search([('picking_id', '=', self.id)])
+        action['domain'] = [('id', 'in', ins_search.ids)]
+        action['context'] = dict(self._context, create=True)
         return action
 
 
