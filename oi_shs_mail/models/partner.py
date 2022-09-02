@@ -174,7 +174,7 @@ class SaleOrderConfirmation(models.Model):
             mail_template_id = self.env.ref('oi_shs_mail.sale_order_cancel_view_form')
             template = self.env['mail.template'].sudo().browse(mail_template_id.id)
             self.env['mail.template'].browse(mail_template_id.id).send_mail(self.id, force_send=True) 
-            return True
+            return res
 
     def create(self, vals):
             res = super(SaleOrderConfirmation, self).create(vals)
