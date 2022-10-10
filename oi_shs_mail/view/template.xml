@@ -165,6 +165,37 @@
 
             </field>
         </record>
+
+
+        <record id="sale_order_create_mail" model="mail.template">
+            <field name="name">Sales Order Create</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject"> Sale Order Creation{{ object.name }} {{ object.partner_id.name }}</field>
+            <field name="email_from"></field>
+            <field name="body_html" type="html">
+                <p>
+                    Dear Team, We have a  Sale Order creation. Details are as follows:<br/>
+                    <br/>
+
+                    Sale Order Number
+                                  <t t-esc="object.name"/> 
+                </p>
+                <p>
+                    Customer Name
+                                  <t t-esc="object.partner_id.name"/> 
+                </p>
+                 <p>
+                     Customer Reference No
+
+                                  <t t-esc="object.client_order_ref"/> 
+                </p>
+                 <p>
+                     Delivery Date
+                                   <t t-esc="object.commitment_date"/> 
+                </p>
+
+            </field>
+        </record>
         
      
 	</data>
