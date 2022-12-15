@@ -35,7 +35,8 @@
                     <strong>Expiration:</strong>
                     <p class="m-0" t-field="doc.validity_date"/>
                 </div>
-                <div t-if="doc.commitment_date" class="col-auto col-3 mw-100 mb-2">
+                <!-- <div t-if="doc.date_order" class="col-auto col-3 mw-100 mb-2"> -->
+                <div t-if="doc.commitment_date and doc.state in ['draft', 'sent']" class="col-auto col-3 mw-100 mb-2">
                     <strong>Shipment Date:</strong>
                     <!-- <p class="m-0" t-field="doc.date_order"/> -->
                     <p class="m-0" t-field="doc.commitment_date"/>
