@@ -148,7 +148,7 @@
                                         </b>
                                         <p>
                                             <span t-if="o.invoice_date">
-                                                <span t-field="o.number"/> 
+                                                <span t-field="o.name"/> 
                                                 Dated
                                                 <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
                                             </span>
