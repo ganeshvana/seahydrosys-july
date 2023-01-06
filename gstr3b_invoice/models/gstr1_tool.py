@@ -237,7 +237,7 @@ class Gstr1Tool(models.Model):
     @api.model
     def exportCsv(self, active_ids, invoice_type, gstToolName, gstType):
         if gstType != 'gstr3b':
-            return super(ExportCsvWizard,
+            return super(Gstr1Tool,
                          self).exportCsv(active_ids=active_ids,
                                          invoice_type=invoice_type,
                                          gstToolName=gstToolName,
@@ -255,7 +255,7 @@ class Gstr1Tool(models.Model):
 
     def prepareCsv(self, mainData, invoice_type, gstToolName, gstType):
         if gstType != 'gstr3b':
-            return super(ExportCsvWizard,
+            return super(Gstr1Tool,
                          self).prepareCsv(mainData=mainData,
                                           invoice_type=invoice_type,
                                           gstToolName=gstToolName,
@@ -286,7 +286,7 @@ class Gstr1Tool(models.Model):
 
     def getInvoiceData(self, active_ids, invoiceType, gstType):
         if gstType != 'gstr3b':
-            return super(ExportCsvWizard,
+            return super(Gstr1Tool,
                          self).getInvoiceData(active_ids=active_ids,
                                               invoiceType=invoiceType,
                                               gstType=gstType)
@@ -511,7 +511,7 @@ class Gstr1Tool(models.Model):
 
     def getGSTInvoiceData(self, invoiceObj, invoiceType, data, gstType=''):
         if gstType != 'gstr3b':
-            return super(GstInvoiceData,
+            return super(Gstr1Tool,
                          self).getGSTInvoiceData(invoiceObj=invoiceObj,
                                                  invoiceType=invoiceType,
                                                  data=data,
@@ -623,7 +623,7 @@ class Gstr1Tool(models.Model):
 
     def getGstTaxData(self, invoiceObj, invoiceLineObj, rateObjs, taxedAmount, invoiceType):
         if self._context.get('gstType', '') != 'gstr3b':
-            return super(GstTaxData,
+            return super(Gstr1Tool,
                          self).getGstTaxData(invoiceObj=invoiceObj,
                                              invoiceLineObj=invoiceLineObj,
                                              rateObjs=rateObjs,
