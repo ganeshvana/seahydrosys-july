@@ -94,36 +94,36 @@
                                             <span>Ship To:</span>
                                         </b>
                                         <p>
-                                            <span t-if="o.partner_id.name">
-                                                <span t-field="o.partner_id.name"/>
+                                            <span t-if="o.partner_shipping_id.name">
+                                                <span t-field="o.partner_shipping_id.name"/>
                                                 <br/>
                                             </span>
 
-                                            <span t-if="o.partner_id.street">
-                                                <span t-field="o.partner_id.street"/>
+                                            <span t-if="o.partner_shipping_id.street">
+                                                <span t-field="o.partner_shipping_id.street"/>
                                             </span> 
 
-                                            <span t-if="o.partner_id.street2"> 
-                                                <span t-field="o.partner_id.street2"/>,
+                                            <span t-if="o.partner_shipping_id.street2"> 
+                                                <span t-field="o.partner_shipping_id.street2"/>,
                                                 <br/>
                                             </span>
                                             
-                                            <span t-if="o.partner_id.city">
-                                                <span t-field="o.partner_id.city"/>
+                                            <span t-if="o.partner_shipping_id.city">
+                                                <span t-field="o.partner_shipping_id.city"/>
                                             </span>
                                             
-                                            <span t-if="o.partner_id.zip">  
-                                                <span t-field="o.partner_id.zip"/> - 
+                                            <span t-if="o.partner_shipping_id.zip">  
+                                                <span t-field="o.partner_shipping_id.zip"/> - 
                                             </span>
                                             <br/>
 
-                                           <span t-if="o.partner_id.state_id">
-                                                <span t-field="o.partner_id.state_id.name"/>,
+                                           <span t-if="o.partner_shipping_id.state_id">
+                                                <span t-field="o.partner_shipping_id.state_id.name"/>,
                                             </span>
                                             
 
-                                            <span t-if="o.partner_id.country_id"> 
-                                                <span t-field="o.partner_id.country_id.name"/>
+                                            <span t-if="o.partner_shipping_id.country_id"> 
+                                                <span t-field="o.partner_shipping_id.country_id.name"/>
                                             </span><br/>
                                         </p>
                                     </td>
@@ -376,6 +376,17 @@
                                         <b><span>Amount Chargeable : </span>
                                             <!-- <span t-esc="o.fx_currency_id.name"/> -  -->
                                             <span t-esc="o.fx_currency_id.amount_to_text(o.total_fx_amount)"/> Only
+                                        </b>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr style="border-bottom:hidden">
+                                    <td>
+                                        <b><span>Terms &amp; Conditions: </span>
+                                            <!-- <span t-esc="o.fx_currency_id.name"/> -  -->
+                                            <span t-esc="o.narration"/> Only
                                         </b>
                                     </td>
                                 </tr>
