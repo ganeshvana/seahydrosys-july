@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <data>
+
+                <record id="group_quality_check_user_enable" model="res.groups">
+                    <field name="name">Manufacturing Quality Check - Enable</field> 
+                </record> 
+
+                <record id="group_inventory_stages_user_enable" model="res.groups">
+                    <field name="name">Inventory Stages User - Enable</field> 
+                </record> 
+
+        </data>
+</odoo>     

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+    <!-->>>>>>>>>>>>>>>> @@@@@@ Check_quality - User restriction-->
+ 
+    <record id="mrp_production_form" model="ir.ui.view">
+        <field name="name">mrp.production.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="quality_mrp.mrp_production_view_form_inherit_quality"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='check_quality']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='check_quality']" position="replace">
+                    <button name="check_quality" attrs="{'invisible': [('quality_check_todo', '=', False)]}" type="object" string="Quality Checks" class="oe_highlight" data-hotkey="shift+z" groups="oi_manufact_add_fields.group_quality_check_user_enable"/>
+
+            </xpath>
+
+        </field>
+    </record> 
+
+
+    <!-->>>>>>>>>>>>>> @@@@@@ Approve button - User restriction-->
+ 
+    <record id="stock_picking_stage_button_form" model="ir.ui.view">
+        <field name="name">stock.picking.stage.button.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="oi_inventory_stage_new.stock_picking_approve_form"/>
+        <field name="arch" type="xml">
+
+            <!-- action_to_approve -->
+            <xpath expr="//button[@name='action_to_approve']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='check_quality']" position="replace">
+
+                <button name="action_to_approve" attrs="{'invisible': ['|', '|',('state', 'in', ('draft','waiting','confirmed')), ('show_validate', '=', False),('picking_type_id','not in',(12)),('is_pc','=',False)]}" string="Approve" type="object" groups="oi_manufact_add_fields.group_inventory_stages_user_enable" class="o_btn_validate" />
+            </xpath>
+
+            <xpath expr="//button[@name='action_to_approve']" position="replace">
+
+                <button name="action_to_approve" attrs="{'invisible': ['|', '|',('state', 'in', ('draft','waiting','confirmed')), ('show_validate', '=', False),('picking_type_id','not in',(1)),('is_pc','=',False)]}" string="Approve" type="object" groups="oi_manufact_add_fields.group_inventory_stages_user_enable" class="o_btn_validate" />
+            </xpath>
+
+
+            <!-- button_validate_new -->
+            <xpath expr="//button[@name='button_validate_new']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='button_validate_new']" position="replace">
+
+                <button name="button_validate_new" attrs="{'invisible': [('state', '!=', 'approved_for_done')]}" string="Validate" type="object" class="oe_highlight" groups="oi_manufact_add_fields.group_inventory_stages_user_enable" data-hotkey="v"/>
+            </xpath>
+
+        </field>
+    </record> 
+
+
+    <!-->>>>>>>>>>>> @@@@@@ Work Order - Add column in Time tracking-->
+
+        <record id="mrp_workorder_wizard_view" model="ir.ui.view">
+             <field name="name">mrp.workorder.wizard.view</field>
+             <field name="model">mrp.workorder</field>
+             <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
+             <field name="arch" type="xml">
+
+               
+                 <xpath expr="//form/sheet/notebook/page[@name='time_tracking']/group//field/tree/field[@name='date_start']" position="after">
+                     <field name="employee"/>
+                 </xpath>
+
+
+             </field>
+        </record> 
+
+
+</odoo>
+
+   
