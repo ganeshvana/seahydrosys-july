@@ -17,7 +17,7 @@ class StockPickingStage(models.Model):
         ('waiting', 'Waiting Another Operation'),
         ('confirmed', 'Waiting'),
         ('assigned', 'Ready'),
-        ('approved_for_done', 'Approved'),
+        ('approved_for_done', 'Approve'),
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
     ], string='Status', compute='_compute_state',

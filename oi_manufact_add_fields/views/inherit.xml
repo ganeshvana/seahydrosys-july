@@ -53,7 +53,7 @@
 
             <xpath expr="//button[@name='button_validate_new']" position="replace">
 
-                <button name="button_validate_new" attrs="{'invisible': [('state', '!=', 'approved_for_done')]}" string="Validate" type="object" class="oe_highlight" groups="oi_manufact_add_fields.group_inventory_stages_user_enable" data-hotkey="v"/>
+                <button name="button_validate_new" attrs="{'invisible': [('state', '!=', 'approved_for_done')]}" string="Validate" type="object" class="oe_highlight" groups="oi_manufact_add_fields.group_inventory_validate_enable" data-hotkey="v"/>
             </xpath>
 
         </field>
