@@ -58,6 +58,12 @@ MATERIAL OUT                </h5>
                                 </td>
                             </tr>
                         <tr>
+                                <td >Effective Date</td>
+                                <td style="background-color: white;">
+                                    <span t-field="o.date_done" t-options='{"format": "dd/MM/yyyy hh:mm:ss"}'/>
+                                </td>
+                            </tr>
+                        <tr>
                                 <td >Supplier's Ref</td>
                                 <td style="background-color: white;">
                                     <span t-field="o.supplier_ref"/>
