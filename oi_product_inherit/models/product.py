@@ -11,7 +11,6 @@ class ProductTemplate(models.Model):
 
 
 
-
     @api.constrains('purchase_ok', 'seller_ids')
     def _check_seller_ids(self):
         for product in self:
@@ -36,6 +35,20 @@ class ProductTemplate(models.Model):
         for record in self:
             if record.produce_delay <= 0.00:
                 raise ValidationError('The value of Manuf. Lead Time  must be greater than 0.00.')
+
+
+    @api.constrains('sale_ok', 'sale_delay')
+    def _check_sale_delay(self):
+        for product in self:
+            if product.sale_ok and not product.sale_delay:
+                raise ValidationError("If sale OK is set to True, Add a Customer Lead Time")
+
+
+    # @api.constrains('route_ids', 'produce_delay')
+    # def _check_produce_delay(self):
+    #     for product in self:
+    #         if product.route_ids and not product.produce_delay:
+    #             raise ValidationError("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 
 
