@@ -537,6 +537,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
                 ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
                 ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
+                account_move_line.name         AS move_name,
                 company.currency_id                     AS company_currency_id,
                 partner.name                            AS partner_name,
                 partner.vat                             AS vat,
