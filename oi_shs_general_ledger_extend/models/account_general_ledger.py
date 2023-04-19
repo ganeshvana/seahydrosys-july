@@ -537,7 +537,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
                 ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
                 ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
-                account_move_line.name         AS move_name,
+                am.name         AS move_name,
                 company.currency_id                     AS company_currency_id,
                 partner.name                            AS partner_name,
                 partner.vat                             AS vat,
@@ -550,6 +550,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
             LEFT JOIN res_company company               ON company.id = account_move_line.company_id
             LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
+            LEFT JOIN account_move am                   ON am.id = account_move_line.move_id
             LEFT JOIN account_account account           ON account.id = account_move_line.account_id
             LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
             LEFT JOIN account_full_reconcile full_rec   ON full_rec.id = account_move_line.full_reconcile_id
