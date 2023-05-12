@@ -1,0 +1,26 @@
+<?xml version="1.1" encoding="utf-8"?>
+<odoo>
+    <data>
+
+   <!--  <report
+            string="GRN Report"
+            id="action_grn_report"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="oi_grn_stock.grn_report"
+            file="oi_grn_stock.grn_report"
+            print_report_name="'GRN Report - %s - %s' % (object.partner_id.name or '', object.name)"/>  -->
+
+    <report
+            string="GRN Report"
+            id="action_grn_report"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="oi_grn_stock.grn_report_deliveryslip"
+            file="oi_grn_stock.grn_report_deliveryslip"
+            print_report_name="'GRN Report - %s - %s' % (object.partner_id.name or '', object.name)"/> 
+
+
+
+    </data>
+</odoo>
