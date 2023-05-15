@@ -1,7 +1,7 @@
 
 {
     "name": "Auto Mail",
-    "summary": "Auto mailsssssss",
+    "summary": "Auto mail",
     "version": "15.0.1",
     'category': '',
     "website": "www.odooimplementers.com",
