@@ -17,9 +17,9 @@
             <field name="model_id" ref="model_project_task"/>
             <field name="email_from"></field>
             <field name="subject">Task Completed Email</field>
-            <field name="email_to">arokiyaliyon@odooimplementers.com</field>
+            <field name="email_to"></field>
             <field name="body_html" type="html">
-                <p>Developer Create a new World</p>
+                <p>Task Is Completed</p>
             </field>
         </record>
 	</data>
