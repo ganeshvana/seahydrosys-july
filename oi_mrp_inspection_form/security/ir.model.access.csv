@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_mrp_quality_inspection_user","mrp_quality_inspection.user","model_mrp_quality_inspection","stock.group_stock_user",1,1,1,1
+"access_inspection_line_user","mrp_inspection_line.user","model_inspection_line","stock.group_stock_user",1,1,1,1
+"access_inspection_line_char_user","mrp_inspection_line_char.user","model_inspection_line_char","stock.group_stock_user",1,1,1,1

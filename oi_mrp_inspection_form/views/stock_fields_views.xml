@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mrp_production_form_inherit_mrp" model="ir.ui.view">
+        <field name="name">mrp.production.form.inherit.mrp</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+          
+             <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                <button name="action_view_inspection" string="Inspection" type="object" class="oe_stat_button" icon="fa-list"/>
+                 <!-- attrs="{'invisible':[('picking_type_code','=','outgoing')]}" -->
+            </xpath>
+            <!-- <xpath expr="//form/sheet/group/group[2]/field[@name='components_availability_state']" position="after">
+                <field name="is_pc"/>
+            </xpath> -->                  
+        </field>
+    </record>
+
+
+    <!-- Inspection templste view >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+    <record id="mrp_quality_inspection_form" model="ir.ui.view">
+        <field name="name">mrp.quality.inspection.form</field>
+        <field name="model">mrp.quality.inspection</field>
+        <field name="arch" type="xml">
+            <form string="Inspection">
+
+                    <header>
+                        <button name="action_confirm" states="draft" string="Confirm" type="object"/>  <!--groups="stock.group_stock_manager,stock.group_stock_user"-->
+                        <button name="action_cancel" states="draft,confirm" string="Cancel" type="object"/> <!-- groups="stock.group_stock_manager,stock.group_stock_user"-->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                    </header>
+
+                <sheet>
+
+                    <h1>
+                            <field name="name" force_save="1"/>
+                    </h1>
+
+                    <group>
+                        <group>
+                            
+                            <field name="mo_no" attrs="{'readonly': [('state', '!=', 'draft')]}"/>  
+                            <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>     
+                            <field name="product_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>  
+                            <field name="categ_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>  
+                            <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="shift" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="total_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sample_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="msn_rej_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>                                             
+                            <field name="inprogress_rej_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <!-- <field name="template_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>                            -->
+                            <field name="template_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            
+
+                        </group>
+                        <group>
+                            <field name="op_sup_name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="operation_name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="pro_draw_no" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="insp_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="accepted_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="total_rej_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="msn_rej_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="in_rej_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="inspected_by" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                                           
+                        </group>  
+                    </group>    
+
+                    <notebook>
+                        <page name="Lines" string="Inspection Lines">
+                            <button name="action_update_status" string="Update Status" type="object"/> <!-- groups="stock.group_stock_manager,stock.group_stock_user"-->
+                            <field name="inspection_line_ids" force_save="1" widget="one2many" attrs="{'readonly': [('state', '!=', 'draft')]}" >
+                                <tree editable="bottom" delete="false">
+                                    <field name="dimension" force_save="1"/>
+                                    <field name="values" force_save="1"/>
+                                    <field name="range_one" force_save="1"/>
+                                    <field name="range_two" force_save="1"/>
+                                    <field name="inspection_method" force_save="1"/>
+                                    <field name="s1" options='{"fg_color": "red:s1_bool == True"}'/>
+                                    <!-- <field name="s1_bool"/> -->
+                                    <field name="s2"/>
+                                    <field name="s3"/>
+                                    <field name="s4"/>
+                                    <field name="s5"/>
+                                    
+                                    <field name="remarks"/>
+                                    <field name="state"/>
+                                </tree>
+                                
+                            </field>
+                        </page>
+                        <page name="Lines" string="Inspection1 Lines">
+                            <button name="action_update_status" string="Update Status" type="object"/> <!-- groups="stock.group_stock_manager,stock.group_stock_user"-->
+                            <field name="inspection1_line_ids" force_save="1" widget="one2many" attrs="{'readonly': [('state', '!=', 'draft')]}" >
+                                <tree editable="bottom" delete="false">
+                                    <field name="dimension" force_save="1"/>
+                                    <field name="values" force_save="1"/>
+                                    <field name="range_one" force_save="1"/>
+                                    <field name="range_two" force_save="1"/>
+                                    <field name="inspection_method" force_save="1"/>
+                                    <field name="s1" options='{"fg_color": "red:s1_bool == True"}'/>
+                                    <!-- <field name="s1_bool"/> -->
+                                    <field name="s2"/>
+                                    <field name="s3"/>
+                                    <field name="s4"/>
+                                    <field name="s5"/>
+                                    
+                                    <field name="remarks"/>
+                                    <field name="state"/>
+                                </tree>
+                                
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mrp_quality_inspection_tree" model="ir.ui.view">
+        <field name="name">mrp.quality.inspection.tree</field>
+        <field name="model">mrp.quality.inspection</field>
+        <field name="arch" type="xml">
+            <tree string="Inspection">
+                <field name="name"/>
+                <field name="mo_no"/> 
+                <field name="date"/>  
+                <field name="shift"/>                          
+            </tree>
+        </field>
+    </record>
+
+    <record id="mrp_quality_inspection_form_action" model="ir.actions.act_window">
+        <field name="name">Inspection</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.quality.inspection</field>
+        <field name="view_mode">tree,form</field>
+    </record>  
+
+    <menuitem action="mrp_quality_inspection_form_action" id="mrp_inspection_sub_menu" name="Inspection in Manufacturing" sequence="70" parent="quality_control.menu_quality_control"/>
+
+
+    <record id="action_order_depositions_tree"
+        model="ir.actions.act_window.view">
+        <field eval="1" name="sequence" />
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="mrp_quality_inspection_tree" />
+        <field name="act_window_id" ref="mrp_quality_inspection_form_action" />
+    </record>
+
+    <record id="action_order_depositions_form"
+        model="ir.actions.act_window.view">
+        <field eval="2" name="sequence" />
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="mrp_quality_inspection_form" />
+        <field name="act_window_id" ref="mrp_quality_inspection_form_action" />
+    </record>   
+
+    <record id="manufacturing_inspection" model="ir.sequence">
+        <field name="name">Manufacturing Inspection</field>
+        <field name="code">mrp.quality.inspection</field>
+        <field name="prefix">QI</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- <menuitem name="Inspection"  id="inspection_sub_menu" parent="menu_mrp_configuration" action="mrp_quality_inspection_form_action" sequence="100"/>   -->
+
+
+   
+
+
+</odoo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
