@@ -28,7 +28,16 @@
             </field>
         </record> 
 
-
+        <record model="ir.ui.view" id="sale_order_no_open">
+            <field name="name">sale.order.no.open</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group[1]/field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_open': True}</attribute>
+                </xpath>
+            </field>
+        </record> 
 
 
         <!-- purchase -->
@@ -54,6 +63,17 @@
             <field name="arch" type="xml">
                 <xpath expr="//form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
                     <attribute name="options">{'no_create_edit': False, 'no_create': False}</attribute>
+                </xpath>
+            </field>
+        </record> 
+
+        <record model="ir.ui.view" id="purchase_vendor_no_open">
+            <field name="name">purchase.vendor.no.open</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group[1]/field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_open': True}</attribute>
                 </xpath>
             </field>
         </record> 
@@ -85,6 +105,17 @@
             </field>
         </record> 
 
+        <record model="ir.ui.view" id="inventory_create_edit_form">
+            <field name="name">stock.picking.create.edit.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group[1]/field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_open': True}</attribute>
+                </xpath>
+            </field>
+        </record> 
+
 
         <!-- Accounting -->
         <record id="account_move_create_view" model="ir.ui.view">
@@ -108,6 +139,32 @@
             <field name="arch" type="xml">
                 <xpath expr="//form/sheet/notebook/page/field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">
                     <attribute name="options">{'no_create_edit': False, 'no_create': False}</attribute>
+                </xpath>
+            </field>
+        </record> 
+
+        <!-- Helpdesk -->
+
+        <record model="ir.ui.view" id="helpdesk_ticket_no_create">
+            <field name="name">helpdesk.ticket.no.create</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group[2]/field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_open': True}</attribute>
+                </xpath>
+            </field>
+        </record> 
+
+        <!-- Project -->
+
+        <record model="ir.ui.view" id="project_task_no_open">
+            <field name="name">project.task.no.open</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group[2]/field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_open': True}</attribute>
                 </xpath>
             </field>
         </record> 

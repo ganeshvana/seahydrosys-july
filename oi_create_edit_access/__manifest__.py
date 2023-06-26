@@ -6,7 +6,7 @@
 'author' : 'Oodu Implementers Private Limited',
 'website' : 'http://www.odooimplementers.com',
 'category' : 'Accounting',
-'depends' : ['base', 'account','sale','purchase','stock','account_accountant'],
+'depends' : ['base', 'account','sale','purchase','stock','account_accountant','helpdesk'],
 'description' : 'This module contains group for billing which restricts users from Invoice, Credit&Debit Note Validation and Journal Entry Posting',
 'summary': 'Accounts Customer – User Permissions',
 'data' : [
