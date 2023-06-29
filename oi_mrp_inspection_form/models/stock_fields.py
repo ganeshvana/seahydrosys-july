@@ -65,7 +65,7 @@ class MrpInspection(models.Model):
     total_rej_quantity = fields.Float('Total Rejection Quantity')
     msn_rej_description = fields.Char('MSN Rejection Description')
     in_rej_description = fields.Char('Inprogress Rejection Description')
-    inspected_by = fields.Char('Inspected By')
+    inspected_by = fields.Char('Inspected By',tracking=True)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirm', 'Confirm'),
