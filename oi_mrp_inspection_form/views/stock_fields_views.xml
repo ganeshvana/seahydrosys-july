@@ -133,6 +133,17 @@
         </field>
     </record>
 
+    <record id="mrp_quality_inspection_search" model="ir.ui.view">
+        <field name="name">mrp.quality.inspection.search</field>
+        <field name="model">mrp.quality.inspection</field>
+        <field name="arch" type="xml">
+            <search string="Mo Number">
+                
+                <field name="mo_no"/>
+            </search>
+        </field>
+    </record>
+
     <record id="mrp_quality_inspection_form_action" model="ir.actions.act_window">
         <field name="name">Inspection</field>
         <field name="type">ir.actions.act_window</field>
