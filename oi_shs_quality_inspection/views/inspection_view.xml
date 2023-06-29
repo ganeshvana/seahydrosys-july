@@ -48,7 +48,7 @@
                                 <field name="shift" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="inspection_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="rejection_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="defect_type_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="defect_type_id"/>
                                 <field name="corrective_test" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="corrective_action" attrs="{'invisible': [('corrective_test', '!=', 'yes')],'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="company_id" invisible="1"/>
