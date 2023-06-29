@@ -51,28 +51,28 @@ class MrpInspection(models.Model):
     msn_rej_quantity = fields.Float('MSN Rejection Quantity',tracking=True)
     inprogress_rej_quantity = fields.Float('Inprogress Rejection Quantity',tracking=True)
     # template_id = fields.Many2one('inspection.template','Template')
-    template_id = fields.Many2one('inspection.template','Template')
+    template_id = fields.Many2one('inspection.template','Template',tracking=True)
     # inspection_line_ids = fields.One2many('inspection.line','inspec_line_id','Lines')
     # inspection1_line_ids = fields.One2many('inspection.line.char','inspec_line_char_id','Lines')
     inspection_line_ids = fields.One2many('inspection.line','inspec_line_id','Lines')
     inspection1_line_ids = fields.One2many('inspection.line.char','inspec_line_char_id','Lines')
     
-    accepted_quantity = fields.Float('Accepted Quantity')
-    operation_name = fields.Char('Operation Name')
-    op_sup_name = fields.Char('Operator/Supplier Name')
-    pro_draw_no = fields.Char('Product Drawing Number')
-    insp_date = fields.Date('Inspected Date',default=fields.Date.context_today)
-    total_rej_quantity = fields.Float('Total Rejection Quantity')
-    msn_rej_description = fields.Char('MSN Rejection Description')
-    in_rej_description = fields.Char('Inprogress Rejection Description')
+    accepted_quantity = fields.Float('Accepted Quantity',tracking=True)
+    operation_name = fields.Char('Operation Name',tracking=True)
+    op_sup_name = fields.Char('Operator/Supplier Name',tracking=True)
+    pro_draw_no = fields.Char('Product Drawing Number',tracking=True)
+    insp_date = fields.Date('Inspected Date',default=fields.Date.context_today,tracking=True)
+    total_rej_quantity = fields.Float('Total Rejection Quantity',tracking=True)
+    msn_rej_description = fields.Char('MSN Rejection Description',tracking=True)
+    in_rej_description = fields.Char('Inprogress Rejection Description',tracking=True)
     inspected_by = fields.Char('Inspected By',tracking=True)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirm', 'Confirm'),
         ('cancel', 'Cancelled')
-    ], string='Status',copy=False, index=True, readonly=True, store=True,track_visibility='onchange',default="draft")
+    ], string='Status',copy=False, index=True, readonly=True, store=True,track_visibility='onchange',default="draft",tracking=True)
 
-    name = fields.Char('Inspection No.',default=lambda self: _(' '),readonly=True)
+    name = fields.Char('Inspection No.',default=lambda self: _(' '),readonly=True,tracking=True)
 
     @api.model
     def create(self, vals):
@@ -229,23 +229,23 @@ class inspection_line(models.Model):
 
     inspection_line_id=fields.Many2one('quality.inspection','Template')
     inspec_line_id = fields.Many2one('mrp.quality.inspection','Template')
-    dimension = fields.Char('Description',readonly=True)
-    values = fields.Char('Specification',readonly=True)
-    range_one = fields.Float('Min',readonly=True)
-    range_two = fields.Float('Max',readonly=True)
-    inspection_method = fields.Char('Inspection Method',readonly=True)
-    s1 = fields.Float('S1')
+    dimension = fields.Char('Description',readonly=True,tracking=True)
+    values = fields.Char('Specification',readonly=True,tracking=True)
+    range_one = fields.Float('Min',readonly=True,tracking=True)
+    range_two = fields.Float('Max',readonly=True,tracking=True)
+    inspection_method = fields.Char('Inspection Method',readonly=True,tracking=True)
+    s1 = fields.Float('S1',tracking=True)
     # s1_bool = fields.Boolean('S1 Bool',default=False)
-    s2 = fields.Float('S')
-    s3 = fields.Float('S')
-    s4 = fields.Float('S')
-    s5 = fields.Float('S')
+    s2 = fields.Float('S',tracking=True)
+    s3 = fields.Float('S',tracking=True)
+    s4 = fields.Float('S',tracking=True)
+    s5 = fields.Float('S',tracking=True)
     
-    remarks = fields.Char('Remarks')
+    remarks = fields.Char('Remarks',tracking=True)
     state = fields.Selection([
         ('accept', 'Accept'),
         ('reject', 'Reject'),
-    ], string='Status',copy=False)
+    ], string='Status',copy=False,tracking=True)
     # status = fieds.Char('Status')
 
 
@@ -254,22 +254,22 @@ class inspection_line_char(models.Model):
 
     inspection_line_char_id=fields.Many2one('quality.inspection','Template')
     inspec_line_char_id=fields.Many2one('mrp.quality.inspection','Template')
-    dimension = fields.Char('Description',readonly=True)
-    values = fields.Char('Specification',readonly=True)
-    range_one = fields.Char('Min',readonly=True)
-    range_two = fields.Char('Max',readonly=True)
-    inspection_method = fields.Char('Inspection Method',readonly=True)
-    s1 = fields.Float('S1')
+    dimension = fields.Char('Description',readonly=True,tracking=True)
+    values = fields.Char('Specification',readonly=True,tracking=True)
+    range_one = fields.Char('Min',readonly=True,tracking=True)
+    range_two = fields.Char('Max',readonly=True,tracking=True)
+    inspection_method = fields.Char('Inspection Method',readonly=True,tracking=True)
+    s1 = fields.Float('S1',tracking=True)
     # s1_bool = fields.Boolean('S1 Bool',default=False)
-    s2 = fields.Float('S')
-    s3 = fields.Float('S')
-    s4 = fields.Float('S')
-    s5 = fields.Float('S')
+    s2 = fields.Float('S',tracking=True)
+    s3 = fields.Float('S',tracking=True)
+    s4 = fields.Float('S',tracking=True)
+    s5 = fields.Float('S',tracking=True)
     
-    remarks = fields.Char('Remarks')
+    remarks = fields.Char('Remarks',tracking=True)
     state = fields.Selection([
         ('accept', 'Accept'),
         ('reject', 'Reject'),
-    ], string='Status',copy=False)
+    ], string='Status',copy=False,tracking=True)
     # status = fieds.Char('Status')
 
