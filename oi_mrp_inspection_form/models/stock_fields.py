@@ -226,6 +226,7 @@ class MrpInspection(models.Model):
 
 class inspection_line(models.Model):
     _name = 'inspection.line'
+    _inherit = ['mail.thread']
 
     inspection_line_id=fields.Many2one('quality.inspection','Template',tracking=True)
     inspec_line_id = fields.Many2one('mrp.quality.inspection','Template',tracking=True)
@@ -251,6 +252,7 @@ class inspection_line(models.Model):
 
 class inspection_line_char(models.Model):
     _name = 'inspection.line.char'
+    _inherit = ['mail.thread']
 
     inspection_line_char_id=fields.Many2one('quality.inspection','Template',tracking=True)
     inspec_line_char_id=fields.Many2one('mrp.quality.inspection','Template',tracking=True)
