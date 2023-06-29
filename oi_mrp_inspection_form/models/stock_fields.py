@@ -227,8 +227,8 @@ class MrpInspection(models.Model):
 class inspection_line(models.Model):
     _name = 'inspection.line'
 
-    inspection_line_id=fields.Many2one('quality.inspection','Template')
-    inspec_line_id = fields.Many2one('mrp.quality.inspection','Template')
+    inspection_line_id=fields.Many2one('quality.inspection','Template',tracking=True)
+    inspec_line_id = fields.Many2one('mrp.quality.inspection','Template',tracking=True)
     dimension = fields.Char('Description',readonly=True,tracking=True)
     values = fields.Char('Specification',readonly=True,tracking=True)
     range_one = fields.Float('Min',readonly=True,tracking=True)
@@ -252,8 +252,8 @@ class inspection_line(models.Model):
 class inspection_line_char(models.Model):
     _name = 'inspection.line.char'
 
-    inspection_line_char_id=fields.Many2one('quality.inspection','Template')
-    inspec_line_char_id=fields.Many2one('mrp.quality.inspection','Template')
+    inspection_line_char_id=fields.Many2one('quality.inspection','Template',tracking=True)
+    inspec_line_char_id=fields.Many2one('mrp.quality.inspection','Template',tracking=True)
     dimension = fields.Char('Description',readonly=True,tracking=True)
     values = fields.Char('Specification',readonly=True,tracking=True)
     range_one = fields.Char('Min',readonly=True,tracking=True)
