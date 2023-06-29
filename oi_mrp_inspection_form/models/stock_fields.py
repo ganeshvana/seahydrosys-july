@@ -38,8 +38,8 @@ class qualityInspection(models.Model):
 
 class MrpInspection(models.Model):
     _name = 'mrp.quality.inspection'
-
-    # mo_no = fields.Char('Mo Number')
+    _inherit = ['mail.thread']
+    
     mo_no = fields.Many2one('mrp.production','Mo Number')
     partner_id = fields.Many2one('res.partner','Partner')
     product_id = fields.Many2one('product.product', 'Product')
