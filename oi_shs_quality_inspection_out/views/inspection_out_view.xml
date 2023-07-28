@@ -61,6 +61,7 @@
                                 <field name="msn_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="process_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="result"/>
+                                <field name="rejection_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                         </group>
                         <notebook>

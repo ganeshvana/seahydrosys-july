@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Inspection - OUT',
+    'name': 'Inspection-OUT',
     'version': '15.0.1.0',
     'author': 'Oodu Implementers Private Limited',
     'website': 'https://www.odooimplementers.com',
