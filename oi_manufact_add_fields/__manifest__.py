@@ -10,6 +10,7 @@
     'depends': ['base','mrp','purchase','quality_mrp','stock',],
     'application': True,
     'data': [
+    
         'security/account_view.xml',
         'views/inherit.xml',
 

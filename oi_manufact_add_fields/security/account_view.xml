@@ -14,5 +14,13 @@
                     <field name="name">Inventory Validate User - Enable</field> 
                 </record> 
 
+                <record id="group_mrp_scrap" model="res.groups">
+                    <field name="name">Manufacturing Scrap Access</field> 
+                </record> 
+                
+                <record id="group_stock_scrap" model="res.groups">
+                    <field name="name">Inventory Scrap Access</field> 
+                </record> 
+
         </data>
 </odoo>     
