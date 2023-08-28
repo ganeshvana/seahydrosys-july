@@ -87,6 +87,11 @@
             <xpath expr="//button[@name='button_scrap']" position="replace">
                <button name="button_scrap" type="object" string="Scrap" attrs="{'invisible': [('state', 'in', ('cancel', 'draft'))]}" data-hotkey="z" groups="oi_manufact_add_fields.group_mrp_scrap"/>
             </xpath>
+             <xpath expr="//page[@name='miscellaneous']" position="inside">
+                    <label for="note" string="Note"/>
+                         <field name="note" string="Note" options="{'no_create_edit': True,'no_create':True}"/> 
+                                    
+             </xpath>
 
           
 
@@ -107,6 +112,51 @@
 
         </field>
     </record>
+
+
+     <!-- *************************NOTE MASTER************************************ -->
+      <record id="note_master_tree_view" model="ir.ui.view">
+        <field name="name">note.master.tree</field>
+        <field name="model">mrp.note</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="note_master_form_view" model="ir.ui.view">
+        <field name="name">note.master.form</field>
+        <field name="model">mrp.note</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="freight_master">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+
+   
+        <record id="action_note_master" model="ir.actions.act_window">         
+        <field name="name">Note</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.note</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+         <menuitem id="note_menu_config_master" name="Note"
+        sequence="300" parent="mrp.menu_mrp_configuration" action="action_note_master"/>
 
 
 </odoo>

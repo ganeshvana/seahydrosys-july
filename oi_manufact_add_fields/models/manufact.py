@@ -5,6 +5,9 @@ class UserRestriction(models.Model):
     _inherit = "mrp.production"
 
 
+    note = fields.Many2one('mrp.note', string='Note')
+
+
 # class purchase_order(models.Model):
 #     _inherit = "purchase.order"
 
@@ -27,6 +30,14 @@ class MrpWorkorderProductivity(models.Model):
     _inherit = "mrp.workcenter.productivity"
 
     employee = fields.Many2one('hr.employee','Employee')
+
+
+class MrpNote(models.Model):
+    _name="mrp.note"
+    _description="Note"
+
+    name = fields.Char("")
+
 
 
 

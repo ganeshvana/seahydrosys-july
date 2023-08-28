@@ -10,7 +10,7 @@
     'depends': ['base','mrp','purchase','quality_mrp','stock',],
     'application': True,
     'data': [
-    
+        'security/ir.model.access.csv',
         'security/account_view.xml',
         'views/inherit.xml',
 
