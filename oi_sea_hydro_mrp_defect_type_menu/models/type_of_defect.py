@@ -6,5 +6,4 @@ class DefectTypes(models.Model):
     _description="Type of defects"
 
     name = fields.Char("Name")
-
-
+    
