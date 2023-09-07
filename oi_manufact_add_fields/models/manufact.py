@@ -36,7 +36,7 @@ class MrpNote(models.Model):
     _name="mrp.note"
     _description="Note"
 
-    name = fields.Char("")
+    name = fields.Char("Name")
 
 
 

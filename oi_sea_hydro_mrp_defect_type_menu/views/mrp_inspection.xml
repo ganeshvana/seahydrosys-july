@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- <record id="sale_order_form_inherit" model="ir.ui.view">
-            <field name="name">sale.order.form.inherit</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
-            <field name="arch" type="xml">
-             
+                <record id="defect_type_tree_view" model="ir.ui.view">
+                <field name="name">defect.type.tree</field>
+                <field name="model">defect.type</field>
+                <field name="arch" type="xml">
+                    <tree string="Type of defects">
+                        <field name="name"/> 
+                    </tree>
+                    </field>
+                </record>
 
-                <xpath expr="//notebook/page[@name='other_information']" position="after">
-                    <page string="Product Specification" name="product_specifications   ">
-                        <field name="sale_specs_ids" widget="section_and_note_one2many">
-                            <tree editable="bottom" create="True">
-                                <field name="product_id"/>
-                        
-                            </tree>
-                        </field>
-                    </page>
-                </xpath>
-             
-            </field>
-        </record> -->
+
+
+                <record id="defect_type_form_view" model="ir.ui.view">
+                <field name="name">defect.type.form</field>
+                <field name="model">defect.type</field>
+                <field name="arch" type="xml">
+                    <form string="name">
+                    <sheet>
+                            <group name="defect_master">
+                                <group>
+                                    <field name="name"/>
+                                </group>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+                </record>
+
+        
+                <record id="action_note_master" model="ir.actions.act_window">         
+                <field name="name">Note</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">mrp.note</field>
+                <field name="view_mode">tree,form</field>
+                <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create the first record</p>
+                </field>
+                </record>
+
+                <menuitem id="defect_type_menu_config_master" name="Type of defects"
+                sequence="400" parent="mrp.menu_mrp_configuration" action="action_note_master"/>
     </data>
 </odoo>

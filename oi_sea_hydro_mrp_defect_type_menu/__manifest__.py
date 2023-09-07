@@ -8,8 +8,8 @@
     'version': '1.0',
     'depends': ['base','mrp'],
     'data': [
-    	# 'security/ir.model.access.csv',
-        'views/mrp_inspection.xml',
+    	'security/ir.model.access.csv',
+        # 'views/mrp_inspection.xml',
     ],
     'installable': True,
     'application': True,
