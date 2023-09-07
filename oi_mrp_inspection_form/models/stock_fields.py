@@ -42,6 +42,7 @@ class MrpInspection(models.Model):
     
     mo_no = fields.Many2one('mrp.production','Mo Number',tracking=True)
     partner_id = fields.Many2one('res.partner','Partner',tracking=True)
+    defect_type_id = fields.Many2one('defect.type','Defect Type',tracking=True)
     product_id = fields.Many2one('product.product', 'Product',tracking=True)
     categ_id = fields.Many2one('product.category','Category',related='product_id.categ_id',store=True,tracking=True)
     date = fields.Date('Date',tracking=True)
