@@ -5,7 +5,7 @@
                 <field name="name">defect.type.tree</field>
                 <field name="model">defect.type</field>
                 <field name="arch" type="xml">
-                    <tree string="Type of defects">
+                    <tree string="Types of defect">
                         <field name="name"/> 
                     </tree>
                     </field>
@@ -31,9 +31,9 @@
 
         
                 <record id="action_note_master" model="ir.actions.act_window">         
-                <field name="name">Note</field>
+                <field name="name">Types of Defect</field>
                 <field name="type">ir.actions.act_window</field>
-                <field name="res_model">mrp.note</field>
+                <field name="res_model">defect.type</field>
                 <field name="view_mode">tree,form</field>
                 <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -41,7 +41,7 @@
                 </field>
                 </record>
 
-                <menuitem id="defect_type_menu_config_master" name="Type of defects"
+                <menuitem id="defect_type_menu_config_master" name="Types of defect"
                 sequence="400" parent="mrp.menu_mrp_configuration" action="action_note_master"/>
     </data>
 </odoo>
