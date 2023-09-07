@@ -9,7 +9,7 @@
     'depends': ['base','mrp'],
     'data': [
     	'security/ir.model.access.csv',
-        # 'views/mrp_inspection.xml',
+        'views/mrp_inspection.xml',
     ],
     'installable': True,
     'application': True,
