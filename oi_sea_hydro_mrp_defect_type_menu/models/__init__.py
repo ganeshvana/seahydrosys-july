@@ -1,2 +1,2 @@
-from . import mrp_inspection
+from . import type_of_defect
 
