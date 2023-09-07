@@ -30,7 +30,7 @@
                 </record>
 
         
-                <record id="action_note_master" model="ir.actions.act_window">         
+                <record id="action_defect_type_master" model="ir.actions.act_window">         
                 <field name="name">Defect Type</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">defect.type</field>
@@ -42,7 +42,7 @@
                 </record>
 
                 <menuitem id="defect_type_menu_config_master" name="Defect Type"
-                sequence="400" parent="mrp.menu_mrp_configuration" action="action_note_master"/>
+                sequence="400" parent="mrp.menu_mrp_configuration" action="action_defect_type_master"/>
 
 
                 
