@@ -179,37 +179,7 @@
                                             <span>Ship To:</span>
                                         </b>
                                         <p>
-                                            <span t-if="o.partner_shipping_id.name">
-                                                <span t-field="o.partner_shipping_id.name"/>
-                                                <br/>
-                                            </span>
-
-                                            <span t-if="o.partner_shipping_id.street">
-                                                <span t-field="o.partner_shipping_id.street"/>
-                                            </span> 
-
-                                            <span t-if="o.partner_shipping_id.street2"> 
-                                                <span t-field="o.partner_shipping_id.street2"/>,
-                                                <br/>
-                                            </span>
-                                            
-                                            <span t-if="o.partner_shipping_id.city">
-                                                <span t-field="o.partner_shipping_id.city"/>
-                                            </span>
-                                            
-                                            <span t-if="o.partner_shipping_id.zip">  
-                                                <span t-field="o.partner_shipping_id.zip"/> - 
-                                            </span>
-                                            <br/>
-
-                                           <span t-if="o.partner_shipping_id.state_id">
-                                                <span t-field="o.partner_shipping_id.state_id.name"/>,
-                                            </span>
-                                            
-
-                                            <span t-if="o.partner_shipping_id.country_id"> 
-                                                <span t-field="o.partner_shipping_id.country_id.name"/>
-                                            </span><br/>
+                                            <span>TO ORDER</span>
                                         </p>
                                     </td>
                                    
