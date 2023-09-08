@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+                <!-- <record id="defect_type_tree_view" model="ir.ui.view">
+                <field name="name">defect.type.tree</field>
+                <field name="model">defect.type</field>
+                <field name="arch" type="xml">
+                    <tree string="Defect Type">
+                        <field name="name"/> 
+                    </tree>
+                    </field>
+                </record>
+
+
+
+                <record id="defect_type_form_view" model="ir.ui.view">
+                <field name="name">defect.type.form</field>
+                <field name="model">defect.type</field>
+                <field name="arch" type="xml">
+                    <form string="name">
+                    <sheet>
+                            <group name="defect_master">
+                                <group>
+                                    <field name="name"/>
+                                </group>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+                </record>
+
+        
+                <record id="action_defect_type_master" model="ir.actions.act_window">         
+                <field name="name">Defect Type</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">defect.type</field>
+                <field name="view_mode">tree,form</field>
+                <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create the first record</p>
+                </field>
+                </record> -->
+
+                <!-- <menuitem id="defect_type_menu_config_master" name="Defect Type"
+                sequence="1000" parent="mrp.menu_mrp_configuration" action="action_defect_type_master"/> -->
+
+
+        <record id="defect_type_tree_view" model="ir.ui.view">
+        <field name="name">defect.type.tree</field>
+        <field name="model">defect.type</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="defect_type_form_view" model="ir.ui.view">
+        <field name="name">defect.type.form</field>
+        <field name="model">defect.type</field>
+        <field name="arch" type="xml">
+            <form string="Defect Types">
+               <sheet>
+                    <group name="defect_type">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+
+   
+        <record id="action_defect_type_master" model="ir.actions.act_window">         
+        <field name="name">Defect Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">defect.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+         <menuitem id="note_menu_config_defect_type" name="Defect Types"
+        sequence="350" parent="mrp.menu_mrp_configuration" action="action_defect_type_master"/>
+
+                
+    </data>
+</odoo>
