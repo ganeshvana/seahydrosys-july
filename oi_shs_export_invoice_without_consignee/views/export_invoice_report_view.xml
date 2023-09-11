@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    	<record id="paper_format_invoice" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">12.5</field>
+            <field name="margin_left">8</field>
+            <field name="margin_right">8</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">2</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report id="action_report_export_invoice_without_consignee"
+                string="Export Invoice Without Consignee"
+                model="account.move"
+                report_type="qweb-pdf"
+                file="oi_shs_export_invoice_without_consignee.report_export_invoice_without_consignee"
+                name="oi_shs_export_invoice_without_consignee.report_export_invoice_without_consignee"
+
+        />
+    </data>
+</odoo>
