@@ -115,7 +115,7 @@
                             <tr style="border-bottom:hidden;margin-top:100px">
                                 <td>
                                     <div>
-                                        <center><h5><b>EXPORT INVOICE</b></h5></center>
+                                        <center><h5><b>TAX INVOICE</b></h5></center>
                                     </div>
                                 </td>
                             </tr>
@@ -158,16 +158,16 @@
                                             <span t-if="o.company_id.country_id">
                                                 <span t-field="o.company_id.country_id.name"/>
                                             </span><br/>
-                                           <span t-if="o.company_id.ie_code">
-                                                IE Code NO: <span t-field="o.company_id.ie_code"/>
-                                            </span><br/>  
-                                            <span t-if="o.company_id.ad_code">
-                                                AD Code NO: <span t-field="o.company_id.ad_code"/>
-                                            </span><br/>  
-                                            <span t-if="o.company_id.cin_no">
+                                           
+                                            <!-- <span t-if="o.company_id.cin_no">
                                                 CIN NO: <span t-field="o.company_id.cin_no"/>
-                                            </span><br/>  
-                                              
+                                            </span><br/>  -->
+                                            <!-- <span t-if="o.company_id.ie_code">
+                                                IE Code NO: <span t-field="o.company_id.ie_code"/>, 
+                                            </span> -->
+                                            <!-- <span t-if="o.company_id.ad_code">
+                                                AD Code NO: <span t-field="o.company_id.ad_code"/>
+                                            </span><br/>  -->   
                                            
                                             <span>100% EOU CUSTOMS LICENSE NO: 3 DT 19.07.2010</span>
                                            
@@ -177,8 +177,40 @@
                                         <b>
                                             <span>Consignee:</span><br/>
                                             <span>Ship To:</span>
-                                        </b> <br/>
-                                        <span>TO ORDER</span>
+                                        </b>
+                                        <p>
+                                            <span t-if="o.partner_shipping_id.name">
+                                                <span t-field="o.partner_shipping_id.name"/>
+                                                <br/>
+                                            </span>
+
+                                            <span t-if="o.partner_shipping_id.street">
+                                                <span t-field="o.partner_shipping_id.street"/>
+                                            </span> 
+
+                                            <span t-if="o.partner_shipping_id.street2"> 
+                                                <span t-field="o.partner_shipping_id.street2"/>,
+                                                <br/>
+                                            </span>
+                                            
+                                            <span t-if="o.partner_shipping_id.city">
+                                                <span t-field="o.partner_shipping_id.city"/>
+                                            </span>
+                                            
+                                            <span t-if="o.partner_shipping_id.zip">  
+                                                <span t-field="o.partner_shipping_id.zip"/> - 
+                                            </span>
+                                            <br/>
+
+                                           <span t-if="o.partner_shipping_id.state_id">
+                                                <span t-field="o.partner_shipping_id.state_id.name"/>,
+                                            </span>
+                                            
+
+                                            <span t-if="o.partner_shipping_id.country_id"> 
+                                                <span t-field="o.partner_shipping_id.country_id.name"/>
+                                            </span><br/>
+                                        </p>
                                     </td>
                                    
                                 </tr>
@@ -187,25 +219,36 @@
                             <table>
                                 <tr style="border-bottom:hidden">
                                     <td style="width:469px">
+
+				                       <!--  <b>
+                                            <span>Customs FX Rate</span>
+                                        </b>
+                                        <p>
+                                            <span t-if="o.exchange_rate">
+                                                <span t-field="o.exchange_rate"/>
+                                            </span>
+                                        </p> -->
                                         <b>
                                             <span>Invoice No. &amp; Date</span>
                                         </b>
                                         <p>
                                             <span t-if="o.invoice_date">
-                                                <span t-field="o.name"/> Dated
-                                                <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                                <span t-field="o.name"/> 
+                                                Dated
+                                                <span t-field="o.invoice_date" t-options="{&quot;format&quot;: &quot;dd/MM/yyyy&quot;}"/>
                                             </span>
                                         </p>
-                                        <!-- <b>
+                                       <!--  <b>
                                             <span>Buyer's order no. &amp; Date</span>
                                         </b>
                                         <p>
-                                            <span t-if="o.invoice_origin">
-                                                <span t-field="o.invoice_origin"/>, 
+                                            <span t-if="o.origin">
+                                                <span t-field="o.origin"/>, 
                                                 <span t-field="o.sale_id.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                                <span t-field="o.picking_ids.name"/>
                                             </span>
                                         </p> -->
-                                         
+                                       
                                     </td>
                                     <td style="width:450px">
                                         <b><span>Buyer:</span><br/>
@@ -269,8 +312,7 @@
                                         <span>Port of Loading :  <span t-field="o.port_of_loading"/></span>
                                     </td>
                                     <td style="width:450px;">
-                                          <span>Payment Terms :  <span t-field="o.invoice_payment_term_id.name"/></span>
-                                   
+                                        <span>Payment Terms :  <span t-field="o.invoice_payment_term_id.name"/></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -289,7 +331,6 @@
                                     </td>
                                     <td style="width:450px;">
                                         <span>HS CODE : <span t-field="o.hs_code"/></span>
-                                   
                                     </td>
                                 </tr>
                                 
@@ -323,11 +364,11 @@
                                             <span>Qty</span>
                                         </th>
                                         <th class="text-center" style="width:120px;">
-                                            <span>Rate in <span t-esc="o.currency_id.name"/> <span t-esc="o.currency_id.symbol"/></span>
+                                            <span>Rate in <span t-esc="o.fx_currency_id.name"/> <span t-esc="o.fx_currency_id.symbol"/></span>
                                         </th>
                                         
                                          <th class="text-center" style="width:125px;">
-                                            <span>Amount in <span t-esc="o.currency_id.name"/> <span t-esc="o.currency_id.symbol"/></span>
+                                            <span>Amount in <span t-esc="o.fx_currency_id.name"/> <span t-esc="o.fx_currency_id.symbol"/></span>
                                         </th>
                                     </tr>
                                 </thead>
@@ -344,25 +385,25 @@
                                         <td style="width:150px; text-align:left;">
                                             <span t-field="l.po_no"/>
                                         </td>
-                                        <td t-if="l.product_id.type !='service'" style="width:80px; text-align:center;">
-                                            <span t-field="l.quantity"/>
-                                        </td>
-                                        <td t-if="l.product_id.type =='service'" style="width:80px; text-align:center;">
-                                            
+                                        <td style="width:80px; text-align:center;">
+                                            <span t-field="l.quantity" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                                         </td>
                                         <td style="width:120px; text-align:right; padding-right:10px;">
-                                            <span t-field="l.price_unit"/>
+                    					   
+                                        	<span t-field="l.exchange_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+
                                         </td>
                                        
                                         <td style="width:125px; text-align:right; padding-right:10px;">
-                                            <span t-field="l.price_subtotal"/>
+                                           
+                                        	<span t-field="l.total_exchange_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                                         </td>
                                     </tr>
                                 </tbody>
                           
                                 <tr style="border-bottom:hidden">
                                     <td style="width:60px;">
-                                        <span></span>
+                                        <span/>
                                     </td>
 
                                     <td style="width:440px;text-transform:uppercase;text-align:center">
@@ -371,7 +412,7 @@
                                         
                                     </td>
                                     <td style="width:150px;">
-                                        <span></span>
+                                        <span/>
                                     </td>
                                    
                                     <td style="width:80px;text-align:center">
@@ -380,19 +421,24 @@
                                                     <t t-if="not l.product_id.type == 'service'" t-set="i" t-value="i+l.quantity"/>
                                                 </t>
                                             <b>
-                                                <t t-esc="'%.0f'%(i)"></t>
+                                                <t t-esc="'%.0f'%(i)"/>
                                             </b>
                                     </td>
 
                                     <td style="width:120px;">
-                                        <span></span>
+                                        <span/>
                                     </td>
 
                                     <td style="width:125px;">
                                         <div class="text-right" style="padding-right:10px;">
-                                                <b>
-                                                    <span t-field="o.amount_total"/>
-                                                </b>
+                                            <span t-esc="o.fx_currency_id.symbol"/>
+                                            <t t-set="i" t-value="0"/>
+                                            <t t-foreach="o.invoice_line_ids" t-as="l">
+                                                <t t-set="i" t-value="i+l.total_exchange_amount"/>
+                                            </t>
+                                            <b>
+                                                <t t-esc="'%.2f'%(i)"/>
+                                            </b>
                                         </div>
                                     </td>
                                 </tr>
@@ -400,11 +446,11 @@
 
                             <table>
                                 <tr style="border-bottom:hidden">
-                                    <td style="text-transform: uppercase;">
-                                       <span t-if="o.narration">
-                                            <b><span t-field="o.narration"/></b>
+                                   <!--  <td style="text-transform: uppercase;">
+                                       <span t-if="o.comment">
+                                            <b><span t-field="o.comment"/></b>
                                         </span>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </table>
 
@@ -413,8 +459,18 @@
                                 <tr style="border-bottom:hidden">
                                     <td>
                                         <b><span>Amount Chargeable : </span>
-                                            <span t-esc="o.currency_id.name"/> - 
-                                            <span t-esc="o.currency_id.amount_to_text(o.amount_total)"/> Only
+                                            <!-- <span t-esc="o.fx_currency_id.name"/> -  -->
+                                            <span t-esc="o.fx_currency_id.amount_to_text(o.total_fx_amount)"/> Only
+                                        </b>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr style="border-bottom:hidden">
+                                    <td>
+                                        <b><span>Terms &amp; Conditions: </span>
+                                            <span t-esc="o.narration"/> 
                                         </b>
                                     </td>
                                 </tr>
@@ -428,16 +484,14 @@
                                      </td>
                                     <td style="width:450px; padding-right:10px;">
                                         <div class="text-right">
-                                           <b> Signature &amp; Date : For <span t-field="o.company_id.name"/></b><br/>
-                                            <span></span><br/>
-                                            <span></span><br/>
+                                           <b> For <span t-field="o.company_id.name"/></b><br/>
+                                            <span/><br/>
+                                            <span/><br/>
                                             <b><span>Authorised Signatory</span></b>
                                         </div>
                                     </td>
                                 </tr>
-                            </table>
-
-                    </div>
+                            </table>                    </div>
                 </t>
             </t>
 
@@ -453,3 +507,4 @@
 
     </data>
 </odoo>
+
