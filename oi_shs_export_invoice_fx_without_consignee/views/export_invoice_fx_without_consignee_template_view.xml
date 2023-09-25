@@ -1,0 +1,478 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <template id="external_layout_export_fx_without_consignee">
+            <div class="header">
+                <div class="o_background_header">
+                <div class="float-right">
+                    <h3 class="mt0 text-right" t-field="o.company_id.report_header"/>
+                </div>
+                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" class="float-left" alt="Logo"/>
+                <div class="float-left company_address">
+                    <div>
+                            <strong t-field="o.company_id.partner_id.name"/><br/>
+                            <span  t-if="o.company_id.street">
+                            <span t-field="o.company_id.street"/>
+                            </span>
+                            <span t-if="o.company_id.street2">
+                                <span t-field="o.company_id.street2"/>
+                            </span><br/>
+                            <span t-if="o.company_id.city">
+                                <span t-field="o.company_id.city" />
+                            </span>
+                            <span t-if="o.company_id.zip">
+                                <span t-field="o.company_id.zip" />
+                            </span>,
+                            <!-- <span>,</span> -->
+                            <span t-if="o.company_id.state_id">
+                                <span t-field="o.company_id.state_id.name" />
+                            </span>
+                            
+                            <span t-if="o.company_id.country_id">
+                                <span t-field="o.company_id.country_id" />
+                            </span>
+                            <br />
+                            
+                            <span t-if="o.company_id.vat">
+                                <span><b>GSTIN:</b> </span><span t-field="o.company_id.vat" />
+                            </span><![CDATA[&nbsp;]]>
+                            <span t-if="o.company_id.cin_no">
+                                <span><b>CIN No:</b> </span><span t-field="o.company_id.cin_no" />
+                            </span>
+                            <br/>
+                        </div>
+                </div>
+                <div class="clearfix mb8"/>
+                </div>
+            </div>
+
+            <div class="article o_report_layout_background" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-call="web.address_layout"/>
+                <t t-raw="0"/>
+            </div>
+
+            <div t-attf-class="o_company_#{o.company_id}_layout footer o_background_footer">
+                <div class="text-center">
+                   <!--  <ul class="list-inline">
+                    </ul> -->
+                    <div t-field="o.company_id.report_footer"/>
+
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page:
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+
+           <!--  <div class="footer o_background_footer">
+                <div class="text-center">
+                    <ul class="list-inline">
+                        <li t-if="o.company_id.phone" class="list-inline-item"><i class="fa fa-phone" role="img" aria-label="Phone" title="Phone"/> <span t-field="o.company_id"/></li>
+                        <li t-if="o.company_id.email" class="list-inline-item"><i class="fa fa-at" role="img" aria-label="Email" title="Email"/> <span t-field="o.company_id.email"/></li>
+                        <li t-if="o.company_id.website" class="list-inline-item"><i class="fa fa-globe" role="img" aria-label="Website" title="Website"/> <span t-field="o.company_id.website"/></li>
+                        <li t-if="o.company_id.vat" class="list-inline-item"><i class="fa fa-building-o" role="img" aria-label="Fiscal number"/><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.company_id.vat"/></li>
+                    </ul>
+                    <div t-field="o.company_id.report_footer"/>
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page:
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div> -->
+        </template>
+
+        <template id="report_export_invoice_fx_without_consignee_document">
+            <t t-call="oi_shs_export_invoice_fx_without_consignee.external_layout_export_fx_without_consignee">
+                <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                      
+                        <table>
+                            <style>
+                                table, td, th {
+                                border: 1px solid black;
+                                width: 950px;
+                                }
+                                p, h1, h2, h3, h4, h5, h6 {
+                                font-family: "Times New Roman";
+                                }
+                                td{
+                                padding-left:15px;
+                                padding-top:5px;
+                                }
+                            </style>
+
+                          
+                        </table>
+                            
+                      
+                        <table>
+                            <tr style="border-bottom:hidden;margin-top:100px">
+                                <td>
+                                    <div>
+                                        <center><h5><b>TAX INVOICE</b></h5></center>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                            <table>
+                                <tr style="border-bottom:hidden">
+                                    <td style="width:469px">
+                                        <b>
+                                            <span>Consignor:</span>
+                                        </b>
+                                        <p>
+                                        	<span t-if="o.company_id.name">
+                                                <span t-field="o.company_id.name"/>
+                                                <br/>
+                                            </span>
+                                            <span t-if="o.company_id.street">
+                                                <span t-field="o.company_id.street"/>
+                                                <br/>
+                                            </span>
+
+                                            <span t-if="o.company_id.street2">
+                                                <span t-field="o.company_id.street2"/> ,
+                                            </span>
+                                            
+                                            <span t-if="o.company_id.city">-
+                                                <span t-field="o.company_id.city"/> - 
+                                            </span>
+                                            
+                                            <span t-if="o.company_id.zip">
+                                                <span t-field="o.company_id.zip"/>
+                                            </span>
+                                            <br/>
+
+                                            <span t-if="o.company_id.state_id"> 
+                                                <span t-field="o.company_id.state_id.name"/>,
+                                            </span>
+                                            
+
+                                            <span t-if="o.company_id.country_id">
+                                                <span t-field="o.company_id.country_id.name"/>
+                                            </span><br/>
+                                           
+                                            <!-- <span t-if="o.company_id.cin_no">
+                                                CIN NO: <span t-field="o.company_id.cin_no"/>
+                                            </span><br/>  -->
+                                            <!-- <span t-if="o.company_id.ie_code">
+                                                IE Code NO: <span t-field="o.company_id.ie_code"/>, 
+                                            </span> -->
+                                            <!-- <span t-if="o.company_id.ad_code">
+                                                AD Code NO: <span t-field="o.company_id.ad_code"/>
+                                            </span><br/>  -->   
+                                           
+                                            <span>100% EOU CUSTOMS LICENSE NO: 3 DT 19.07.2010</span>
+                                           
+                                        </p>
+                                    </td>
+                                   <td style="width:450px">
+                                        <b>
+                                            <span>Consignee:</span><br/>
+                                            <span>Ship To:</span>
+                                        </b> <br/>
+                                        <span>TO ORDER</span>
+                                    </td>
+                                   
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr style="border-bottom:hidden">
+                                    <td style="width:469px">
+
+				                       <!--  <b>
+                                            <span>Customs FX Rate</span>
+                                        </b>
+                                        <p>
+                                            <span t-if="o.exchange_rate">
+                                                <span t-field="o.exchange_rate"/>
+                                            </span>
+                                        </p> -->
+                                        <b>
+                                            <span>Invoice No. &amp; Date</span>
+                                        </b>
+                                        <p>
+                                            <span t-if="o.invoice_date">
+                                                <span t-field="o.name"/> 
+                                                Dated
+                                                <span t-field="o.invoice_date" t-options="{&quot;format&quot;: &quot;dd/MM/yyyy&quot;}"/>
+                                            </span>
+                                        </p>
+                                       <!--  <b>
+                                            <span>Buyer's order no. &amp; Date</span>
+                                        </b>
+                                        <p>
+                                            <span t-if="o.origin">
+                                                <span t-field="o.origin"/>, 
+                                                <span t-field="o.sale_id.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                                <span t-field="o.picking_ids.name"/>
+                                            </span>
+                                        </p> -->
+                                       
+                                    </td>
+                                    <td style="width:450px">
+                                        <b><span>Buyer:</span><br/>
+                                        </b>
+                                         <p>
+                                            <span t-if="o.partner_id.name">
+                                                <span t-field="o.partner_id.name"/>
+                                                <br/>
+                                            </span>
+
+                                            <span t-if="o.partner_id.street">
+                                                <span t-field="o.partner_id.street"/>
+                                            </span>, 
+
+                                            <span t-if="o.partner_id.street2">
+                                                <span t-field="o.partner_id.street2"/>
+                                                <br/>
+                                            </span>
+                                            
+                                            <span t-if="o.partner_id.city">
+                                                <span t-field="o.partner_id.city"/> - 
+                                            </span>
+                                            
+                                            <span t-if="o.partner_id.zip">
+                                                <span t-field="o.partner_id.zip"/>
+                                            </span>
+                                            <br/>
+
+                                           <span t-if="o.partner_id.state_id"> 
+                                                <span t-field="o.partner_id.state_id.name"/>,
+                                            </span>
+                                            
+
+                                            <span t-if="o.partner_id.country_id"> 
+                                                <span t-field="o.partner_id.country_id.name"/>
+                                            </span><br/>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr>
+                                    <td style="width:469px;">
+                                        <span>Country of Origin of Goods :  <span t-field="o.country_of_origin"/></span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span>Vessel/Flight No. <span t-field="o.vessel_no"/></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:469px;">
+                                        <span>Country of Final Destination :  <span t-field="o.destination"/></span>
+                                    </td>
+                                    <td style="width:450px;">
+                                         <span>Delivery Terms : <span t-field="o.delivery_terms"/></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:469px;">
+                                        <span>Port of Loading :  <span t-field="o.port_of_loading"/></span>
+                                    </td>
+                                    <td style="width:450px;">
+                                        <span>Payment Terms :  <span t-field="o.invoice_payment_term_id.name"/></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td style="width:469px;">
+                                        <span>Port of Discharge : <span t-field="o.port_of_discharge"/></span>
+                                    </td>
+                                    
+                                    <td style="width:450px;">
+                                        <span>Notify Party :  <span t-field="o.notify_party"/></span>
+                                   
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:469px;">
+                                        <span>Place of Delivery : <span t-field="o.place_of_delivery"/></span>
+                                    </td>
+                                    <td style="width:450px;">
+                                        <span>HS CODE : <span t-field="o.hs_code"/></span>
+                                    </td>
+                                </tr>
+                                
+                            </table>
+
+                           
+                          	<table>
+                                <tr style="border-bottom:hidden">
+                                    <td>
+                                        <center><b><span>Description of Goods: <span t-field="o.description_goods"/></span>
+                                        </b></center>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <thead>
+                                    <tr style="font-size:14px;">
+                                        <th class="text-center" style="width:60px; padding-top:10px">
+                                            <span>S.No</span>
+                                        </th>
+                                        
+                                        <th class="text-center" style="width:440px;text-transform:uppercase;font-size:12px">
+                                            <span>Model No</span>
+                                        </th>
+                                        <th class="text-center" style="width:150px;text-transform:uppercase;font-size:12px">
+                                            <span>PO No</span>
+                                        </th>
+                                      
+                                        <th class="text-center" style="width:80px;">
+                                            <span>Qty</span>
+                                        </th>
+                                        <th class="text-center" style="width:120px;">
+                                            <span>Rate in <span t-esc="o.fx_currency_id.name"/> <span t-esc="o.fx_currency_id.symbol"/></span>
+                                        </th>
+                                        
+                                         <th class="text-center" style="width:125px;">
+                                            <span>Amount in <span t-esc="o.fx_currency_id.name"/> <span t-esc="o.fx_currency_id.symbol"/></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr t-foreach="o.invoice_line_ids" t-as="l">
+                                        <td style="width:60px; text-align:center;">
+                                            <span t-esc="l_index+1"/>
+                                        </td>
+                                      
+                                        <td style="width:440px; text-align:left;">
+                                            <span t-field="l.product_id"/> 
+                                        </td>
+                                        <td style="width:150px; text-align:left;">
+                                            <span t-field="l.po_no"/>
+                                        </td>
+                                        <td style="width:80px; text-align:center;">
+                                            <span t-field="l.quantity" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                        </td>
+                                        <td style="width:120px; text-align:right; padding-right:10px;">
+                    					   
+                                        	<span t-field="l.exchange_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+
+                                        </td>
+                                       
+                                        <td style="width:125px; text-align:right; padding-right:10px;">
+                                           
+                                        	<span t-field="l.total_exchange_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                          
+                                <tr style="border-bottom:hidden">
+                                    <td style="width:60px;">
+                                        <span/>
+                                    </td>
+
+                                    <td style="width:440px;text-transform:uppercase;text-align:center">
+                                      
+                                        <b><span>Total</span></b>
+                                        
+                                    </td>
+                                    <td style="width:150px;">
+                                        <span/>
+                                    </td>
+                                   
+                                    <td style="width:80px;text-align:center">
+                                            <t t-set="i" t-value="0"/>
+                                                <t t-foreach="o.invoice_line_ids" t-as="l">
+                                                    <t t-if="not l.product_id.type == 'service'" t-set="i" t-value="i+l.quantity"/>
+                                                </t>
+                                            <b>
+                                                <t t-esc="'%.0f'%(i)"/>
+                                            </b>
+                                    </td>
+
+                                    <td style="width:120px;">
+                                        <span/>
+                                    </td>
+
+                                    <td style="width:125px;">
+                                        <div class="text-right" style="padding-right:10px;">
+                                            <span t-esc="o.fx_currency_id.symbol"/>
+                                            <t t-set="i" t-value="0"/>
+                                            <t t-foreach="o.invoice_line_ids" t-as="l">
+                                                <t t-set="i" t-value="i+l.total_exchange_amount"/>
+                                            </t>
+                                            <b>
+                                                <t t-esc="'%.2f'%(i)"/>
+                                            </b>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr style="border-bottom:hidden">
+                                   <!--  <td style="text-transform: uppercase;">
+                                       <span t-if="o.comment">
+                                            <b><span t-field="o.comment"/></b>
+                                        </span>
+                                    </td> -->
+                                </tr>
+                            </table>
+
+
+                            <table>
+                                <tr style="border-bottom:hidden">
+                                    <td>
+                                        <b><span>Amount Chargeable : </span>
+                                            <!-- <span t-esc="o.fx_currency_id.name"/> -  -->
+                                            <span t-esc="o.fx_currency_id.amount_to_text(o.total_fx_amount)"/> Only
+                                        </b>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr style="border-bottom:hidden">
+                                    <td>
+                                        <b><span>Terms &amp; Conditions: </span>
+                                            <span t-esc="o.narration"/> 
+                                        </b>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr>
+                                    <td style="width:450px;">
+                                        <b><span>Declaration :</span></b> 
+                                        <span>We declare that this Invoice shows the actual price of the goods described and the particulars are true and correct</span>
+                                     </td>
+                                    <td style="width:450px; padding-right:10px;">
+                                        <div class="text-right">
+                                           <b> For <span t-field="o.company_id.name"/></b><br/>
+                                            <span/><br/>
+                                            <span/><br/>
+                                            <b><span>Authorised Signatory</span></b>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>                    </div>
+                </t>
+            </t>
+
+        </template>
+
+        <template id="report_export_invoice_fx_without_consignee">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="oi_shs_export_invoice_fx_without_consignee.report_export_invoice_fx_without_consignee_document" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
+
