@@ -38,6 +38,7 @@
                                 <field name="process_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="rm_supplier_id"/>
                                 <field name="template_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="debit_note_reference"/>
                             </group>
                             <group>
                                 <!-- <field name="from_dates" attrs="{'readonly': [('state', '=', 'done')]}"/> -->
