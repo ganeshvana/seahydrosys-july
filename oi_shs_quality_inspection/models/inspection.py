@@ -86,7 +86,7 @@ class quality_inspection(models.Model):
     process_description = fields.Char('process Rejection Description')
     rm_supplier_id = fields.Many2one('res.partner','RM Supplier')
     rejection_reference = fields.Char("Rejection Reference")
-    
+    debit_note_reference = fields.Char("Debit Note Reference")
 
 
     @api.model
