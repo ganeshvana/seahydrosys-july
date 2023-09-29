@@ -13,9 +13,9 @@
 
 
 
-         <!--    <xpath expr="//form/sheet/group/group[2]/field[@name='origin']" position="after">
+            <xpath expr="//form/sheet/group/group[2]/field[@name='origin']" position="after">
                 <field name="is_pc"/>
-            </xpath> -->
+            </xpath>
 
             <xpath expr="//form/header/field[@name='state']" position="replace">
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,assigned,approved_for_done,done" />
@@ -34,8 +34,7 @@
 
             <xpath expr="//form/header/button[@name='button_validate']" position="after">
 
-               <button name="action_to_approve" attrs="{'invisible': ['|', '|',('state', 'in', ('draft','waiting','confirmed')), ('show_validate', '=', False),('picking_type_id','not in',(12))]}" string="Approve" type="object" groups="stock.group_stock_user" class="o_btn_validate" />
-               <!-- ,('is_pc','=',False) -->
+               <button name="action_to_approve" attrs="{'invisible': ['|', '|',('state', 'in', ('draft','waiting','confirmed')), ('show_validate', '=', False),('picking_type_id','not in',(12)),('is_pc','=',False)]}" string="Approve" type="object" groups="stock.group_stock_user" class="o_btn_validate" />
 
                <button name="button_validate_new" attrs="{'invisible': [('state', '!=', 'approved_for_done')]}" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="v"/>
             </xpath>
