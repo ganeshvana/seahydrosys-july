@@ -42,9 +42,7 @@
 
                                 <field name="inspection_area" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="root_cause" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="rework_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="rework_cost"/>
-                                <field name="rework_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                
                                 <field name="other_info" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
@@ -67,6 +65,9 @@
                                 <field name="process_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
                                 <field name="result"/>
+                                <field name="rework_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="rework_cost"/>
+                                <field name="rework_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                         </group>
                         <notebook>

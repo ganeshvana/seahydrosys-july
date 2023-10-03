@@ -18,6 +18,17 @@
                     </sheet>
 
             </xpath>
+            
+        </field>
+    </record>
+    <record id="view_mrp_production_filter_inherit" model="ir.ui.view">
+        <field name="name">view_mrp_production_filter_inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[@name='product_id']" position="after">
+                <field name="sea_batch_no"/>
+            </xpath>
         </field>
     </record>
 </odoo>
