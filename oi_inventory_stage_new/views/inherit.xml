@@ -11,7 +11,11 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
 
-
+            <button name="action_cancel" position="replace">
+            <button name="action_cancel" attrs="{'invisible': [('state', 'not in', ('assigned', 'confirmed', 'draft', 'waiting'))]}" 
+            string="Cancel" groups="base.group_user" type="object" data-hotkey="z"
+            confirm="Are you sure? Do you want to cancel the Transfer"/>
+            </button>
 
             <xpath expr="//form/sheet/group/group[2]/field[@name='origin']" position="after">
                 <field name="is_pc"/>

@@ -87,12 +87,7 @@ class quality_inspection(models.Model):
     rm_supplier_id = fields.Many2one('res.partner','RM Supplier')
     rejection_reference = fields.Char("Rejection Reference")
     debit_note_reference = fields.Char("Debit Note Reference")
-    inspection_area = fields.Char("Inspection Area")
-    root_cause = fields.Char("Root Cause")
-    rework_quantity = fields.Char("Rework Quantity")
-    rework_description = fields.Char("Rework Description")
-    rework_cost = fields.Char("Rework Cost")
-    other_info = fields.Char("Other Information")
+    
     
 
 

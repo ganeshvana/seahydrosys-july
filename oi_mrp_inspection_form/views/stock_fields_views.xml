@@ -52,6 +52,9 @@
                             <field name="inprogress_rej_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <!-- <field name="template_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>                            -->
                             <field name="template_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="inspection_area" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="root_cause" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="other_info" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             
 
                         </group>
@@ -65,7 +68,9 @@
                             <field name="msn_rej_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="in_rej_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="inspected_by" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                                           
+                            <field name="rework_quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="rework_cost"/>
+                            <field name="rework_description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>                                              
                         </group>  
                     </group>    
 
