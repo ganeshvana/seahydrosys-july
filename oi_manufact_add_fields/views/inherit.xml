@@ -83,7 +83,11 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
+                 <button name="action_cancel" position="replace">
+                       <button name="action_cancel" type="object" string="Cancel" data-hotkey="z"
+                            attrs="{'invisible': ['|', '|', ('id', '=', False), ('state', 'in', ('done', 'cancel')), ('confirm_cancel', '=', True)]}" confirm="Are you sure? Do you want to cancel the MO"/>
 
+                </button>  
             <xpath expr="//button[@name='button_scrap']" position="replace">
                <button name="button_scrap" type="object" string="Scrap" attrs="{'invisible': [('state', 'in', ('cancel', 'draft'))]}" data-hotkey="z" groups="oi_manufact_add_fields.group_mrp_scrap"/>
             </xpath>
