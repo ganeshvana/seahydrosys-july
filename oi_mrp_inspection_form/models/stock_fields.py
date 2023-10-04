@@ -74,7 +74,13 @@ class MrpInspection(models.Model):
     ], string='Status',copy=False, index=True, readonly=True, store=True,track_visibility='onchange',default="draft",tracking=True)
 
     name = fields.Char('Inspection No.',default=lambda self: _(' '),readonly=True,tracking=True)
-
+    inspection_area = fields.Char("Inspection Area")
+    root_cause = fields.Char("Root Cause")
+    rework_quantity = fields.Char("Rework Quantity")
+    rework_description = fields.Char("Rework Description")
+    rework_cost = fields.Char("Rework Cost")
+    other_info = fields.Char("Other Information")
+    
     @api.model
     def create(self, vals):
         if vals.get('name', _(' ')) == _(' '):

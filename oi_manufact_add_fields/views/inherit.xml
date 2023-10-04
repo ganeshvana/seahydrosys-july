@@ -92,7 +92,11 @@
                          <field name="note" string="Note" options="{'no_create_edit': True,'no_create':True}"/> 
                                     
              </xpath>
+                <button name="action_cancel" position="replace">
+                       <button name="action_cancel" type="object" string="Cancel" data-hotkey="z"
+                            attrs="{'invisible': ['|', '|', ('id', '=', False), ('state', 'in', ('done', 'cancel')), ('confirm_cancel', '=', True)]}" confirm="Are you sure? Do you want to cancel the MO"/>
 
+                </button>  
           
 
         </field>
@@ -103,6 +107,11 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
+             <button name="action_cancel" position="replace">
+                <button name="action_cancel" attrs="{'invisible': [('state', 'not in', ('assigned', 'confirmed', 'draft', 'waiting'))]}" 
+                string="Cancel" groups="base.group_user" type="object" data-hotkey="z"
+                confirm="Are you sure? Do you want to cancel the Transfer"/>
+            </button>
              <xpath expr="//form/header/button[@name='button_scrap']" position="replace">
                 
                 <button name="button_scrap" type="object" string="Scrap" attrs="{'invisible': ['|', '&amp;', ('picking_type_code', '=', 'incoming'), ('state', '!=', 'done'), '&amp;', ('picking_type_code', '=', 'outgoing'), ('state', '=', 'done')]}" data-hotkey="y" groups="oi_manufact_add_fields.group_stock_scrap"/>
