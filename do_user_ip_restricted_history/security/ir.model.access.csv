@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_login_ips,access_login_ips,model_login_ips,base.group_user,1,1,1,0
+access_login_ips_system,access_login_ips_system,model_login_ips,base.group_system,1,1,1,1
+access_login_history,access_login_history,model_login_history,,1,1,1,0
+access_login_history_system,access_login_history_system,model_login_history,base.group_system,1,1,1,1

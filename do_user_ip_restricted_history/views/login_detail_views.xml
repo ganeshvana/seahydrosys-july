@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="login_user_history_tree_view">
+        <field name="name">Login User History</field>
+        <field name="model">login.history</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="user_id" />
+                <field name="ip_address" />
+                <field name="login_date" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="login_user_history_form_view">
+        <field name="name">Login User History</field>
+        <field name="model">login.history</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="user_id" />
+                        <field name="ip_address" />
+                        <field name="login_date" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="login_user_history_action_window">
+        <field name="name">Login User History</field>
+        <field name="res_model">login.history</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="Login History" id="menu_login_history" parent="base.menu_users" action="login_user_history_action_window" />
+    <record model="ir.ui.view" id="login_user_ips_tree_view">
+        <field name="name">Login User IP's</field>
+        <field name="model">login.ips</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="user_id" />
+                <field name="ip_address" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="login_user_ips_action_window">
+        <field name="name">Login User IP's</field>
+        <field name="res_model">login.ips</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="Login User IPS" id="menu_login_user_ips" parent="base.menu_users" action="login_user_ips_action_window" />
+    <record model="ir.ui.view" id="res_users_login_ips">
+        <field name="name">res.users</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[last()]" position='after'>
+                <page string="Allowed IP Addresses">
+                    <field name="login_ips">
+                        <tree editable="bottom">
+                            <field name="ip_address" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
