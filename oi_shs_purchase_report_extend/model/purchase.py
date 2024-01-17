@@ -18,10 +18,10 @@ class purchase_order(models.Model):
     _inherit = "purchase.order"
  
     # mo_product = fields.Char("MO Product",compute="_get_mo_product")   
-    despatch_through = fields.Char(string="Despatch Through",tracking=True)
-    due_date = fields.Date("Due Date",tracking=True)
-    sail_date = fields.Date("Sail Date",tracking=True)
-    tax_country_id = fields.Many2one("res.country",'Country',tracking=True)
+    despatch_through = fields.Char(string="Despatch Through")
+    due_date = fields.Date("Due Date")
+    sail_date = fields.Date("Sail Date")
+    tax_country_id = fields.Many2one("res.country",'Country')
     # pick_id = fields.Many2one('stock.picking','DO')
     
 
@@ -54,7 +54,7 @@ class purchase_order_line(models.Model):
     _inherit = "purchase.order.line"
  
    
-    price_unit = fields.Float(string='Unit Price', digits=dp.get_precision('Purchase Price'),tracking=True)
+    price_unit = fields.Float(string='Unit Price', digits=dp.get_precision('Purchase Price'))
 
 
 class accoount_invoice_line(models.Model):
