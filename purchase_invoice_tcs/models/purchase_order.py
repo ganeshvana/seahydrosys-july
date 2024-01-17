@@ -34,13 +34,16 @@ class SaleOrder(models.Model):
         states={
             'draft': [('readonly', False)],
             'sent': [('readonly', False)]
-        }
+        },
+        tracking=True
+
     )
     tcs_value = fields.Float(
         string='TCS Value',
         store=True,
         readonly=True,
         compute='_amount_all',
+        tracking=True
         
     )
     
@@ -79,8 +82,8 @@ class SaleOrder(models.Model):
 class purchase_tcs_master(models.Model):
     _name = 'purchase.tcs.master'
 
-    name = fields.Char('Name')
-    code = fields.Char('Code')
-    tcs = fields.Float('TCS(in percent)',digits=dp.get_precision('Product Unit of Measure'))
+    name = fields.Char('Name',tracking=True)
+    code = fields.Char('Code',tracking=True)
+    tcs = fields.Float('TCS(in percent)',digits=dp.get_precision('Product Unit of Measure'),tracking=True)
 
 
