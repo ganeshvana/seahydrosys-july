@@ -13,12 +13,12 @@ class SaleOrder(models.Model):
             sale_rec.order_revised_count = len(order_revised_count)
 
     name = fields.Char(string='Order Reference', required=True, copy=False,
-                       readonly=True, index=True, default='New')
+                       readonly=True, index=True, default='New',tracking=True)
     parent_saleorder_id = fields.Many2one(
-        'sale.order', 'Parent SaleOrder', copy=False)
+        'sale.order', 'Parent SaleOrder', copy=False,tracking=True)
     order_revised_count = fields.Integer(
-        '# of Orders Revised', compute='_order_revised_count', copy=False)
-    so_number = fields.Integer('SO Number', copy=False, default=1)
+        '# of Orders Revised', compute='_order_revised_count', copy=False,tracking=True)
+    so_number = fields.Integer('SO Number', copy=False, default=1,tracking=True)
     state = fields.Selection(selection_add=[
         ('draft_quote', 'Revised Quotation'),
         ('draft', 'Quotation'),
@@ -28,7 +28,7 @@ class SaleOrder(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
     ], string='Status', readonly=True, copy=False, index=True,
-        tracking=True, default='draft')
+        tracking=True, default='draft',tracking=True)
 
     def so_revision_quote(self):
         for cur_rec in self:
