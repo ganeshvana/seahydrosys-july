@@ -40,6 +40,10 @@ class SaleOrder(models.Model):
             if days > 0:
                 return fields.Date.to_string(datetime.now() + timedelta(days))
         return False
+    
+    @api.model
+    def _get_default_team(self):
+        return self.env['crm.team']._get_default_team_id()
 
 
     origin = fields.Char(string='Source Document', help="Reference of the document that generated this sales order request.",tracking=True)
@@ -106,14 +110,16 @@ class SaleOrder(models.Model):
     
     note = fields.Html('Terms and conditions', default=_default_note,tracking=True)
     terms_type = fields.Selection(related='company_id.terms_type',tracking=True)
+    amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, compute='_amount_all', tracking=True)
 
     tax_totals_json = fields.Char(compute='_compute_tax_totals_json',tracking=True)
     amount_tax = fields.Monetary(string='Taxes', store=True, compute='_amount_all',tracking=True)
+    amount_total = fields.Monetary(string='Total', store=True, compute='_amount_all', tracking=True)
     currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', store=True, digits=(12, 6), help='The rate of the currency to the currency of rate 1 applicable at the date of the order',tracking=True)
 
     payment_term_id = fields.Many2one(
-        'account.payment.term', string='Payment Terms', check_company=True,  # Unrequired company
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",tracking=True)
+        'account.payment.term', string='Payment Terms', check_company=True,tracking=True,  # Unrequired company
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     fiscal_position_id = fields.Many2one(
         'account.fiscal.position', string='Fiscal Position',
         domain="[('company_id', '=', company_id)]", check_company=True,
@@ -126,6 +132,13 @@ class SaleOrder(models.Model):
         compute_sudo=True,
         help="Technical field to filter the available taxes depending on the fiscal country and fiscal position.",tracking=True)
     company_id = fields.Many2one('res.company', 'Company', required=True, index=True, default=lambda self: self.env.company,tracking=True)
+
+    team_id = fields.Many2one(
+        'crm.team', 'Sales Team',
+        ondelete="set null", tracking=True,
+        change_default=True, default=_get_default_team, check_company=True,  # Unrequired company
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+
 
 
     signature = fields.Image('Signature', help='Signature received through the portal.', copy=False, attachment=True, max_width=1024, max_height=1024,tracking=True)
@@ -168,6 +181,14 @@ class SaleOrder(models.Model):
             ('deemed_export', 'Deemed Export'),
         ], string="GST Treatment", readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, compute="_compute_l10n_in_gst_treatment", store=True,tracking=True)
     l10n_in_company_country_code = fields.Char(related='company_id.account_fiscal_country_id.code', string="Country code",tracking=True)
+
+    state = fields.Selection([
+        ('draft', 'Quotation'),
+        ('sent', 'Quotation Sent'),
+        ('sale', 'Sales Order'),
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled'),
+        ], string='Status', readonly=True, copy=False, index=True, tracking=True, default='draft')
 
 
 
