@@ -46,10 +46,10 @@ class SaleOrder(models.Model):
         return self.env['crm.team']._get_default_team_id()
 
 
-    origin = fields.Char(string='Source Document', help="Reference of the document that generated this sales order request.",tracking=True)
-    client_order_ref = fields.Char(string='Customer Reference', copy=False,tracking=True)
-    reference = fields.Char(string='Payment Ref.', copy=False,
-        help='The payment communication of this sale order.',tracking=True)
+    # origin = fields.Char(string='Source Document', help="Reference of the document that generated this sales order request.",tracking=True)
+    # client_order_ref = fields.Char(string='Customer Reference', copy=False,tracking=True)
+    # reference = fields.Char(string='Payment Ref.', copy=False,
+    #     help='The payment communication of this sale order.',tracking=True)
    
     # date_order = fields.Datetime(string='Order Date', required=True, readonly=True, index=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, copy=False, default=fields.Datetime.now, help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.",tracking=True)
     # validity_date = fields.Date(string='Expiration', readonly=True, copy=False, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
