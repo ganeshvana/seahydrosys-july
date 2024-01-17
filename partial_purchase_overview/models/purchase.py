@@ -7,10 +7,10 @@ from odoo import models, fields, api
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
-    is_order_open = fields.Boolean(compute="_compute_is_order_open_reception_status", store=True)
+    is_order_open = fields.Boolean(compute="_compute_is_order_open_reception_status", store=True,tracking=True)
     reception_status = fields.Selection([
         ('done', 'Done'), ('partiall_delivered', 'Partially Delivered'), ('force_closure', 'Force Closure')
-    ], compute='_compute_is_order_open_reception_status', store=True)
+    ], compute='_compute_is_order_open_reception_status', store=True,tracking=True)
 
     @api.depends('order_line', 'order_line.qty_received', 'order_line.product_qty')
     def _compute_is_order_open_reception_status(self):
@@ -33,13 +33,13 @@ class PurchaseOrderLine(models.Model):
 
     partial_qty_to_receive = fields.Float(
         compute="_compute_partial_qty_to_receive", digits='Product Unit of Measure', store=True,
-        help="Total product qauntities from all open back orders")
+        help="Total product qauntities from all open back orders",tracking=True)
     pending_qty = fields.Float(
         compute="_compute_pending_qty", digits='Product Unit of Measure', store=True,
-        help="By considering Back order and cancelled backorder and 'No back order'")
-    undelivered_products = fields.Boolean(compute="_compute_partial_qty_to_receive", store=True)
-    is_order_open = fields.Boolean(related='order_id.is_order_open')
-    order_reception_status = fields.Selection(related="order_id.reception_status")
+        help="By considering Back order and cancelled backorder and 'No back order'",tracking=True)
+    undelivered_products = fields.Boolean(compute="_compute_partial_qty_to_receive", store=True,tracking=True)
+    is_order_open = fields.Boolean(related='order_id.is_order_open',tracking=True)
+    order_reception_status = fields.Selection(related="order_id.reception_status",tracking=True)
 
     @api.depends('product_qty', 'qty_received')
     def _compute_pending_qty(self):
