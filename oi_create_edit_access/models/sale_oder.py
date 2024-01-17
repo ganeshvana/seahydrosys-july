@@ -159,5 +159,106 @@ class SaleOrder(models.Model):
 
     
     
+    l10n_in_reseller_partner_id = fields.Many2one('res.partner',
+        string='Reseller', domain="[('vat', '!=', False), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},tracking=True)
+    l10n_in_journal_id = fields.Many2one('account.journal', string="Journal", compute="_compute_l10n_in_journal_id", store=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},tracking=True)
+    l10n_in_gst_treatment = fields.Selection([
+            ('regular', 'Registered Business - Regular'),
+            ('composition', 'Registered Business - Composition'),
+            ('unregistered', 'Unregistered Business'),
+            ('consumer', 'Consumer'),
+            ('overseas', 'Overseas'),
+            ('special_economic_zone', 'Special Economic Zone'),
+            ('deemed_export', 'Deemed Export'),
+        ], string="GST Treatment", readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, compute="_compute_l10n_in_gst_treatment", store=True,tracking=True)
+    l10n_in_company_country_code = fields.Char(related='company_id.account_fiscal_country_id.code', string="Country code",tracking=True)
+
+
+
+    #sale_mrp
+
+    mrp_production_count = fields.Integer(
+        "Count of MO generated",
+        compute='_compute_mrp_production_count',
+        groups='mrp.group_mrp_user',tracking=True)
+    
+    #sale_crm
+
+    opportunity_id = fields.Many2one(
+        'crm.lead', string='Opportunity', check_company=True,
+        domain="[('type', '=', 'opportunity'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",tracking=True)
+    
+
+    # sale_stock
+
+
+    @api.model
+    def _default_warehouse_id(self):
+        # !!! Any change to the default value may have to be repercuted
+        # on _init_column() below.
+        return self.env.user._get_default_warehouse_id()
+
+    incoterm = fields.Many2one(
+        'account.incoterms', 'Incoterm',
+        help="International Commercial Terms are a series of predefined commercial terms used in international transactions.",tracking=True)
+    picking_policy = fields.Selection([
+        ('direct', 'As soon as possible'),
+        ('one', 'When all products are ready')],
+        string='Shipping Policy', required=True, readonly=True, default='direct',
+        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}
+        ,help="If you deliver all products at once, the delivery order will be scheduled based on the greatest "
+        "product lead time. Otherwise, it will be based on the shortest.",tracking=True)
+    warehouse_id = fields.Many2one(
+        'stock.warehouse', string='Warehouse',
+        required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        default=_default_warehouse_id, check_company=True,tracking=True)
+    picking_ids = fields.One2many('stock.picking', 'sale_id', string='Transfers',tracking=True)
+    delivery_count = fields.Integer(string='Delivery Orders', compute='_compute_picking_ids',tracking=True)
+    procurement_group_id = fields.Many2one('procurement.group', 'Procurement Group', copy=False,tracking=True)
+    effective_date = fields.Datetime("Effective Date", compute='_compute_effective_date', store=True, help="Completion date of the first delivery order.",tracking=True)
+    expected_date = fields.Datetime( help="Delivery date you can promise to the customer, computed from the minimum lead time of "
+                                          "the order lines in case of Service products. In case of shipping, the shipping policy of "
+                                          "the order will be taken into account to either use the minimum or maximum lead time of "
+                                          "the order lines.",tracking=True)
+    json_popover = fields.Char('JSON data for the popover widget', compute='_compute_json_popover',tracking=True)
+    show_json_popover = fields.Boolean('Has late picking', compute='_compute_json_popover',tracking=True)
 
     
+    # sale_purchase
+
+    purchase_order_count = fields.Integer(
+        "Number of Purchase Order Generated",
+        compute='_compute_purchase_order_count',
+        groups='purchase.group_purchase_user',tracking=True)
+
+    @api.depends('order_line.purchase_line_ids.order_id')
+    def _compute_purchase_order_count(self):
+        for order in self:
+            order.purchase_order_count = len(order._get_purchase_orders())
+
+    
+    #sale_management
+            
+    sale_order_template_id = fields.Many2one(
+        'sale.order.template', 'Quotation Template',
+        readonly=True, check_company=True,
+        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",tracking=True)
+    sale_order_option_ids = fields.One2many(
+        'sale.order.option', 'order_id', 'Optional Products Lines',
+        copy=True, readonly=True,
+        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},tracking=True)
+    
+
+    # sale_project
+
+    tasks_ids = fields.Many2many('project.task', compute='_compute_tasks_ids', string='Tasks associated to this sale',tracking=True)
+    tasks_count = fields.Integer(string='Tasks', compute='_compute_tasks_ids', groups="project.group_project_user",tracking=True)
+
+    visible_project = fields.Boolean('Display project', compute='_compute_visible_project', readonly=True,tracking=True)
+    project_id = fields.Many2one(
+        'project.project', 'Project', readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        help='Select a non billable project on which tasks can be created.',tracking=True)
+    project_ids = fields.Many2many('project.project', compute="_compute_project_ids", string='Projects', copy=False, groups="project.group_project_manager", help="Projects used in this sales order.",tracking=True)
+    project_count = fields.Integer(string='Number of Projects', compute='_compute_project_ids', groups='project.group_project_manager',tracking=True)
+
