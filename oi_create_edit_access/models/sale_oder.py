@@ -41,9 +41,6 @@ class SaleOrder(models.Model):
                 return fields.Date.to_string(datetime.now() + timedelta(days))
         return False
 
-   
-
-    #Tracking True for all fields in SO
 
     origin = fields.Char(string='Source Document', help="Reference of the document that generated this sales order request.",tracking=True)
     client_order_ref = fields.Char(string='Customer Reference', copy=False,tracking=True)
