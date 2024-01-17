@@ -15,35 +15,35 @@ from odoo.addons.payment import utils as payment_utils
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    @api.model
-    def _default_note(self):
-        use_invoice_terms = self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms')
-        if use_invoice_terms and self.env.company.terms_type == "html":
-            baseurl = html_keep_url(self._default_note_url() + '/terms')
-            context = {'lang': self.partner_id.lang or self.env.user.lang}
-            note = _('Terms & Conditions: %s', baseurl)
-            del context
-            return note
-        return use_invoice_terms and self.env.company.invoice_terms or ''
+    # @api.model
+    # def _default_note(self):
+    #     use_invoice_terms = self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms')
+    #     if use_invoice_terms and self.env.company.terms_type == "html":
+    #         baseurl = html_keep_url(self._default_note_url() + '/terms')
+    #         context = {'lang': self.partner_id.lang or self.env.user.lang}
+    #         note = _('Terms & Conditions: %s', baseurl)
+    #         del context
+    #         return note
+    #     return use_invoice_terms and self.env.company.invoice_terms or ''
     
 
     
-    def _get_default_require_payment(self):
-        return self.env.company.portal_confirmation_pay
+    # def _get_default_require_payment(self):
+    #     return self.env.company.portal_confirmation_pay
     
-    def _get_default_require_signature(self):
-        return self.env.company.portal_confirmation_sign
+    # def _get_default_require_signature(self):
+    #     return self.env.company.portal_confirmation_sign
     
-    def _default_validity_date(self):
-        if self.env['ir.config_parameter'].sudo().get_param('sale.use_quotation_validity_days'):
-            days = self.env.company.quotation_validity_days
-            if days > 0:
-                return fields.Date.to_string(datetime.now() + timedelta(days))
-        return False
+    # def _default_validity_date(self):
+    #     if self.env['ir.config_parameter'].sudo().get_param('sale.use_quotation_validity_days'):
+    #         days = self.env.company.quotation_validity_days
+    #         if days > 0:
+    #             return fields.Date.to_string(datetime.now() + timedelta(days))
+    #     return False
     
-    @api.model
-    def _get_default_team(self):
-        return self.env['crm.team']._get_default_team_id()
+    # @api.model
+    # def _get_default_team(self):
+    #     return self.env['crm.team']._get_default_team_id()
 
 
     # origin = fields.Char(string='Source Document', help="Reference of the document that generated this sales order request.",tracking=True)
