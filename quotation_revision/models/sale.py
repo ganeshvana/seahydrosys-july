@@ -28,7 +28,7 @@ class SaleOrder(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
     ], string='Status', readonly=True, copy=False, index=True,
-        tracking=True, default='draft',tracking=True)
+        tracking=True, default='draft')
 
     def so_revision_quote(self):
         for cur_rec in self:
