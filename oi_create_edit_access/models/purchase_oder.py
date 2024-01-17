@@ -1,4 +1,5 @@
 from odoo import api, fields, models, tools, _
+from odoo.addons.purchase.models.purchase import PurchaseOrder as Purchase
 
 
 class PurchaseOrder(models.Model):
@@ -11,6 +12,10 @@ class PurchaseOrder(models.Model):
         'done': [('readonly', True)],
         'cancel': [('readonly', True)],
     }
+
+    @api.model
+    def _default_picking_type(self):
+        return self._get_picking_type(self.env.context.get('company_id') or self.env.company.id)
 
     name = fields.Char('Order Reference', required=True, index=True, copy=False, default='New',tracking=True)
     priority = fields.Selection(
@@ -71,6 +76,66 @@ class PurchaseOrder(models.Model):
     receipt_reminder_email = fields.Boolean('Receipt Reminder Email', related='partner_id.receipt_reminder_email', readonly=False,tracking=True)
     reminder_date_before_receipt = fields.Integer('Days Before Receipt', related='partner_id.reminder_date_before_receipt', readonly=False,tracking=True)
 
+    #purchase requsition
+
+    requisition_id = fields.Many2one('purchase.requisition', string='Purchase Agreement', copy=False,tracking=True)
+    is_quantity_copy = fields.Selection(related='requisition_id.is_quantity_copy', readonly=False,tracking=True)
+
+    #mrp_subcontracting_purchase
+
+    subcontracting_resupply_picking_count = fields.Integer(
+        "Count of Subcontracting Resupply", compute='_compute_subcontracting_resupply_picking_count',
+        help="Count of Subcontracting Resupply for component",tracking=True)
+    
+
+    #l10n_in_purchase
+
+    l10n_in_journal_id = fields.Many2one('account.journal', string="Journal", \
+        states=Purchase.READONLY_STATES, domain="[('type', '=', 'purchase')]",tracking=True)
+    l10n_in_gst_treatment = fields.Selection([
+            ('regular', 'Registered Business - Regular'),
+            ('composition', 'Registered Business - Composition'),
+            ('unregistered', 'Unregistered Business'),
+            ('consumer', 'Consumer'),
+            ('overseas', 'Overseas'),
+            ('special_economic_zone', 'Special Economic Zone'),
+            ('deemed_export', 'Deemed Export')
+        ], string="GST Treatment", states=Purchase.READONLY_STATES, compute="_compute_l10n_in_gst_treatment", store=True,tracking=True)
+    l10n_in_company_country_code = fields.Char(related='company_id.account_fiscal_country_id.code', string="Country code",tracking=True)
+
+
+    #sale_purchase
+
+
+    sale_order_count = fields.Integer(
+        "Number of Source Sale",
+        compute='_compute_sale_order_count',
+        groups='sales_team.group_sale_salesman',tracking=True)
+    
+
+    #purchase_mrp
+
+    mrp_production_count = fields.Integer(
+        "Count of MO Source",
+        compute='_compute_mrp_production_count',
+        groups='mrp.group_mrp_user',tracking=True)
+    
+    #purchase_stock    
+
+    incoterm_id = fields.Many2one('account.incoterms', 'Incoterm', states={'done': [('readonly', True)]}, help="International Commercial Terms are a series of predefined commercial terms used in international transactions.",tracking=True)
+
+    incoming_picking_count = fields.Integer("Incoming Shipment count", compute='_compute_incoming_picking_count',tracking=True)
+    picking_ids = fields.Many2many('stock.picking', compute='_compute_picking_ids', string='Receptions', copy=False, store=True,tracking=True)
+
+    picking_type_id = fields.Many2one('stock.picking.type', 'Deliver To', states=Purchase.READONLY_STATES, required=True, default=_default_picking_type, domain="['|', ('warehouse_id', '=', False), ('warehouse_id.company_id', '=', company_id)]",
+        help="This will determine operation type of incoming shipment",tracking=True)
+    default_location_dest_id_usage = fields.Selection(related='picking_type_id.default_location_dest_id.usage', string='Destination Location Type',
+        help="Technical field used to display the Drop Ship Address", readonly=True,tracking=True)
+    group_id = fields.Many2one('procurement.group', string="Procurement Group", copy=False,tracking=True)
+    is_shipped = fields.Boolean(compute="_compute_is_shipped",tracking=True)
+    effective_date = fields.Datetime("Effective Date", compute='_compute_effective_date', store=True, copy=False,
+        help="Completion date of the first receipt order.",tracking=True)
+    on_time_rate = fields.Float(related='partner_id.on_time_rate', compute_sudo=False,tracking=True)
 
 
 class PurchaseOrderLine(models.Model):
@@ -100,6 +165,8 @@ class PurchaseOrderLine(models.Model):
     company_id = fields.Many2one('res.company', related='order_id.company_id', string='Company', store=True, readonly=True,tracking=True)
     state = fields.Selection(related='order_id.state', store=True,tracking=True)
 
+    
+
 
     # Replace by invoiced Qty
     qty_invoiced = fields.Float(compute='_compute_qty_invoiced', string="Billed Qty", digits='Product Unit of Measure', store=True,tracking=True)
@@ -122,3 +189,20 @@ class PurchaseOrderLine(models.Model):
     display_type = fields.Selection([
         ('line_section', "Section"),
         ('line_note', "Note")], default=False, help="Technical field for UX purpose.",tracking=True)
+    
+
+    #sale_purchase
+
+    sale_order_id = fields.Many2one(related='sale_line_id.order_id', string="Sale Order", store=True, readonly=True,tracking=True)
+    sale_line_id = fields.Many2one('sale.order.line', string="Origin Sale Item", index=True, copy=False,tracking=True)
+
+    #purchase_stock    
+
+    qty_received_method = fields.Selection(selection_add=[('stock_moves', 'Stock Moves')],tracking=True)
+
+    move_ids = fields.One2many('stock.move', 'purchase_line_id', string='Reservation', readonly=True, copy=False,tracking=True)
+    orderpoint_id = fields.Many2one('stock.warehouse.orderpoint', 'Orderpoint', copy=False, index=True,tracking=True)
+    move_dest_ids = fields.One2many('stock.move', 'created_purchase_line_id', 'Downstream Moves',tracking=True)
+    product_description_variants = fields.Char('Custom Description',tracking=True)
+    propagate_cancel = fields.Boolean('Propagate cancellation', default=True,tracking=True)
+    forecasted_issue = fields.Boolean(compute='_compute_forecasted_issue',tracking=True)
