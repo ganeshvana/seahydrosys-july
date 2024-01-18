@@ -316,89 +316,89 @@ class SaleOrderLine(models.Model):
     #sale
 
 
-    order_id = fields.Many2one('sale.order', string='Order Reference', required=True, ondelete='cascade', index=True, copy=False,tracking=True)
-    name = fields.Text(string='Description', required=True,tracking=True)
+    # order_id = fields.Many2one('sale.order', string='Order Reference', required=True, ondelete='cascade', index=True, copy=False,tracking=True)
+    # name = fields.Text(string='Description', required=True,tracking=True)
 
-    invoice_lines = fields.Many2many('account.move.line', 'sale_order_line_invoice_rel', 'order_line_id', 'invoice_line_id', string='Invoice Lines', copy=False,tracking=True)
-    invoice_status = fields.Selection([
-        ('upselling', 'Upselling Opportunity'),
-        ('invoiced', 'Fully Invoiced'),
-        ('to invoice', 'To Invoice'),
-        ('no', 'Nothing to Invoice')
-        ], string='Invoice Status', compute='_compute_invoice_status', store=True, default='no',tracking=True)
-    price_unit = fields.Float('Unit Price', required=True, digits='Product Price', default=0.0,tracking=True)
+    # invoice_lines = fields.Many2many('account.move.line', 'sale_order_line_invoice_rel', 'order_line_id', 'invoice_line_id', string='Invoice Lines', copy=False,tracking=True)
+    # invoice_status = fields.Selection([
+    #     ('upselling', 'Upselling Opportunity'),
+    #     ('invoiced', 'Fully Invoiced'),
+    #     ('to invoice', 'To Invoice'),
+    #     ('no', 'Nothing to Invoice')
+    #     ], string='Invoice Status', compute='_compute_invoice_status', store=True, default='no',tracking=True)
+    # price_unit = fields.Float('Unit Price', required=True, digits='Product Price', default=0.0,tracking=True)
 
-    price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True,tracking=True)
-    price_tax = fields.Float(compute='_compute_amount', string='Total Tax', store=True,tracking=True)
-    price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True,tracking=True)
+    # price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True,tracking=True)
+    # price_tax = fields.Float(compute='_compute_amount', string='Total Tax', store=True,tracking=True)
+    # price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True,tracking=True)
 
-    price_reduce = fields.Float(compute='_compute_price_reduce', string='Price Reduce', digits='Product Price', store=True,tracking=True)
-    tax_id = fields.Many2many('account.tax', string='Taxes', context={'active_test': False}, check_company=True,tracking=True)
-    price_reduce_taxinc = fields.Monetary(compute='_compute_price_reduce_taxinc', string='Price Reduce Tax inc', store=True,tracking=True)
-    price_reduce_taxexcl = fields.Monetary(compute='_compute_price_reduce_taxexcl', string='Price Reduce Tax excl', store=True,tracking=True)
+    # price_reduce = fields.Float(compute='_compute_price_reduce', string='Price Reduce', digits='Product Price', store=True,tracking=True)
+    # tax_id = fields.Many2many('account.tax', string='Taxes', context={'active_test': False}, check_company=True,tracking=True)
+    # price_reduce_taxinc = fields.Monetary(compute='_compute_price_reduce_taxinc', string='Price Reduce Tax inc', store=True,tracking=True)
+    # price_reduce_taxexcl = fields.Monetary(compute='_compute_price_reduce_taxexcl', string='Price Reduce Tax excl', store=True,tracking=True)
 
-    discount = fields.Float(string='Discount (%)', digits='Discount', default=0.0,tracking=True)
+    # discount = fields.Float(string='Discount (%)', digits='Discount', default=0.0,tracking=True)
 
-    product_id = fields.Many2one(
-        'product.product', string='Product', domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
-        change_default=True, ondelete='restrict', check_company=True,tracking=True)  # Unrequired company
-    product_template_id = fields.Many2one(
-        'product.template', string='Product Template',
-        related="product_id.product_tmpl_id", domain=[('sale_ok', '=', True)],tracking=True)
-    product_updatable = fields.Boolean(compute='_compute_product_updatable', string='Can Edit Product', default=True,tracking=True)
-    product_uom_qty = fields.Float(string='Quantity', digits='Product Unit of Measure', required=True, default=1.0,tracking=True)
-    product_uom = fields.Many2one('uom.uom', string='Unit of Measure', domain="[('category_id', '=', product_uom_category_id)]", ondelete="restrict",tracking=True)
-    product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id',tracking=True)
-    product_uom_readonly = fields.Boolean(compute='_compute_product_uom_readonly',tracking=True)
+    # product_id = fields.Many2one(
+    #     'product.product', string='Product', domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+    #     change_default=True, ondelete='restrict', check_company=True,tracking=True)  # Unrequired company
+    # product_template_id = fields.Many2one(
+    #     'product.template', string='Product Template',
+    #     related="product_id.product_tmpl_id", domain=[('sale_ok', '=', True)],tracking=True)
+    # product_updatable = fields.Boolean(compute='_compute_product_updatable', string='Can Edit Product', default=True,tracking=True)
+    # product_uom_qty = fields.Float(string='Quantity', digits='Product Unit of Measure', required=True, default=1.0,tracking=True)
+    # product_uom = fields.Many2one('uom.uom', string='Unit of Measure', domain="[('category_id', '=', product_uom_category_id)]", ondelete="restrict",tracking=True)
+    # product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id',tracking=True)
+    # product_uom_readonly = fields.Boolean(compute='_compute_product_uom_readonly',tracking=True)
 
-    # M2M holding the values of product.attribute with create_variant field set to 'no_variant'
-    # It allows keeping track of the extra_price associated to those attribute values and add them to the SO line description
-    product_no_variant_attribute_value_ids = fields.Many2many('product.template.attribute.value', string="Extra Values", ondelete='restrict',tracking=True)
+    # # M2M holding the values of product.attribute with create_variant field set to 'no_variant'
+    # # It allows keeping track of the extra_price associated to those attribute values and add them to the SO line description
+    # product_no_variant_attribute_value_ids = fields.Many2many('product.template.attribute.value', string="Extra Values", ondelete='restrict',tracking=True)
 
-    qty_delivered_method = fields.Selection([
-        ('manual', 'Manual'),
-        ('analytic', 'Analytic From Expenses')
-    ], string="Method to update delivered qty", compute='_compute_qty_delivered_method', store=True,
-        help="According to product configuration, the delivered quantity can be automatically computed by mechanism :\n"
-             "  - Manual: the quantity is set manually on the line\n"
-             "  - Analytic From expenses: the quantity is the quantity sum from posted expenses\n"
-             "  - Timesheet: the quantity is the sum of hours recorded on tasks linked to this sale line\n"
-             "  - Stock Moves: the quantity comes from confirmed pickings\n",tracking=True)
-    qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', inverse='_inverse_qty_delivered', store=True, digits='Product Unit of Measure', default=0.0,tracking=True)
-    qty_delivered_manual = fields.Float('Delivered Manually', copy=False, digits='Product Unit of Measure', default=0.0,tracking=True)
-    qty_to_invoice = fields.Float(
-        compute='_get_to_invoice_qty', string='To Invoice Quantity', store=True,
-        digits='Product Unit of Measure',tracking=True)
-    qty_invoiced = fields.Float(
-        compute='_compute_qty_invoiced', string='Invoiced Quantity', store=True,
-        digits='Product Unit of Measure',tracking=True)
+    # qty_delivered_method = fields.Selection([
+    #     ('manual', 'Manual'),
+    #     ('analytic', 'Analytic From Expenses')
+    # ], string="Method to update delivered qty", compute='_compute_qty_delivered_method', store=True,
+    #     help="According to product configuration, the delivered quantity can be automatically computed by mechanism :\n"
+    #          "  - Manual: the quantity is set manually on the line\n"
+    #          "  - Analytic From expenses: the quantity is the quantity sum from posted expenses\n"
+    #          "  - Timesheet: the quantity is the sum of hours recorded on tasks linked to this sale line\n"
+    #          "  - Stock Moves: the quantity comes from confirmed pickings\n",tracking=True)
+    # qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', inverse='_inverse_qty_delivered', store=True, digits='Product Unit of Measure', default=0.0,tracking=True)
+    # qty_delivered_manual = fields.Float('Delivered Manually', copy=False, digits='Product Unit of Measure', default=0.0,tracking=True)
+    # qty_to_invoice = fields.Float(
+    #     compute='_get_to_invoice_qty', string='To Invoice Quantity', store=True,
+    #     digits='Product Unit of Measure',tracking=True)
+    # qty_invoiced = fields.Float(
+    #     compute='_compute_qty_invoiced', string='Invoiced Quantity', store=True,
+    #     digits='Product Unit of Measure',tracking=True)
 
-    untaxed_amount_invoiced = fields.Monetary("Untaxed Invoiced Amount", compute='_compute_untaxed_amount_invoiced', store=True,tracking=True)
-    untaxed_amount_to_invoice = fields.Monetary("Untaxed Amount To Invoice", compute='_compute_untaxed_amount_to_invoice', store=True,tracking=True)
+    # untaxed_amount_invoiced = fields.Monetary("Untaxed Invoiced Amount", compute='_compute_untaxed_amount_invoiced', store=True,tracking=True)
+    # untaxed_amount_to_invoice = fields.Monetary("Untaxed Amount To Invoice", compute='_compute_untaxed_amount_to_invoice', store=True,tracking=True)
 
-    salesman_id = fields.Many2one(related='order_id.user_id', store=True, string='Salesperson',tracking=True)
-    currency_id = fields.Many2one(related='order_id.currency_id', depends=['order_id.currency_id'], store=True, string='Currency',tracking=True)
-    company_id = fields.Many2one(related='order_id.company_id', string='Company', store=True, index=True,tracking=True)
-    order_partner_id = fields.Many2one(related='order_id.partner_id', store=True, string='Customer', index=True,tracking=True)
-    analytic_tag_ids = fields.Many2many(
-        'account.analytic.tag', string='Analytic Tags',
-        compute='_compute_analytic_tag_ids', store=True, readonly=False,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",tracking=True)
-    is_expense = fields.Boolean('Is expense', help="Is true if the sales order line comes from an expense or a vendor bills",tracking=True)
-    is_downpayment = fields.Boolean(
-        string="Is a down payment", help="Down payments are made when creating invoices from a sales order."
-        " They are not copied when duplicating a sales order.",tracking=True)
+    # salesman_id = fields.Many2one(related='order_id.user_id', store=True, string='Salesperson',tracking=True)
+    # currency_id = fields.Many2one(related='order_id.currency_id', depends=['order_id.currency_id'], store=True, string='Currency',tracking=True)
+    # company_id = fields.Many2one(related='order_id.company_id', string='Company', store=True, index=True,tracking=True)
+    # order_partner_id = fields.Many2one(related='order_id.partner_id', store=True, string='Customer', index=True,tracking=True)
+    # analytic_tag_ids = fields.Many2many(
+    #     'account.analytic.tag', string='Analytic Tags',
+    #     compute='_compute_analytic_tag_ids', store=True, readonly=False,
+    #     domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",tracking=True)
+    # is_expense = fields.Boolean('Is expense', help="Is true if the sales order line comes from an expense or a vendor bills",tracking=True)
+    # is_downpayment = fields.Boolean(
+    #     string="Is a down payment", help="Down payments are made when creating invoices from a sales order."
+    #     " They are not copied when duplicating a sales order.",tracking=True)
 
-    state = fields.Selection(
-        related='order_id.state', string='Order Status', copy=False, store=True,tracking=True)
+    # state = fields.Selection(
+    #     related='order_id.state', string='Order Status', copy=False, store=True,tracking=True)
 
-    customer_lead = fields.Float(
-        'Lead Time', required=True, default=0.0,
-        help="Number of days between the order confirmation and the shipping of the products to the customer",tracking=True)
+    # customer_lead = fields.Float(
+    #     'Lead Time', required=True, default=0.0,
+    #     help="Number of days between the order confirmation and the shipping of the products to the customer",tracking=True)
 
-    display_type = fields.Selection([
-        ('line_section', "Section"),
-        ('line_note', "Note")], default=False, help="Technical field for UX purpose.",tracking=True)
+    # display_type = fields.Selection([
+    #     ('line_section', "Section"),
+    #     ('line_note', "Note")], default=False, help="Technical field for UX purpose.",tracking=True)
 
-    product_packaging_id = fields.Many2one('product.packaging', string='Packaging', default=False, domain="[('sales', '=', True), ('product_id','=',product_id)]", check_company=True,tracking=True)
-    product_packaging_qty = fields.Float('Packaging Quantity',tracking=True)
+    # product_packaging_id = fields.Many2one('product.packaging', string='Packaging', default=False, domain="[('sales', '=', True), ('product_id','=',product_id)]", check_company=True,tracking=True)
+    # product_packaging_qty = fields.Float('Packaging Quantity',tracking=True)
