@@ -112,14 +112,10 @@ class SaleOrder(models.Model):
     terms_type = fields.Selection(related='company_id.terms_type',tracking=True)
     amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, compute='_amount_all', tracking=True)
 
-    tax_totals_json = fields.Char(compute='_compute_tax_totals_json',tracking=True)
+    # tax_totals_json = fields.Char(compute='_compute_tax_totals_json',tracking=True)
     amount_tax = fields.Monetary(string='Taxes', store=True, compute='_amount_all',tracking=True)
     amount_total = fields.Monetary(string='Total', store=True, compute='_amount_all', tracking=True)
 
-    def print(self):
-        if self.amount_tax and self.amount_total:
-            print(" >>>>>>>>>>>>> amount_tax ",self.amount_tax)
-            print(" >>>>>>>>>>>>> amount_total ",self.amount_total)
 
     currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', store=True, digits=(12, 6), help='The rate of the currency to the currency of rate 1 applicable at the date of the order',tracking=True)
 
