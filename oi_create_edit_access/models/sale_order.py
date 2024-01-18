@@ -278,6 +278,9 @@ class SaleOrder(models.Model):
 
     # _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
 
+    order_line = fields.One2many('sale.order.line', 'order_id', string='Order Lines', states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True, auto_join=True,tracking=True)
+
+
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
@@ -458,3 +461,8 @@ class SaleOrderLine(models.Model):
 
     product_packaging_id = fields.Many2one('product.packaging', string='Packaging', default=False, domain="[('sales', '=', True), ('product_id','=',product_id)]", check_company=True,tracking=True)
     product_packaging_qty = fields.Float('Packaging Quantity',tracking=True)
+
+
+    product_custom_attribute_value_ids = fields.One2many('product.attribute.custom.value', 'sale_order_line_id', string="Custom Values", copy=True,tracking=True)
+
+    analytic_line_ids = fields.One2many('account.analytic.line', 'so_line', string="Analytic lines",tracking=True)
