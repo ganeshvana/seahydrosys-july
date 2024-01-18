@@ -170,7 +170,7 @@ class BOMStructureXl(models.TransientModel):
                         # line['version'],
                         # line['ecos'],
                         categ,
-                        pro['bom'].bom_line_ids.product_id.categ_id.name,
+                        
                         str(line['quantity']) + '0',
                         line['uom'],
                         currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
