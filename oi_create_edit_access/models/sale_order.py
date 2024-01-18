@@ -313,13 +313,13 @@ class SaleOrderLine(models.Model):
     def _create_tracking_logs(self, vals):
         for record in self:
             log_message = "Field changes:\n"
-            for field_name in self._fields:
-                if self._fields[field_name].tracking and field_name in vals:
-                    log_message += f"{self._fields[field_name].string}: {vals[field_name]}\n"
+            for field_name in vals:
+                field_type = record._fields[field_name].type
+                if field_type in ['many2one', 'float', 'boolean']:
+                    log_message += f"{record._fields[field_name].string}: {vals[field_name]}\n"
 
             # Now you can use log_message to create logs or print it as per your requirement
             print(log_message)
-    
 
 
     # sale_project
