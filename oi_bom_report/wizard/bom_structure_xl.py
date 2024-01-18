@@ -159,8 +159,8 @@ class BOMStructureXl(models.TransientModel):
                         #     product_name = product_ref[1]
                         # else:
                         #     product_name = ''
-                        for record in pro['bom'].bom_line_ids:
-                            categ = record.product_id.categ_id.name
+                        # for record in pro['bom'].bom_line_ids:
+                        #     categ = record.product_id.categ_id.name
                         rows.append((
                         line['name'],
                         line['name'],
@@ -169,7 +169,7 @@ class BOMStructureXl(models.TransientModel):
                         # ref,
                         # line['version'],
                         # line['ecos'],
-                        categ,
+                        # categ,
                         
                         str(line['quantity']) + '0',
                         line['uom'],
