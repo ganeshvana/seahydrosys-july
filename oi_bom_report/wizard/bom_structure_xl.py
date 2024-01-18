@@ -148,7 +148,7 @@ class BOMStructureXl(models.TransientModel):
                     print("88888888888888888888888888888888888",row)
                 for a in vals['docs']:
                     for line in a['lines']: 
-                        categ = pro['bom'].bom_line_ids.product_id.categ_id.name,
+                        # categ = pro['bom'].bom_line_ids.product_id.categ_id.name,
                         if not 'prod_cost' in line:
                             line['prod_cost'] = 0.0
                         if not 'bom_cost' in line:
@@ -159,7 +159,8 @@ class BOMStructureXl(models.TransientModel):
                         #     product_name = product_ref[1]
                         # else:
                         #     product_name = ''
-
+                        for record in pro['bom'].bom_line_ids:
+                            categ = record.product_id.categ_id.name
                         rows.append((
                         line['name'],
                         line['name'],
@@ -169,7 +170,7 @@ class BOMStructureXl(models.TransientModel):
                         # line['version'],
                         # line['ecos'],
                         categ,
-                        # pro['bom'].bom_line_ids.product_id.categ_id.name,
+                        pro['bom'].bom_line_ids.product_id.categ_id.name,
                         str(line['quantity']) + '0',
                         line['uom'],
                         currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
