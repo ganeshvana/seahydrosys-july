@@ -276,11 +276,50 @@ class SaleOrder(models.Model):
     project_ids = fields.Many2many('project.project', compute="_compute_project_ids", string='Projects', copy=False, groups="project.group_project_manager", help="Projects used in this sales order.",tracking=True)
     project_count = fields.Integer(string='Number of Projects', compute='_compute_project_ids', groups='project.group_project_manager',tracking=True)
 
+    # _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
+
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
-    # _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
 
+
+    # def write(self,vals_list):
+    #     res = super(SaleOrderLine, self).write(vals_list)
+    #     if 'attend_by' or 'date' or 'remark' in vals_list:
+    #         subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
+    #         body_dynamic_html = '<p>Attended by %s on %s, remarks: "<i>%s</i>"</p> </div>' % (
+    #             self.attend_by,str(self.date),self.remark)
+    #         edit_message = self.env['mail.message'].create({
+    #             'subject':'Edited in Sale Order Line',
+    #             'body': body_dynamic_html,
+    #             'message_type': 'notification',
+    #             'model': 'sale.order.line',
+    #             'res_id': self.entries_id.id,
+    #             'subtype_id': subtype.id
+    #         })          
+    #     return res
+
+    @api.model
+    def create(self, vals):
+        record = super(SaleOrderLine, self).create(vals)
+        record._create_tracking_logs(vals)
+        return record
+
+    def write(self, vals):
+        res = super(SaleOrderLine, self).write(vals)
+        self._create_tracking_logs(vals)
+        return res
+
+    def _create_tracking_logs(self, vals):
+        for record in self:
+            log_message = "Field changes:\n"
+            for field_name in self._fields:
+                if self._fields[field_name].tracking and field_name in vals:
+                    log_message += f"{self._fields[field_name].string}: {vals[field_name]}\n"
+
+            # Now you can use log_message to create logs or print it as per your requirement
+            print(log_message)
+    
 
 
     # sale_project
