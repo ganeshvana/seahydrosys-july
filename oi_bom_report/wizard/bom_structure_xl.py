@@ -132,7 +132,7 @@ class BOMStructureXl(models.TransientModel):
                     currency = pro['currency']
                     split_ref = pro['code'].split(']')
                     ref = split_ref[0].replace('[','')
-                    product_name = split_ref[1]
+                    # product_name = split_ref[1]
                     rows.append((
                         pro['code'],
                         pro['code'],
@@ -154,14 +154,15 @@ class BOMStructureXl(models.TransientModel):
                             line['bom_cost'] = 0.0
                         product_ref = line['name'].split(']')
                         ref = product_ref[0].replace('[','')
-                        if len(product_ref) >1:
-                            product_name = product_ref[1]
-                        else:
-                            product_name = ''
+                        # if len(product_ref) >1:
+                        #     product_name = product_ref[1]
+                        # else:
+                        #     product_name = ''
 
                         rows.append((
                         line['name'],
-                        product_name,
+                        line['name'],
+                        # product_name,
                         ref,
                         ref,
                         # line['version'],
