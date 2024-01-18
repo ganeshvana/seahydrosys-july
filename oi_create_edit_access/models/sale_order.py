@@ -288,7 +288,7 @@ class SaleOrderLine(models.Model):
 
     def write(self,vals_list):
         res = super(SaleOrderLine, self).write(vals_list)
-        if 'attend_by' or 'date' or 'remark' in vals_list:
+        if 'product_uom_qty' or 'price_unit' or 'tax_id' in vals_list:
             subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
             body_dynamic_html = '<p>Attended by %s on %s, remarks: "<i>%s</i>"</p> </div>' % (
                 self.attend_by,str(self.date),self.remark)
