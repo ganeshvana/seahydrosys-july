@@ -135,7 +135,7 @@ class BOMStructureXl(models.TransientModel):
                     product_name = split_ref[1]
                     rows.append((
                         pro['code'],
-                        product_name,
+                        pro['code'],
                         ref,
                         pro['product_id'].categ_id.name,
                         # pro['version'],
