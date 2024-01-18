@@ -286,43 +286,43 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
 
-    # def write(self,vals_list):
-    #     res = super(SaleOrderLine, self).write(vals_list)
-    #     if 'attend_by' or 'date' or 'remark' in vals_list:
-    #         subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
-    #         body_dynamic_html = '<p>Attended by %s on %s, remarks: "<i>%s</i>"</p> </div>' % (
-    #             self.attend_by,str(self.date),self.remark)
-    #         edit_message = self.env['mail.message'].create({
-    #             'subject':'Edited in Sale Order Line',
-    #             'body': body_dynamic_html,
-    #             'message_type': 'notification',
-    #             'model': 'sale.order.line',
-    #             'res_id': self.entries_id.id,
-    #             'subtype_id': subtype.id
-    #         })          
-    #     return res
-
-    @api.model
-    def create(self, vals):
-        record = super(SaleOrderLine, self).create(vals)
-        record._create_tracking_logs(vals)
-        return record
-
-    def write(self, vals):
-        res = super(SaleOrderLine, self).write(vals)
-        self._create_tracking_logs(vals)
+    def write(self,vals_list):
+        res = super(SaleOrderLine, self).write(vals_list)
+        if 'attend_by' or 'date' or 'remark' in vals_list:
+            subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
+            body_dynamic_html = '<p>Attended by %s on %s, remarks: "<i>%s</i>"</p> </div>' % (
+                self.attend_by,str(self.date),self.remark)
+            edit_message = self.env['mail.message'].create({
+                'subject':'Edited in Sale Order Line',
+                'body': body_dynamic_html,
+                'message_type': 'notification',
+                'model': 'sale.order.line',
+                'res_id': self.entries_id.id,
+                'subtype_id': subtype.id
+            })          
         return res
 
-    def _create_tracking_logs(self, vals):
-        for record in self:
-            log_message = "Field changes:\n"
-            for field_name in vals:
-                field_type = record._fields[field_name].type
-                if field_type in ['many2one', 'float', 'boolean']:
-                    log_message += f"{record._fields[field_name].string}: {vals[field_name]}\n"
+    # @api.model
+    # def create(self, vals):
+    #     record = super(SaleOrderLine, self).create(vals)
+    #     record._create_tracking_logs(vals)
+    #     return record
 
-            # Now you can use log_message to create logs or print it as per your requirement
-            print(log_message)
+    # def write(self, vals):
+    #     res = super(SaleOrderLine, self).write(vals)
+    #     self._create_tracking_logs(vals)
+    #     return res
+
+    # def _create_tracking_logs(self, vals):
+    #     for record in self:
+    #         log_message = "Field changes:\n"
+    #         for field_name in vals:
+    #             field_type = record._fields[field_name].type
+    #             if field_type in ['many2one', 'float', 'boolean']:
+    #                 log_message += f"{record._fields[field_name].string}: {vals[field_name]}\n"
+
+    #         # Now you can use log_message to create logs or print it as per your requirement
+    #         print(log_message)
 
 
     # sale_project
