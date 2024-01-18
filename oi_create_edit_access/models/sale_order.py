@@ -339,7 +339,7 @@ class SaleOrderLine(models.Model):
     price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True,tracking=True)
 
     # price_reduce = fields.Float(compute='_compute_price_reduce', string='Price Reduce', digits='Product Price', store=True,tracking=True)
-    # tax_id = fields.Many2many('account.tax', string='Taxes', context={'active_test': False}, check_company=True,tracking=True)
+    tax_id = fields.Many2many('account.tax', string='Taxes', context={'active_test': False}, check_company=True,tracking=True)
     # price_reduce_taxinc = fields.Monetary(compute='_compute_price_reduce_taxinc', string='Price Reduce Tax inc', store=True,tracking=True)
     # price_reduce_taxexcl = fields.Monetary(compute='_compute_price_reduce_taxexcl', string='Price Reduce Tax excl', store=True,tracking=True)
 
