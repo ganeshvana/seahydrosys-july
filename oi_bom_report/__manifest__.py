@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp'],
+    'depends': ['mrp','mrp_plm','mrp_mps'],
 
     # always loaded
     'data': [

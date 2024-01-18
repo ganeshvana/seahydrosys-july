@@ -117,38 +117,35 @@ class BOMStructureXl(models.TransientModel):
                     "Product",
                     "Product Name",
                     "Intenal Reference",
-                    "BoM",
-                    "BoM Version",
-                    "ECOs",
+                    "Product Category",
                     "Quantity",
                     "Unit of Measure",
                     "Product Cost",
                     "BoM Cost",
 
                 ] 
+                 # "BoM Version",
+                    # "ECO(s)",
                 for pro in vals['docs']:
                     # price = str("%.2f" % round(pro['price'], 2))
-                    # total = pro['total'] / pro['bom_qty']
+                    # total = pro['total'] / pro['quantity']
                     currency = pro['currency']
-                    # split_ref = pro['bom_prod_name'].split(']')
-                    # ref = split_ref[0].replace('[','')
-                    # product_name = split_ref[1]
-                    # rows.append((
-                        
-                        
-                       
-                    #     pro['version'],
-                    #     pro['ecos'],
-                    #     str(pro['bom_qty'])+'0',
-                    #     pro['bom'].product_uom_id.name,
-                       
-                        
-                    #     ))
-                    # product_name,
-                    #  ref,
-                    # pro['bom_prod_name'],
-                    # currency.symbol + str("%.2f" % round(pro['total'], 2)),
-                    #  currency.symbol + str("%.2f" % round(pro['price'], 2)),
+                    split_ref = pro['code'].split(']')
+                    ref = split_ref[0].replace('[','')
+                    product_name = split_ref[1]
+                    rows.append((
+                        pro['code'],
+                        product_name,
+                        ref,
+                        pro['product_id'].categ_id.name,
+                        # pro['version'],
+                        # pro['ecos'],
+                        str(pro['quantity'])+'0',
+                        pro['bom'].product_uom_id.name,
+                        # currency.symbol + str("%.2f" % round(pro['price'], 2)),
+                        # currency.symbol + str("%.2f" % round(pro['total'], 2)),
+                        ))
+                    print("88888888888888888888888888888888888",row)
                 for a in vals['docs']:
                     for line in a['lines']: 
                         if not 'prod_cost' in line:
@@ -166,6 +163,7 @@ class BOMStructureXl(models.TransientModel):
                         line['name'],
                         product_name,
                         ref,
+                        ref,
                         # line['version'],
                         # line['ecos'],
                         str(line['quantity']) + '0',
@@ -173,18 +171,17 @@ class BOMStructureXl(models.TransientModel):
                         currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
                         currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),
                     ))
-                # foot.append((
-                #         '',
-                #         '',
-                #         '',
-                #         '',
-                #         'Unit Cost',
-                #         '',
-                #        '',
-                #        '',
-                #         ))
-                #  currency.symbol + str(total)
-                #  currency.symbol + price
+                        print("MMMMMMMMMMMMMMMMMSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",rows)
+                foot.append((
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        ))
                 col = 0
                 worksheet.write(row, col, bom.product_tmpl_id.name, style_highlight)
                 for header in headers:
@@ -223,5 +220,8 @@ class BOMStructureXl(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
+    
+
 
     
