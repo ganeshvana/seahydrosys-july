@@ -140,7 +140,7 @@ class BOMStructureXl(models.TransientModel):
                         # pro['product_id'].categ_id.name,
                         # pro['version'],
                         # pro['ecos'],
-                        # str(pro['quantity'])+'0',
+                        str(pro['bom'].product_qty)+'0',
                         pro['bom'].product_uom_id.name,
                         # currency.symbol + str("%.2f" % round(pro['price'], 2)),
                         # currency.symbol + str("%.2f" % round(pro['total'], 2)),
