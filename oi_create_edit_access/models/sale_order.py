@@ -314,6 +314,22 @@ class SaleOrderLine(models.Model):
 
     #sale
 
+    @api.depends('is_expense')
+    def _compute_qty_delivered_method(self):
+        """ Sale module compute delivered qty for product [('type', 'in', ['consu']), ('service_type', '=', 'manual')]
+                - consu + expense_policy : analytic (sum of analytic unit_amount)
+                - consu + no expense_policy : manual (set manually on SOL)
+                - service (+ service_type='manual', the only available option) : manual
+
+            This is true when only sale is installed: sale_stock redifine the behavior for 'consu' type,
+            and sale_timesheet implements the behavior of 'service' + service_type=timesheet.
+        """
+        for line in self:
+            if line.is_expense:
+                line.qty_delivered_method = 'analytic'
+            else:  # service and consu
+                line.qty_delivered_method = 'manual'
+
 
     order_id = fields.Many2one('sale.order', string='Order Reference', required=True, ondelete='cascade', index=True, copy=False,tracking=True)
     name = fields.Text(string='Description', required=True,tracking=True)
