@@ -59,7 +59,7 @@ class PurchaseOrder(models.Model):
         help="Delivery date promised by vendor. This date is used to determine expected arrival of products.",tracking=True)
     date_calendar_start = fields.Datetime(compute='_compute_date_calendar_start', readonly=True, store=True,tracking=True)
 
-    tax_totals_json = fields.Char(compute='_compute_tax_totals_json',tracking=True)
+    # tax_totals_json = fields.Char(compute='_compute_tax_totals_json',tracking=True)
     amount_tax = fields.Monetary(string='Taxes', store=True, readonly=True, compute='_amount_all',tracking=True)
     amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all',tracking=True)
 
