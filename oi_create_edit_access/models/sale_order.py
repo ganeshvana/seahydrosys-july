@@ -429,48 +429,84 @@ class SaleOrderLine(models.Model):
 
     @api.model
     def create(self, vals):
+        new_line = super(SaleOrderLine, self).create(vals)
         
-        res = super(SaleOrderLine, self).create(vals)
-        subtype = self.env['mail.message.subtype'].search(
-            [('name', '=', 'Note')], limit=1)
-        for vals in vals:
-            body_dynamic_html = '<p>%s Uploaded to sale order line: "<i>%s</i>"</p> </div>' % (
-                vals['product_id'], vals['name'],vals['product_uom_qty'],vals['price_unit'],vals['tax_id'])
-            if 'name' in vals:
-                upload_message = self.env['mail.message'].create({
-                    'subject': 'File uploaded to design',
-                    'body': body_dynamic_html,
-                    'message_type': 'notification',
-                    'model': 'sale.order',
-                    'res_id': vals['id'],
-                    'subtype_id': subtype.id
-                })
-        return res
+        self._log_changes(new_line, vals)
+
+        return new_line
 
     def write(self, vals):
         res = super(SaleOrderLine, self).write(vals)
 
         for line in self:
-            sale_order = line.order_id
-            subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
-            body_dynamic_html = '<p>Modified in Sale Order Line:</p>'
-            
-            for field in ['product_id', 'name', 'product_uom_qty', 'price_unit', '']:
-                if field in vals:
-                    # previous_value = line[field]
-                    changed_value = vals[field]
-                    body_dynamic_html += f'<p>{field.capitalize()}: {changed_value}</p>'
-
-            edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Sale Order Line',
-                'body': body_dynamic_html,
-                'message_type': 'notification',
-                'model': 'sale.order',
-                'res_id': sale_order.id,
-                'subtype_id': subtype.id
-            })
+            self._log_changes(line, vals)
 
         return res
+
+    def _log_changes(self, line, vals):
+        sale_order = line.order_id
+        subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
+        body_dynamic_html = '<p>Modified in Sale Order Line:</p>'
+        
+        for field in ['product_id', 'name', 'product_uom_qty', 'price_unit', 'tax_id']:
+            if field in vals:
+                previous_value = line[field]
+                changed_value = vals[field]
+                body_dynamic_html += f'<p>{field.capitalize()}: {previous_value} -> {changed_value}</p>'
+
+        edit_message = self.env['mail.message'].create({
+            'subject': 'Edited in Sale Order Line',
+            'body': body_dynamic_html,
+            'message_type': 'notification',
+            'model': 'sale.order',
+            'res_id': sale_order.id,
+            'subtype_id': subtype.id
+        })
+
+    # @api.model
+    # def create(self, vals):
+        
+    #     res = super(SaleOrderLine, self).create(vals)
+    #     subtype = self.env['mail.message.subtype'].search(
+    #         [('name', '=', 'Note')], limit=1)
+    #     for vals in vals:
+    #         body_dynamic_html = '<p>%s Uploaded to sale order line: "<i>%s</i>"</p> </div>' % (
+    #             vals['product_id'], vals['name'],vals['product_uom_qty'],vals['price_unit'],vals['tax_id'])
+    #         if 'name' in vals:
+    #             upload_message = self.env['mail.message'].create({
+    #                 'subject': 'File uploaded to design',
+    #                 'body': body_dynamic_html,
+    #                 'message_type': 'notification',
+    #                 'model': 'sale.order',
+    #                 'res_id': vals['id'],
+    #                 'subtype_id': subtype.id
+    #             })
+    #     return res
+
+    # def write(self, vals):
+    #     res = super(SaleOrderLine, self).write(vals)
+
+    #     for line in self:
+    #         sale_order = line.order_id
+    #         subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
+    #         body_dynamic_html = '<p>Modified in Sale Order Line:</p>'
+            
+    #         for field in ['product_id', 'name', 'product_uom_qty', 'price_unit', 'tax_id']:
+    #             if field in vals:
+    #                 # previous_value = line[field]
+    #                 changed_value = vals[field]
+    #                 body_dynamic_html += f'<p>{field.capitalize()}: {changed_value}</p>'
+
+    #         edit_message = self.env['mail.message'].create({
+    #             'subject': 'Edited in Sale Order Line',
+    #             'body': body_dynamic_html,
+    #             'message_type': 'notification',
+    #             'model': 'sale.order',
+    #             'res_id': sale_order.id,
+    #             'subtype_id': subtype.id
+    #         })
+
+    #     return res
 
     # @api.model
     # def create(self, vals):
