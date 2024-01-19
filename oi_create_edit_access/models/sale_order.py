@@ -519,7 +519,7 @@ class SaleOrderLine(models.Model):
         if 'tax_id' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
-            body_dynamic_html = '<p>%s was edited in Taxes </p> </div>' % (self.tax_id)
+            body_dynamic_html = '<p>%s was edited in Taxes </p> </div>' % (self.tax_id.name)
             edit_message = self.env['mail.message'].create({
                 'subject': 'Edited in Purchase Order Line',
                 'body': body_dynamic_html,
