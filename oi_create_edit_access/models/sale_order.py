@@ -467,9 +467,45 @@ class SaleOrderLine(models.Model):
                 'subject': 'Edited in Sale Order Line',
                 'body': body_dynamic_html,
                 'message_type': 'notification',
-                'model': 'sale.order.line',
+                'model': 'sale.order',
                 'res_id': self.id,
                 'subtype_id': subtype.id
             })
 
         return res
+
+    # def write(self, vals_list):
+    #     res = super(DesignForm, self).write(vals_list)
+    #     if 'name' or 'file2' in vals_list:
+    #         subtype = self.env['mail.message.subtype'].search(
+    #             [('name', '=', 'Note')], limit=1)
+    #         body_dynamic_html = '<p>%s was edited in design to description "<i>%s</i>"</p> </div>' % (
+    #             self.filename, self.name)
+    #         edit_message = self.env['mail.message'].create({
+    #             'subject': 'Edited in Design',
+    #             'body': body_dynamic_html,
+    #             'message_type': 'notification',
+    #             'model': 'crm.lead',
+    #             'res_id': self.design_id.id,
+    #             'subtype_id': subtype.id
+    #         })
+    #     return res
+
+
+    # def create(self, vals_list):
+    #     res = super(DesignForm, self).create(vals_list)
+    #     subtype = self.env['mail.message.subtype'].search(
+    #         [('name', '=', 'Note')], limit=1)
+    #     for vals in vals_list:
+    #         body_dynamic_html = '<p>%s uploaded to design with description: "<i>%s</i>"</p> </div>' % (
+    #             vals['filename'], vals['name'])
+    #         if 'name' in vals:
+    #             upload_message = self.env['mail.message'].create({
+    #                 'subject': 'File uploaded to design',
+    #                 'body': body_dynamic_html,
+    #                 'message_type': 'notification',
+    #                 'model': 'crm.lead',
+    #                 'res_id': vals['design_id'],
+    #                 'subtype_id': subtype.id
+    #             })
+    #     return res
