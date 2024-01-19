@@ -258,7 +258,7 @@ class PurchaseOrderLine(models.Model):
         if 'product_qty' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
-            body_dynamic_html = '<p>%s was edited in description </p> </div>' % (self.product_qty)
+            body_dynamic_html = '<p>%s was edited in Quantity </p> </div>' % (self.product_qty)
             edit_message = self.env['mail.message'].create({
                 'subject': 'Edited in Purchase Order Line',
                 'body': body_dynamic_html,
@@ -267,6 +267,46 @@ class PurchaseOrderLine(models.Model):
                 'res_id': self.order_id.id,
                 'subtype_id': subtype.id
             })
+
+        if 'product_uom' in vals:
+            subtype = self.env['mail.message.subtype'].search(
+                [('name', '=', 'Note')], limit=1)
+            body_dynamic_html = '<p>%s was edited in UOM </p> </div>' % (self.product_uom.name)
+            edit_message = self.env['mail.message'].create({
+                'subject': 'Edited in Purchase Order Line',
+                'body': body_dynamic_html,
+                'message_type': 'notification',
+                'model': 'purchase.order',
+                'res_id': self.order_id.id,
+                'subtype_id': subtype.id
+            })
+
+        if 'price_unit' in vals:
+            subtype = self.env['mail.message.subtype'].search(
+                [('name', '=', 'Note')], limit=1)
+            body_dynamic_html = '<p>%s was edited in Unit Price </p> </div>' % (self.price_unit)
+            edit_message = self.env['mail.message'].create({
+                'subject': 'Edited in Purchase Order Line',
+                'body': body_dynamic_html,
+                'message_type': 'notification',
+                'model': 'purchase.order',
+                'res_id': self.order_id.id,
+                'subtype_id': subtype.id
+            })
+
+        if 'taxes_id' in vals:
+            subtype = self.env['mail.message.subtype'].search(
+                [('name', '=', 'Note')], limit=1)
+            body_dynamic_html = '<p>%s was edited in Taxes </p> </div>' % (self.taxes_id)
+            edit_message = self.env['mail.message'].create({
+                'subject': 'Edited in Purchase Order Line',
+                'body': body_dynamic_html,
+                'message_type': 'notification',
+                'model': 'purchase.order',
+                'res_id': self.order_id.id,
+                'subtype_id': subtype.id
+            })
+
 
         return res
 
