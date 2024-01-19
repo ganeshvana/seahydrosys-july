@@ -480,7 +480,7 @@ class SaleOrderLine(models.Model):
         if 'product_uom_qty' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
-            body_dynamic_html = '<p>%s was edited in Quantity </p> </div>' % (self.product_qty)
+            body_dynamic_html = '<p>%s was edited in Quantity </p> </div>' % (self.product_uom_qty)
             edit_message = self.env['mail.message'].create({
                 'subject': 'Edited in Purchase Order Line',
                 'body': body_dynamic_html,
