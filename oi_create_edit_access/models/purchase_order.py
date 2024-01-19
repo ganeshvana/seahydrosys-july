@@ -228,7 +228,7 @@ class PurchaseOrderLine(models.Model):
             #         changed_value = vals[field]
             #         body_dynamic_html += f'<p>{field.capitalize()}: {changed_value}</p>'
 
-        if vals['product_id']:
+        if 'product_id' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
             body_dynamic_html = '<p>%s was edited in product </p> </div>' % (self.product_id)
@@ -242,7 +242,7 @@ class PurchaseOrderLine(models.Model):
                 'subtype_id': subtype.id
             })
 
-        if 'name' in vals:
+        elif 'name' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
             body_dynamic_html = '<p>%s was edited in description </p> </div>' % (self.name)
