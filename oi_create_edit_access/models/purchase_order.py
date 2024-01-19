@@ -228,14 +228,15 @@ class PurchaseOrderLine(models.Model):
                     changed_value = vals[field]
                     body_dynamic_html += f'<p>{field.capitalize()}: {changed_value}</p>'
 
-            edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Purchase Order Line',
-                'body': body_dynamic_html,
-                'message_type': 'notification',
-                'model': 'purchase.order',
-                'res_id': purchase_order.id,
-                'subtype_id': subtype.id
-            })
+                    if changed_value:
+                        edit_message = self.env['mail.message'].create({
+                            'subject': 'Edited in Purchase Order Line',
+                            'body': body_dynamic_html,
+                            'message_type': 'notification',
+                            'model': 'purchase.order',
+                            'res_id': purchase_order.id,
+                            'subtype_id': subtype.id
+                        })
 
         return res
 
