@@ -231,12 +231,10 @@ class PurchaseOrderLine(models.Model):
         if 'product_id' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
-            body_dynamic_html = '<p>%s was edited in sale order line </p> "<i>%s</i>" </div>' % (self.product_id)
-
-            
+            body_dynamic_html = '<p>%s was edited product </p> </div>' % (self.product_id)
                     
             edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Product',
+                'subject': 'Edited in Sale Order Line',
                 'body': body_dynamic_html,
                 'message_type': 'notification',
                 'model': 'purchase.order',
@@ -249,7 +247,7 @@ class PurchaseOrderLine(models.Model):
                 [('name', '=', 'Note')], limit=1)
             body_dynamic_html = '<p>%s was edited in description </p> </div>' % (self.name)
             edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Name',
+                'subject': 'Edited in Sale Order Line',
                 'body': body_dynamic_html,
                 'message_type': 'notification',
                 'model': 'purchase.order',
