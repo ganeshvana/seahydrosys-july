@@ -276,8 +276,6 @@ class SaleOrder(models.Model):
     project_ids = fields.Many2many('project.project', compute="_compute_project_ids", string='Projects', copy=False, groups="project.group_project_manager", help="Projects used in this sales order.",tracking=True)
     project_count = fields.Integer(string='Number of Projects', compute='_compute_project_ids', groups='project.group_project_manager',tracking=True)
 
-    # _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
-
     order_line = fields.One2many('sale.order.line', 'order_id', string='Order Lines', states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True, auto_join=True,tracking=True)
 
 
@@ -290,7 +288,7 @@ class SaleOrderLine(models.Model):
         res = super(SaleOrderLine, self).write(vals_list)
         if 'product_uom_qty' or 'price_unit' or 'tax_id' in vals_list:
             subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
-            body_dynamic_html = '<p>Attended by %s on %s, remarks: "<i>%s</i>"</p> </div>' % (
+            body_dynamic_html = '<p>Quantity %s on %s, Price Unit: "<i>%s</i>"</p> </div>' % (
                 self.attend_by,str(self.date),self.remark)
             edit_message = self.env['mail.message'].create({
                 'subject':'Edited in Sale Order Line',
@@ -302,27 +300,7 @@ class SaleOrderLine(models.Model):
             })          
         return res
 
-    # @api.model
-    # def create(self, vals):
-    #     record = super(SaleOrderLine, self).create(vals)
-    #     record._create_tracking_logs(vals)
-    #     return record
 
-    # def write(self, vals):
-    #     res = super(SaleOrderLine, self).write(vals)
-    #     self._create_tracking_logs(vals)
-    #     return res
-
-    # def _create_tracking_logs(self, vals):
-    #     for record in self:
-    #         log_message = "Field changes:\n"
-    #         for field_name in vals:
-    #             field_type = record._fields[field_name].type
-    #             if field_type in ['many2one', 'float', 'boolean']:
-    #                 log_message += f"{record._fields[field_name].string}: {vals[field_name]}\n"
-
-    #         # Now you can use log_message to create logs or print it as per your requirement
-    #         print(log_message)
 
 
     # sale_project
