@@ -450,7 +450,6 @@ class SaleOrderLine(models.Model):
 
     #     return res
 
-
     @api.model
     def create(self, vals):
         return super(SaleOrderLine, self).create(vals)
@@ -460,17 +459,19 @@ class SaleOrderLine(models.Model):
 
         # Check if any of the specified fields are in vals
         if any(field in vals for field in ['product_id', 'name', 'product_uom_qty', 'price_unit', 'tax_id']):
-            subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
-            body_dynamic_html = '<p>Modified: Product ID=%s, Name=%s, Quantity=%s, Unit Price=%s, Taxes=%s</p>' % (
-                self.product_id.display_name, self.name, self.product_uom_qty, self.price_unit, self.tax_id.display_name)
-            edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Sale Order Line',
-                'body': body_dynamic_html,
-                'message_type': 'notification',
-                'model': 'sale.order',
-                'res_id': self.id,
-                'subtype_id': subtype.id
-            })
+            for line in self:
+                sale_order = line.order_id
+                subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>Modified: Product ID=%s, Name=%s, Quantity=%s, Unit Price=%s, Taxes=%s</p>' % (
+                    line.product_id.display_name, line.name, line.product_uom_qty, line.price_unit, line.tax_id.display_name)
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale Order Line',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': sale_order.id,
+                    'subtype_id': subtype.id
+                })
 
         return res
 
