@@ -110,6 +110,7 @@ class BOMStructureXl(models.TransientModel):
                 bom = self.env['mrp.bom'].browse(rec)
                 data = {'context': {'tz': 'Asia/Kolkata', 'uid': 2, 'allowed_company_ids': [1]}, 'report_type': 'pdf'}
                 vals = self._get_report_values([bom.id], data=data)
+                print("000000000000000=================",vals)
                 cost = 0.0
                 rows = []
                 foot = []
