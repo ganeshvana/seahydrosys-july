@@ -235,7 +235,7 @@ class PurchaseOrderLine(models.Model):
     def _log_changes(self, line, vals):
         purchase_order = line.order_id
         subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
-        body_dynamic_html = '<p>Modified in Sale Order Line:</p>'
+        body_dynamic_html = '<p>Modified in Purchase Order Line:</p>'
         
         for field in ['product_id', 'name', 'product_qty', 'qty_received', 'qty_invoiced','product_uom','price_unit', 'taxes_id','price_subtotal']:
             if field in vals:
@@ -244,7 +244,7 @@ class PurchaseOrderLine(models.Model):
                 body_dynamic_html += f'<p>{field.capitalize()}: {changed_value}</p>'
 
         edit_message = self.env['mail.message'].create({
-            'subject': 'Edited in Sale Order Line',
+            'subject': 'Edited in Purchase Order Line',
             'body': body_dynamic_html,
             'message_type': 'notification',
             'model': 'purchase.order',
