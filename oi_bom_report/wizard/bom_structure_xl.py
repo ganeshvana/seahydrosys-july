@@ -118,7 +118,7 @@ class BOMStructureXl(models.TransientModel):
                     "Product",
                     "Product Name",
                     "Intenal Reference",
-                    # "Product Category",
+                    "Product Category",
                     "Quantity",
                     "Unit of Measure",
                     "Product Cost",
@@ -138,9 +138,7 @@ class BOMStructureXl(models.TransientModel):
                         pro['code'],
                         pro['code'],
                         ref,
-                        # pro['product_id'].categ_id.name,
-                        # pro['version'],
-                        # pro['ecos'],
+                        pro['product'].categ_id.complete_name,
                         str(pro['bom'].product_qty)+'0',
                         pro['bom'].product_uom_id.name,
                         # currency.symbol + str("%.2f" % round(pro['price'], 2)),
@@ -156,22 +154,19 @@ class BOMStructureXl(models.TransientModel):
                             line['bom_cost'] = 0.0
                         product_ref = line['name'].split(']')
                         ref = product_ref[0].replace('[','')
-                        # if len(product_ref) >1:
-                        #     product_name = product_ref[1]
-                        # else:
-                        #     product_name = ''
-                        # for record in pro['bom'].bom_line_ids:
-                        #     categ = record.product_id.categ_id.name
+                        if ref:
+                            product = self.env['product.product'].search([('default_code', '=', ref)])
+                            print(product, "product----------")
+                            if product:
+                                categ = product.categ_id.complete_name
+                            else:
+                                categ = ''
                         rows.append((
                         line['name'],
                         line['name'],
                         # product_name,
                         ref,
-                        # ref,
-                        # line['version'],
-                        # line['ecos'],
-                        # categ,
-                        
+                        categ,    
                         str(line['quantity']) + '0',
                         line['uom'],
                         currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
