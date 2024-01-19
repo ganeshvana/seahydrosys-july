@@ -440,14 +440,15 @@ class SaleOrderLine(models.Model):
                     changed_value = vals[field]
                     body_dynamic_html += f'<p>{field.capitalize()}: {changed_value}</p>'
 
-            edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Sale Order Line',
-                'body': body_dynamic_html,
-                'message_type': 'notification',
-                'model': 'sale.order',
-                'res_id': sale_order.id,
-                'subtype_id': subtype.id
-            })
+            if changed_value:
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale Order Line',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': sale_order.id,
+                    'subtype_id': subtype.id
+                })
 
         return res
 
