@@ -427,6 +427,30 @@ class SaleOrderLine(models.Model):
 
     analytic_line_ids = fields.One2many('account.analytic.line', 'so_line', string="Analytic lines",tracking=True)
 
+    # @api.model
+    # def create(self, vals):
+    #     return super(SaleOrderLine, self).create(vals)
+
+    # def write(self, vals):
+    #     res = super(SaleOrderLine, self).write(vals)
+
+    #     # Check if any of the specified fields are in vals
+    #     if any(field in vals for field in ['product_id', 'name', 'product_uom_qty', 'price_unit', 'tax_id']):
+    #         subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
+    #         body_dynamic_html = '<p>Modified: Product ID=%s, Name=%s, Quantity=%s, Unit Price=%s, Taxes=%s</p>' % (
+    #             self.product_id.name, self.name, self.product_uom_qty, self.price_unit, self.tax_id.name)
+    #         edit_message = self.env['mail.message'].create({
+    #             'subject': 'Edited in Sale Order Line',
+    #             'body': body_dynamic_html,
+    #             'message_type': 'notification',
+    #             'model': 'sale.order.line',
+    #             'res_id': self.id,
+    #             'subtype_id': subtype.id
+    #         })
+
+    #     return res
+
+
     @api.model
     def create(self, vals):
         return super(SaleOrderLine, self).create(vals)
