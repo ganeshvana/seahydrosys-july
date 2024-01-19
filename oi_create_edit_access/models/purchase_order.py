@@ -231,10 +231,10 @@ class PurchaseOrderLine(models.Model):
         if 'product_id' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
-            body_dynamic_html = '<p>%s was edited product </p> </div>' % (self.product_id)
+            body_dynamic_html = '<p>%s was edited product </p> </div>' % (self.product_id.name)
                     
             edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Sale Order Line',
+                'subject': 'Edited in Purchase Order Line',
                 'body': body_dynamic_html,
                 'message_type': 'notification',
                 'model': 'purchase.order',
@@ -242,18 +242,32 @@ class PurchaseOrderLine(models.Model):
                 'subtype_id': subtype.id
             })
 
-        elif 'name' in vals:
+        if 'name' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
             body_dynamic_html = '<p>%s was edited in description </p> </div>' % (self.name)
             edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Sale Order Line',
+                'subject': 'Edited in Purchase Order Line',
                 'body': body_dynamic_html,
                 'message_type': 'notification',
                 'model': 'purchase.order',
                 'res_id': self.order_id.id,
                 'subtype_id': subtype.id
             })
+
+        if 'product_qty' in vals:
+            subtype = self.env['mail.message.subtype'].search(
+                [('name', '=', 'Note')], limit=1)
+            body_dynamic_html = '<p>%s was edited in description </p> </div>' % (self.product_qty)
+            edit_message = self.env['mail.message'].create({
+                'subject': 'Edited in Purchase Order Line',
+                'body': body_dynamic_html,
+                'message_type': 'notification',
+                'model': 'purchase.order',
+                'res_id': self.order_id.id,
+                'subtype_id': subtype.id
+            })
+
         return res
 
         
