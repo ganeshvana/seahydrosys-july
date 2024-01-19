@@ -238,7 +238,7 @@ class PurchaseOrderLine(models.Model):
                 'body': body_dynamic_html,
                 'message_type': 'notification',
                 'model': 'purchase.order',
-                'res_id': vals['order_id'],
+                'res_id': self.order_id.id,
                 'subtype_id': subtype.id
             })
 
@@ -256,5 +256,5 @@ class PurchaseOrderLine(models.Model):
             })
         return res
 
-        return res
+        
 
