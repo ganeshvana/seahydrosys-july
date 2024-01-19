@@ -116,7 +116,7 @@ class BOMStructureXl(models.TransientModel):
                 foot = []
                 headers =[
                     "Product",
-                    "Product Name",
+                    # "Product Name",
                     "Intenal Reference",
                     "Product Category",
                     "Quantity",
@@ -136,7 +136,7 @@ class BOMStructureXl(models.TransientModel):
                     # product_name = split_ref[1]
                     rows.append((
                         pro['code'],
-                        pro['code'],
+                        # pro['code'],
                         ref,
                         pro['product'].categ_id.complete_name,
                         str(pro['bom'].product_qty)+'0',
@@ -163,7 +163,7 @@ class BOMStructureXl(models.TransientModel):
                                 categ = ''
                         rows.append((
                         line['name'],
-                        line['name'],
+                        # line['name'],
                         # product_name,
                         ref,
                         categ,    
