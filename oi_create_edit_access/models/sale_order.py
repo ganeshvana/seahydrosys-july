@@ -596,7 +596,6 @@ class SaleOrderOption(models.Model):
 
         return res
 
-    @api.multi
     def write(self, vals):
         res = super(SaleOrderOption, self).write(vals)
 
