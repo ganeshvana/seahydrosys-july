@@ -222,7 +222,7 @@ class PurchaseOrderLine(models.Model):
         subtype = self.env['mail.message.subtype'].search(
             [('name', '=', 'Note')], limit=1)
 
-        body_dynamic_html = '<p>New Purchase Order Line created:</p>'
+        body_dynamic_html = '<p>Purchase Order Line created:</p>'
         if res.product_id:
             body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
         if res.name:
@@ -237,7 +237,7 @@ class PurchaseOrderLine(models.Model):
             body_dynamic_html += '<p>Taxes: %s</p>' % (res.taxes_id.name)
 
         edit_message = self.env['mail.message'].create({
-            'subject': 'New Purchase Order Line',
+            'subject': 'Purchase Order Line',
             'body': body_dynamic_html,
             'message_type': 'notification',
             'model': 'purchase.order',
