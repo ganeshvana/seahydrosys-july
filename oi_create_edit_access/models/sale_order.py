@@ -434,22 +434,35 @@ class SaleOrderLine(models.Model):
     analytic_line_ids = fields.One2many('account.analytic.line', 'so_line', string="Analytic lines",tracking=True)
 
     @api.model
-    def create(self,vals_list):
-        res = super(SaleOrderLine, self).write(vals_list)
-        for sale in res:
-            if sale.product_id:
-                subtype = self.env['mail.message.subtype'].search(
-                    [('name', '=', 'Note')], limit=1)
-                body_dynamic_html = '<p>%s was created product </p> </div>' % (self.product_id.name)
-                        
-                edit_message = self.env['mail.message'].create({
-                    'subject': 'Created in Sale Order Line',
-                    'body': body_dynamic_html,
-                    'message_type': 'notification',
-                    'model': 'sale.order',
-                    'res_id': self.order_id.id,
-                    'subtype_id': subtype.id
-                })
+    def create(self, vals):
+        res = super(SaleOrderLine, self).create(vals)
+
+        subtype = self.env['mail.message.subtype'].search(
+            [('name', '=', 'Note')], limit=1)
+
+        body_dynamic_html = '<p>New Sale Order Line created:</p>'
+        body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
+        if res.product_id:
+            body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
+        if res.name:
+            body_dynamic_html += '<p>Description: %s</p>' % (res.name)
+        if res.product_uom_qty:
+            body_dynamic_html += '<p>Quantity: %s</p>' % (res.product_uom_qty)
+        if res.product_uom:
+            body_dynamic_html += '<p>UOM: %s</p>' % (res.product_uom.name)
+        if res.price_unit:
+            body_dynamic_html += '<p>Unit Price: %s</p>' % (res.price_unit)
+        if res.tax_id:
+            body_dynamic_html += '<p>Taxes: %s</p>' % (res.tax_id.name)
+
+        edit_message = self.env['mail.message'].create({
+            'subject': 'New Sale Order Line',
+            'body': body_dynamic_html,
+            'message_type': 'notification',
+            'model': 'sale.order',
+            'res_id': res.order_id.id,
+            'subtype_id': subtype.id
+        })
 
         return res
     
