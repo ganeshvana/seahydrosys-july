@@ -433,6 +433,28 @@ class SaleOrderLine(models.Model):
 
     analytic_line_ids = fields.One2many('account.analytic.line', 'so_line', string="Analytic lines",tracking=True)
 
+    @api.model
+    def create(self,vals_list):
+        res = super(SaleOrderLine, self).write(vals_list)
+        for sale in res:
+            if sale.product_id:
+                subtype = self.env['mail.message.subtype'].search(
+                    [('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>%s was created product </p> </div>' % (self.product_id.name)
+                        
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Created in Sale Order Line',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': self.order_id.id,
+                    'subtype_id': subtype.id
+                })
+
+        return res
+    
+       
+
     def write(self, vals):
         res = super(SaleOrderLine, self).write(vals)
 
@@ -526,12 +548,7 @@ class SaleOrderLine(models.Model):
     class SaleOrderOption(models.Model):
         _inherit = "sale.order.option"
        
-        is_present = fields.Boolean(string="Present on Quotation",
-                            help="This field will be checked if the option line's product is "
-                                    "already present in the quotation.",
-                            compute="_compute_is_present", search="_search_is_present",tracking=True)
-        order_id = fields.Many2one('sale.order', 'Sales Order Reference', ondelete='cascade', index=True,tracking=True)
-        line_id = fields.Many2one('sale.order.line', ondelete="set null", copy=False,tracking=True)
+       
         name = fields.Text('Description', required=True,tracking=True)
         product_id = fields.Many2one('product.product', 'Product', required=True, domain=[('sale_ok', '=', True)],tracking=True)
         price_unit = fields.Float('Unit Price', required=True, digits='Product Price',tracking=True)
@@ -540,3 +557,101 @@ class SaleOrderLine(models.Model):
         product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True,tracking=True)
         quantity = fields.Float('Quantity', required=True, digits='Product Unit of Measure', default=1,tracking=True)
         sequence = fields.Integer('Sequence', help="Gives the sequence order when displaying a list of optional products.",tracking=True)
+
+
+        def write(self, vals):
+            res = super(SaleOrderLine, self).write(vals)
+
+            if 'product_id' in vals:
+                subtype = self.env['mail.message.subtype'].search(
+                    [('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>%s was edited product </p> </div>' % (self.product_id.name)
+                        
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale Order',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': self.order_id.id,
+                    'subtype_id': subtype.id
+                })
+
+            if 'name' in vals:
+                subtype = self.env['mail.message.subtype'].search(
+                    [('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>%s was edited in description </p> </div>' % (self.name)
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': self.order_id.id,
+                    'subtype_id': subtype.id
+                })
+
+            if 'quantity' in vals:
+                subtype = self.env['mail.message.subtype'].search(
+                    [('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>%s was edited in Quantity </p> </div>' % (self.quantity)
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': self.order_id.id,
+                    'subtype_id': subtype.id
+                })
+
+            if 'uom_id' in vals:
+                subtype = self.env['mail.message.subtype'].search(
+                    [('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>%s was edited in UOM </p> </div>' % (self.uom_id.name)
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': self.order_id.id,
+                    'subtype_id': subtype.id
+                })
+
+            if 'price_unit' in vals:
+                subtype = self.env['mail.message.subtype'].search(
+                    [('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>%s was edited in Unit Price </p> </div>' % (self.price_unit)
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': self.order_id.id,
+                    'subtype_id': subtype.id
+                })
+
+            if 'discount' in vals:
+                subtype = self.env['mail.message.subtype'].search(
+                    [('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>%s was edited in discount </p> </div>' % (self.discount)
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': self.order_id.id,
+                    'subtype_id': subtype.id
+                })
+
+            if 'product_uom_category_id' in vals:
+                subtype = self.env['mail.message.subtype'].search(
+                    [('name', '=', 'Note')], limit=1)
+                body_dynamic_html = '<p>%s was edited in product_uom_category_id </p> </div>' % (self.product_uom_category_id)
+                edit_message = self.env['mail.message'].create({
+                    'subject': 'Edited in Sale',
+                    'body': body_dynamic_html,
+                    'message_type': 'notification',
+                    'model': 'sale.order',
+                    'res_id': self.order_id.id,
+                    'subtype_id': subtype.id
+                })
+
+            return res
