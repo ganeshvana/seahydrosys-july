@@ -652,29 +652,33 @@ class SaleReport(models.Model):
     _name = "sale.report"
 
 
-    def write(self, vals):
-        res = super(SaleReport, self).write(vals)
+    campaign_id = fields.Many2one('utm.campaign', 'Campaign',tracking=True)
+    medium_id = fields.Many2one('utm.medium', 'Medium',tracking=True)
+    source_id = fields.Many2one('utm.source', 'Source',tracking=True)
 
-        if any(field in vals for field in ['campaign_id', 'medium_id', 'source_id']):
-            subtype = self.env['mail.message.subtype'].search(
-                [('name', '=', 'Note')], limit=1)
+    # def write(self, vals):
+    #     res = super(SaleReport, self).write(vals)
 
-            body_dynamic_html = '<p>Sale Order Option edited:</p>'
-            if 'campaign_id' in vals:
-                body_dynamic_html += '<p>Campaign Id: %s</p>' % (self.campaign_id.name)
-            if 'medium_id' in vals:
-                body_dynamic_html += '<p>Medium Id: %s</p>' % (self.medium_id.name)
-            if 'source_id' in vals:
-                body_dynamic_html += '<p>Source Id: %s</p>' % (self.source_id.name)
+    #     if any(field in vals for field in ['campaign_id', 'medium_id', 'source_id']):
+    #         subtype = self.env['mail.message.subtype'].search(
+    #             [('name', '=', 'Note')], limit=1)
+
+    #         body_dynamic_html = '<p>Sale Order Option edited:</p>'
+    #         if 'campaign_id' in vals:
+    #             body_dynamic_html += '<p>Campaign Id: %s</p>' % (self.campaign_id.name)
+    #         if 'medium_id' in vals:
+    #             body_dynamic_html += '<p>Medium Id: %s</p>' % (self.medium_id.name)
+    #         if 'source_id' in vals:
+    #             body_dynamic_html += '<p>Source Id: %s</p>' % (self.source_id.name)
             
 
-            edit_message = self.env['mail.message'].create({
-                'subject': 'Edited Sale Order',
-                'body': body_dynamic_html,
-                'message_type': 'notification',
-                'model': 'sale.order',
-                'res_id': self.order_id.id,
-                'subtype_id': subtype.id
-            })
+    #         edit_message = self.env['mail.message'].create({
+    #             'subject': 'Edited Sale Order',
+    #             'body': body_dynamic_html,
+    #             'message_type': 'notification',
+    #             'model': 'sale.order',
+    #             'res_id': self.order_id.id,
+    #             'subtype_id': subtype.id
+    #         })
 
-        return res
+    #     return res
