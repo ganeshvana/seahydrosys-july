@@ -69,7 +69,7 @@ class SaleOrder(models.Model):
             self.env.ref("sales_team.group_sale_salesman").id
         ),)
     partner_id = fields.Many2one(
-        'res.partner', string='Customer Abinaya', readonly=True,
+        'res.partner', string='Customer', readonly=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         required=True, change_default=True, index=True, tracking=True,
         domain="[('type', '!=', 'private'), ('company_id', 'in', (False, company_id))]",)
@@ -122,11 +122,11 @@ class SaleOrder(models.Model):
     payment_term_id = fields.Many2one(
         'account.payment.term', string='Payment Terms', check_company=True,tracking=True,  # Unrequired company
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    fiscal_position_id = fields.Many2one(
-        'account.fiscal.position', string='Fiscal Position',
-        domain="[('company_id', '=', company_id)]", check_company=True,
-        help="Fiscal positions are used to adapt taxes and accounts for particular customers or sales orders/invoices."
-        "The default value comes from the customer.",tracking=True)
+    # fiscal_position_id = fields.Many2one(
+        # 'account.fiscal.position', string='Fiscal Position',
+        # domain="[('company_id', '=', company_id)]", check_company=True,
+        # help="Fiscal positions are used to adapt taxes and accounts for particular customers or sales orders/invoices."
+        # "The default value comes from the customer.",tracking=True)
     tax_country_id = fields.Many2one(
         comodel_name='res.country',
         compute='_compute_tax_country_id',
