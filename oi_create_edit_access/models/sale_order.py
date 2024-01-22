@@ -462,10 +462,10 @@ class SaleOrderLine(models.Model):
                 [('name', '=', 'Note')], limit=1)
             body_dynamic_html = '<p>%s was edited in Quantity </p> </div>' % (self.product_uom_qty)
             edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Purchase Order Line',
+                'subject': 'Edited in Sale Order Line',
                 'body': body_dynamic_html,
                 'message_type': 'notification',
-                'model': 'purchase.order',
+                'model': 'sale.order',
                 'res_id': self.order_id.id,
                 'subtype_id': subtype.id
             })
@@ -501,10 +501,10 @@ class SaleOrderLine(models.Model):
                 [('name', '=', 'Note')], limit=1)
             body_dynamic_html = '<p>%s was edited in Taxes </p> </div>' % (self.tax_id.name)
             edit_message = self.env['mail.message'].create({
-                'subject': 'Edited in Purchase Order Line',
+                'subject': 'Edited in Sale Order Line',
                 'body': body_dynamic_html,
                 'message_type': 'notification',
-                'model': 'purchase.order',
+                'model': 'sale.order',
                 'res_id': self.order_id.id,
                 'subtype_id': subtype.id
             })
