@@ -69,7 +69,7 @@ class SaleOrder(models.Model):
             self.env.ref("sales_team.group_sale_salesman").id
         ),)
     partner_id = fields.Many2one(
-        'res.partner', string='Customer', readonly=True,
+        'res.partner', string='Customer Abinaya', readonly=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         required=True, change_default=True, index=True, tracking=True,
         domain="[('type', '!=', 'private'), ('company_id', 'in', (False, company_id))]",)
