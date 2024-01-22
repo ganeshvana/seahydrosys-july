@@ -165,9 +165,27 @@ class SaleOrder(models.Model):
     show_update_pricelist = fields.Boolean(string='Has Pricelist Changed',
                                            help="Technical Field, True if the pricelist was changed;\n"
                                                 " this will then display a recomputation button",tracking=True)
-    tag_ids = fields.Many2many('crm.tag', 'sale_order_tag_rel', 'order_id', 'tag_id', string='Tags',tracking=True)
+    # tag_ids = fields.Many2many('crm.tag', 'sale_order_tag_rel', 'order_id', 'tag_id', string='Tags',tracking=True)
 
+    def write(self, vals):
+        res = super(SaleOrder, self).write(vals)
 
+        if 'tag_ids' in vals:
+            subtype = self.env['mail.message.subtype'].search(
+                [('name', '=', 'Note')], limit=1)
+
+            body_dynamic_html = '<p>Tags were edited:</p>'
+            for tag_id in self.tag_ids:
+                body_dynamic_html += '<p>%s</p>' % tag_id.name
+
+            edit_message = self.env['mail.message'].create({
+                'subject': 'Edited Tags in Sale Order',
+                'body': body_dynamic_html,
+                'message_type': 'notification',
+                'model': 'sale.order',
+                'res_id': self.id,
+                'subtype_id': subtype.id
+            })
     
     
     l10n_in_reseller_partner_id = fields.Many2one('res.partner',
@@ -560,15 +578,6 @@ class SaleOrderLine(models.Model):
 class SaleOrderOption(models.Model):
     _inherit = "sale.order.option"
 
-    # name = fields.Text('Description', required=True, tracking=True)
-    # product_id = fields.Many2one('product.product', 'Product', required=True, domain=[('sale_ok', '=', True)], tracking=True)
-    # price_unit = fields.Float('Unit Price', required=True, digits='Product Price', tracking=True)
-    # discount = fields.Float('Discount (%)', digits='Discount', tracking=True)
-    # uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=True, domain="[('category_id', '=', product_uom_category_id)]", tracking=True)
-    # product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True, tracking=True)
-    # quantity = fields.Float('Quantity', required=True, digits='Product Unit of Measure', default=1, tracking=True)
-    # sequence = fields.Integer('Sequence', help="Gives the sequence order when displaying a list of optional products.", tracking=True)
-
     @api.model
     def create(self, vals):
         res = super(SaleOrderOption, self).create(vals)
@@ -628,6 +637,39 @@ class SaleOrderOption(models.Model):
 
             edit_message = self.env['mail.message'].create({
                 'subject': 'Edited Sale Order Option',
+                'body': body_dynamic_html,
+                'message_type': 'notification',
+                'model': 'sale.order',
+                'res_id': self.order_id.id,
+                'subtype_id': subtype.id
+            })
+
+        return res
+
+
+
+class SaleReport(models.Model):
+    _name = "sale.report"
+
+
+    def write(self, vals):
+        res = super(SaleReport, self).write(vals)
+
+        if any(field in vals for field in ['campaign_id', 'medium_id', 'source_id']):
+            subtype = self.env['mail.message.subtype'].search(
+                [('name', '=', 'Note')], limit=1)
+
+            body_dynamic_html = '<p>Sale Order Option edited:</p>'
+            if 'campaign_id' in vals:
+                body_dynamic_html += '<p>Campaign Id: %s</p>' % (self.campaign_id.name)
+            if 'medium_id' in vals:
+                body_dynamic_html += '<p>Medium Id: %s</p>' % (self.medium_id.name)
+            if 'source_id' in vals:
+                body_dynamic_html += '<p>Source Id: %s</p>' % (self.source_id.name)
+            
+
+            edit_message = self.env['mail.message'].create({
+                'subject': 'Edited Sale Order',
                 'body': body_dynamic_html,
                 'message_type': 'notification',
                 'model': 'sale.order',
