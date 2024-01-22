@@ -302,7 +302,9 @@ class SaleOrder(models.Model):
 
     order_line = fields.One2many('sale.order.line', 'order_id', string='Order Lines', states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True, auto_join=True,tracking=True)
 
-
+    campaign_id = fields.Many2one('utm.campaign', 'Campaign',tracking=True)
+    medium_id = fields.Many2one('utm.medium', 'Medium',tracking=True)
+    source_id = fields.Many2one('utm.source', 'Source',tracking=True)
 
 
 class SaleOrderLine(models.Model):
@@ -648,13 +650,11 @@ class SaleOrderOption(models.Model):
 
 
 
-class SaleReport(models.Model):
-    _name = "sale.report"
+# class SaleReport(models.Model):
+#     _name = "sale.report"
 
 
-    campaign_id = fields.Many2one('utm.campaign', 'Campaign',tracking=True)
-    medium_id = fields.Many2one('utm.medium', 'Medium',tracking=True)
-    source_id = fields.Many2one('utm.source', 'Source',tracking=True)
+  
 
     # def write(self, vals):
     #     res = super(SaleReport, self).write(vals)
