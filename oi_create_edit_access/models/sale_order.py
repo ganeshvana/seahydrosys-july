@@ -557,75 +557,82 @@ class SaleOrderLine(models.Model):
     sale_order_option_ids = fields.One2many('sale.order.option', 'line_id', 'Optional Products Lines',tracking=True)
 
 
-# class SaleOrderOption(models.Model):
-#     _inherit = "sale.order.option"
+class SaleOrderOption(models.Model):
+    _inherit = "sale.order.option"
 
-#     # name = fields.Text('Description', required=True, tracking=True)
-#     # product_id = fields.Many2one('product.product', 'Product', required=True, domain=[('sale_ok', '=', True)], tracking=True)
-#     # price_unit = fields.Float('Unit Price', required=True, digits='Product Price', tracking=True)
-#     # discount = fields.Float('Discount (%)', digits='Discount', tracking=True)
-#     # uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=True, domain="[('category_id', '=', product_uom_category_id)]", tracking=True)
-#     # product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True, tracking=True)
-#     # quantity = fields.Float('Quantity', required=True, digits='Product Unit of Measure', default=1, tracking=True)
-#     # sequence = fields.Integer('Sequence', help="Gives the sequence order when displaying a list of optional products.", tracking=True)
+    # name = fields.Text('Description', required=True, tracking=True)
+    # product_id = fields.Many2one('product.product', 'Product', required=True, domain=[('sale_ok', '=', True)], tracking=True)
+    # price_unit = fields.Float('Unit Price', required=True, digits='Product Price', tracking=True)
+    # discount = fields.Float('Discount (%)', digits='Discount', tracking=True)
+    # uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=True, domain="[('category_id', '=', product_uom_category_id)]", tracking=True)
+    # product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True, tracking=True)
+    # quantity = fields.Float('Quantity', required=True, digits='Product Unit of Measure', default=1, tracking=True)
+    # sequence = fields.Integer('Sequence', help="Gives the sequence order when displaying a list of optional products.", tracking=True)
 
-#     @api.model
-#     def create(self, vals):
-#         res = super(SaleOrderOption, self).create(vals)
+    @api.model
+    def create(self, vals):
+        res = super(SaleOrderOption, self).create(vals)
 
-#         subtype = self.env['mail.message.subtype'].search(
-#             [('name', '=', 'Note')], limit=1)
+        subtype = self.env['mail.message.subtype'].search(
+            [('name', '=', 'Note')], limit=1)
 
-#         body_dynamic_html = '<p>Sale Order Option created:</p>'
-#         body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
-#         body_dynamic_html += '<p>Description: %s</p>' % (res.name)
-#         body_dynamic_html += '<p>Quantity: %s</p>' % (res.quantity)
-#         body_dynamic_html += '<p>UOM: %s</p>' % (res.uom_id.name)
-#         body_dynamic_html += '<p>Unit Price: %s</p>' % (res.price_unit)
-#         body_dynamic_html += '<p>Discount: %s</p>' % (res.discount)
-#         body_dynamic_html += '<p>Product UOM Category: %s</p>' % (res.product_uom_category_id.name)
+        body_dynamic_html = '<p>Sale Order Option created:</p>'
+        if res.product_id:
+            body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
+        if res.name:
+            body_dynamic_html += '<p>Description: %s</p>' % (res.name)
+        if res.quantity:
+            body_dynamic_html += '<p>Quantity: %s</p>' % (res.quantity)
+        if res.uom_id:
+            body_dynamic_html += '<p>UOM: %s</p>' % (res.uom_id.name)
+        if res.price_unit:
+            body_dynamic_html += '<p>Unit Price: %s</p>' % (res.price_unit)
+        if res.discount:
+            body_dynamic_html += '<p>Discount: %s</p>' % (res.discount)
+        if res.product_uom_category_id:
+            body_dynamic_html += '<p>Product UOM Category: %s</p>' % (res.product_uom_category_id.name)
 
-#         edit_message = self.env['mail.message'].create({
-#             'subject': 'Sale Order Option Created',
-#             'body': body_dynamic_html,
-#             'message_type': 'notification',
-#             'model': 'sale.order',
-#             'res_id': res.order_id.id,
-#             'subtype_id': subtype.id
-#         })
+        edit_message = self.env['mail.message'].create({
+            'subject': 'Sale Order Option Created',
+            'body': body_dynamic_html,
+            'message_type': 'notification',
+            'model': 'sale.order',
+            'res_id': res.order_id.id,
+            'subtype_id': subtype.id
+        })
 
-#         return res
+        return res
 
-#     def write(self, vals):
-#         res = super(SaleOrderOption, self).write(vals)
+    def write(self, vals):
+        res = super(SaleOrderOption, self).write(vals)
 
-#         if any(field in vals for field in ['product_id', 'name', 'quantity', 'uom_id', 'price_unit', 'discount', 'product_uom_category_id']):
-#             subtype = self.env['mail.message.subtype'].search(
-#                 [('name', '=', 'Note')], limit=1)
+        if any(field in vals for field in ['product_id', 'name', 'quantity', 'uom_id', 'price_unit', 'discount', 'product_uom_category_id']):
+            subtype = self.env['mail.message.subtype'].search(
+                [('name', '=', 'Note')], limit=1)
 
-#             body_dynamic_html = '<p>Sale Order Option edited:</p>'
-#             if 'product_id' in vals:
-#                 body_dynamic_html += '<p>Product: %s</p>' % (self.product_id.name)
-#             if 'name' in vals:
-#                 body_dynamic_html += '<p>Description: %s</p>' % (self.name)
-#             if 'quantity' in vals:
-#                 body_dynamic_html += '<p>Quantity: %s</p>' % (self.quantity)
-#             if 'uom_id' in vals:
-#                 body_dynamic_html += '<p>UOM: %s</p>' % (self.uom_id.name)
-#             if 'price_unit' in vals:
-#                 body_dynamic_html += '<p>Unit Price: %s</p>' % (self.price_unit)
-#             if 'discount' in vals:
-#                 body_dynamic_html += '<p>Discount: %s</p>' % (self.discount)
-#             if 'product_uom_category_id' in vals:
-#                 body_dynamic_html += '<p>Product UOM Category: %s</p>' % (self.product_uom_category_id.name)
+            body_dynamic_html = '<p>Sale Order Option edited:</p>'
+            if 'product_id' in vals:
+                body_dynamic_html += '<p>Product: %s</p>' % (self.product_id.name)
+            if 'name' in vals:
+                body_dynamic_html += '<p>Description: %s</p>' % (self.name)
+            if 'quantity' in vals:
+                body_dynamic_html += '<p>Quantity: %s</p>' % (self.quantity)
+            if 'uom_id' in vals:
+                body_dynamic_html += '<p>UOM: %s</p>' % (self.uom_id.name)
+            if 'price_unit' in vals:
+                body_dynamic_html += '<p>Unit Price: %s</p>' % (self.price_unit)
+            if 'discount' in vals:
+                body_dynamic_html += '<p>Discount: %s</p>' % (self.discount)
+            if 'product_uom_category_id' in vals:
+                body_dynamic_html += '<p>Product UOM Category: %s</p>' % (self.product_uom_category_id.name)
 
-#             edit_message = self.env['mail.message'].create({
-#                 'subject': 'Edited Sale Order Option',
-#                 'body': body_dynamic_html,
-#                 'message_type': 'notification',
-#                 'model': 'sale.order',
-#                 'res_id': self.order_id.id,
-#                 'subtype_id': subtype.id
-#             })
+            edit_message = self.env['mail.message'].create({
+                'subject': 'Edited Sale Order Option',
+                'body': body_dynamic_html,
+                'message_type': 'notification',
+                'model': 'sale.order',
+                'res_id': self.order_id.id,
+                'subtype_id': subtype.id
+            })
 
-#         return res
+        return res
