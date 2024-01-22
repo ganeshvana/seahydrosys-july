@@ -440,7 +440,7 @@ class SaleOrderLine(models.Model):
         subtype = self.env['mail.message.subtype'].search(
             [('name', '=', 'Note')], limit=1)
 
-        body_dynamic_html = '<p>New Sale Order Line created:</p>'
+        body_dynamic_html = '<p>Sale Order Line created:</p>'
         body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
         if res.product_id:
             body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
@@ -456,7 +456,7 @@ class SaleOrderLine(models.Model):
             body_dynamic_html += '<p>Taxes: %s</p>' % (res.tax_id.name)
 
         edit_message = self.env['mail.message'].create({
-            'subject': 'New Sale Order Line',
+            'subject': 'Sale Order Line',
             'body': body_dynamic_html,
             'message_type': 'notification',
             'model': 'sale.order',
@@ -573,7 +573,7 @@ class SaleOrderLine(models.Model):
 
 
         def write(self, vals):
-            res = super(SaleOrderLine, self).write(vals)
+            res = super(SaleOrderOption, self).write(vals)
 
             if 'product_id' in vals:
                 subtype = self.env['mail.message.subtype'].search(
