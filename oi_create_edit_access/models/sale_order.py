@@ -262,6 +262,12 @@ class SaleOrder(models.Model):
         readonly=True, check_company=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",tracking=True)
+
+    sale_order_option_ids = fields.One2many(
+        'sale.order.option', 'order_id', 'Optional Products Lines',
+        copy=True, readonly=True,
+        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},tracking=True)
+
     
 
     # # sale_project
@@ -513,4 +519,24 @@ class SaleOrderLine(models.Model):
 
  
 
-   
+    sale_order_option_ids = fields.One2many('sale.order.option', 'line_id', 'Optional Products Lines',tracking=True)
+
+
+
+    class SaleOrderOption(models.Model):
+        _inherit = "sale.order.option"
+       
+        is_present = fields.Boolean(string="Present on Quotation",
+                            help="This field will be checked if the option line's product is "
+                                    "already present in the quotation.",
+                            compute="_compute_is_present", search="_search_is_present",tracking=True)
+        order_id = fields.Many2one('sale.order', 'Sales Order Reference', ondelete='cascade', index=True,tracking=True)
+        line_id = fields.Many2one('sale.order.line', ondelete="set null", copy=False,tracking=True)
+        name = fields.Text('Description', required=True,tracking=True)
+        product_id = fields.Many2one('product.product', 'Product', required=True, domain=[('sale_ok', '=', True)],tracking=True)
+        price_unit = fields.Float('Unit Price', required=True, digits='Product Price',tracking=True)
+        discount = fields.Float('Discount (%)', digits='Discount',tracking=True)
+        uom_id = fields.Many2one('uom.uom', 'Unit of Measure ', required=True, domain="[('category_id', '=', product_uom_category_id)]",tracking=True)
+        product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True,tracking=True)
+        quantity = fields.Float('Quantity', required=True, digits='Product Unit of Measure', default=1,tracking=True)
+        sequence = fields.Integer('Sequence', help="Gives the sequence order when displaying a list of optional products.",tracking=True)
