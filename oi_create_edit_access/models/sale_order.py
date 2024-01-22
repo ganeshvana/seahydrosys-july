@@ -122,11 +122,11 @@ class SaleOrder(models.Model):
     payment_term_id = fields.Many2one(
         'account.payment.term', string='Payment Terms', check_company=True,tracking=True,  # Unrequired company
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    # fiscal_position_id = fields.Many2one(
-        # 'account.fiscal.position', string='Fiscal Position',
-        # domain="[('company_id', '=', company_id)]", check_company=True,
-        # help="Fiscal positions are used to adapt taxes and accounts for particular customers or sales orders/invoices."
-        # "The default value comes from the customer.",tracking=True)
+    fiscal_position_id = fields.Many2one(
+        'account.fiscal.position', string='Fiscal Position',
+        domain="[('company_id', '=', company_id)]", check_company=True,
+        help="Fiscal positions are used to adapt taxes and accounts for particular customers or sales orders/invoices."
+        "The default value comes from the customer.",tracking=True)
     tax_country_id = fields.Many2one(
         comodel_name='res.country',
         compute='_compute_tax_country_id',
@@ -429,26 +429,6 @@ class SaleOrderLine(models.Model):
 
     def write(self, vals):
         res = super(SaleOrderLine, self).write(vals)
-
-        # for line in self:
-        #     sale_order = line.order_id
-        #     subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
-        #     body_dynamic_html = '<p>Modified in Sale Order Line:</p>'
-            
-        #     for field in ['product_id', 'name', 'product_uom_qty', 'price_unit', 'tax_id']:
-        #         if field in vals:
-        #             changed_value = vals[field]
-        #             body_dynamic_html += f'<p>{field.capitalize()}: {changed_value}</p>'
-
-        #             if changed_value:
-        #                 edit_message = self.env['mail.message'].create({
-        #                     'subject': 'Edited in Sale Order Line',
-        #                     'body': body_dynamic_html,
-        #                     'message_type': 'notification',
-        #                     'model': 'sale.order',
-        #                     'res_id': sale_order.id,
-        #                     'subtype_id': subtype.id
-        #                 })
 
         if 'product_id' in vals:
             subtype = self.env['mail.message.subtype'].search(

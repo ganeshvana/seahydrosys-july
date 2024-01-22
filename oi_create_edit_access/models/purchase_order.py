@@ -218,16 +218,6 @@ class PurchaseOrderLine(models.Model):
     def write(self, vals):
         res = super(PurchaseOrderLine, self).write(vals)
 
-        # for line in self:
-        #     purchase_order = line.order_id
-        #     subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
-        #     body_dynamic_html = '<p>Modified in Purchase Order Line:</p>'
-            
-            # for field in ['product_id', 'name', 'product_qty', 'qty_received', 'qty_invoiced','product_uom','price_unit', 'taxes_id','price_subtotal']:
-            #     if field in vals:
-            #         changed_value = vals[field]
-            #         body_dynamic_html += f'<p>{field.capitalize()}: {changed_value}</p>'
-
         if 'product_id' in vals:
             subtype = self.env['mail.message.subtype'].search(
                 [('name', '=', 'Note')], limit=1)
