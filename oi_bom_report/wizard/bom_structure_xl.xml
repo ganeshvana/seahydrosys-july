@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="bom_structure_xl_view_form" model="ir.ui.view">
+        <field name="name">bom.structure.xl.view.form</field>
+        <field name="model">bom.structure.xl</field>
+        <field name="arch" type="xml">
+            <form string="274.XX Sheets">    
+            	<group>
+            		<group>
+            			<field name="xls_file" readonly="1" filename="xls_filename"/>
+            			<field name="xls_filename" readonly="1"/>
+            		</group>
+            	</group>            
+                <footer>
+                    <button name="action_generate_xls" string="Export XLSX" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>               
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bom_structure_xl" model="ir.actions.act_window">
+        <field name="name">BoM Structure Xl</field>
+        <field name="res_model">bom.structure.xl</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="bom_structure_xl_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="mrp.model_mrp_bom"/>
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>
