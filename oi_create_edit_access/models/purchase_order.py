@@ -215,10 +215,40 @@ class PurchaseOrderLine(models.Model):
     propagate_cancel = fields.Boolean('Propagate cancellation', default=True,tracking=True)
     forecasted_issue = fields.Boolean(compute='_compute_forecasted_issue',tracking=True)
 
+    @api.model
+    def create(self, vals):
+        res = super(PurchaseOrderLine, self).create(vals)
+
+        subtype = self.env['mail.message.subtype'].search(
+            [('name', '=', 'Note')], limit=1)
+
+        body_dynamic_html = '<p>Purchase Order Line created:</p>'
+        if res.product_id:
+            body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
+        if res.name:
+            body_dynamic_html += '<p>Description: %s</p>' % (res.name)
+        if res.product_qty:
+            body_dynamic_html += '<p>Quantity: %s</p>' % (res.product_qty)
+        if res.product_uom:
+            body_dynamic_html += '<p>UOM: %s</p>' % (res.product_uom.name)
+        if res.price_unit:
+            body_dynamic_html += '<p>Unit Price: %s</p>' % (res.price_unit)
+        if res.taxes_id:
+            body_dynamic_html += '<p>Taxes: %s</p>' % (res.taxes_id.name)
+
+        edit_message = self.env['mail.message'].create({
+            'subject': 'Purchase Order Line',
+            'body': body_dynamic_html,
+            'message_type': 'notification',
+            'model': 'purchase.order',
+            'res_id': res.order_id.id,
+            'subtype_id': subtype.id
+        })
+
+        return res
+
     def write(self, vals):
         res = super(PurchaseOrderLine, self).write(vals)
-
-     
 
         if 'product_id' in vals:
             subtype = self.env['mail.message.subtype'].search(
