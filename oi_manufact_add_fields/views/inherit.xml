@@ -86,7 +86,6 @@
                  <button name="action_cancel" position="replace">
                        <button name="action_cancel" type="object" string="Cancel" data-hotkey="z"
                             attrs="{'invisible': ['|', '|', ('id', '=', False), ('state', 'in', ('done', 'cancel')), ('confirm_cancel', '=', True)]}" confirm="Are you sure? Do you want to cancel the MO"/>
-
                 </button>  
             <xpath expr="//button[@name='button_scrap']" position="replace">
                <button name="button_scrap" type="object" string="Scrap" attrs="{'invisible': [('state', 'in', ('cancel', 'draft'))]}" data-hotkey="z" groups="oi_manufact_add_fields.group_mrp_scrap"/>
@@ -96,6 +95,10 @@
                          <field name="note" string="Note" options="{'no_create_edit': True,'no_create':True}"/> 
                                     
              </xpath>
+             <xpath expr="//field[@name='product_id']" position="after">
+                     <field name="tag_ids"/>
+                 </xpath>
+
 
           
 
