@@ -7,7 +7,7 @@
     'version': '15.0',
     'author': 'oodu implementers ',
     'description': """""",
-    'depends': ['base','mrp','purchase','quality_mrp','stock','product_tags_fork'],
+    'depends': ['base','mrp','purchase','quality_mrp','stock'],
     'application': True,
     'data': [
         'security/ir.model.access.csv',

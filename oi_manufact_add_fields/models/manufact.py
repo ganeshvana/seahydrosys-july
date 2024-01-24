@@ -6,8 +6,7 @@ class UserRestriction(models.Model):
 
 
     note = fields.Many2one('mrp.note', string='Note')
-    # tag_ids = fields.Many2one(related='product_id.tag_ids', string="Product Tag")
-    
+
 
 
 # class purchase_order(models.Model):
