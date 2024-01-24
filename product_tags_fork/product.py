@@ -82,7 +82,9 @@ class UserRestriction(models.Model):
     _inherit = "mrp.production"
 
 
-    tag_ids = fields.Many2many(comodel_name='product.tag', relation='mrp_product_tag_rel',
-                               column1='product_tag_id',
-                               column2='mrp_product_id', string="Product Tags")
-    # related='product_id.tag_ids'
+    tag_ids = fields.Many2many( related='product_id.tag_ids', string="Product Tags")
+    
+    # comodel_name='product.tag', relation='mrp_product_tag_rel',
+    #                            column1='product_tag_id',
+    #                            column2='mrp_product_id',
+   
