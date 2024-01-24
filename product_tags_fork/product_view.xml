@@ -112,6 +112,17 @@
                  </xpath>
         </field>
     </record>
+
+        <record id="mrp_product_tag_search_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.tag.view.search</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="tag_ids" string="Tags" filter_domain="['|',('tag_ids','ilike',self),('tag_ids','child_of',self)]"/>
+                </field>
+            </field>
+        </record>
         
 
     </data>
