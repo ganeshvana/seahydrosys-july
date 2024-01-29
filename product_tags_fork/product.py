@@ -89,7 +89,7 @@ class UserRestriction(models.Model):
     #                            column2='product_id_tag')
 
 
-    tag_ids = fields.Many2many( related='product_id.tag_ids', string="Product Tags", store=True)
+    product_tag_ids = fields.Many2many( related='product_id.tag_ids', string="Product Tags", store=True)
     
     # comodel_name='product.tag', relation='mrp_product_tag_rel',
     #                            column1='product_tag_id',
