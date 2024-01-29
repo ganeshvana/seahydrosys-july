@@ -108,7 +108,7 @@
         </field>
     </record>
 
-     <!-- <record id="mrp_product_tag_search_inherit" model="ir.ui.view">
+     <record id="mrp_product_tag_search_inherit" model="ir.ui.view">
         <field name="name">mrp.production.product.tag.select</field>
         <field name="model">mrp.production</field>
         <field name="mode">primary</field>
@@ -122,7 +122,7 @@
               
             </xpath>
         </field>
-    </record> -->
+    </record>
 
         <!-- <record id="mrp_product_tag_search_inherit" model="ir.ui.view">
             <field name="name">mrp.production.tag.view.search</field>
