@@ -97,7 +97,7 @@
                 </xpath>
             </field>
         </record>
-    <!-- <record id="mrp_production_form_view_inherit" model="ir.ui.view">
+    <record id="mrp_production_form_view_inherit" model="ir.ui.view">
         <field name="name">mrp.production.form</field>
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
@@ -106,7 +106,7 @@
                      <field name="tag_ids" widget="many2many_tags"/>
                  </xpath>
         </field>
-    </record> -->
+    </record>
 
      <!-- <record id="mrp_product_tag_search_inherit" model="ir.ui.view">
         <field name="name">mrp.production.product.tag.select</field>
