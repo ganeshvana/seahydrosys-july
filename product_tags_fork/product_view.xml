@@ -97,13 +97,13 @@
                 </xpath>
             </field>
         </record>
-    <record id="mrp_production_form_view_inherit" model="ir.ui.view">
+    <!-- <record id="mrp_production_form_view_inherit" model="ir.ui.view">
         <field name="name">mrp.production.form</field>
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">         
              <xpath expr="//field[@name='product_id']" position="after">
-                     <field name="product_tag_ids" widget="many2many_tags"/>
+                     <field name="tag_ids" widget="many2many_tags"/>
                  </xpath>
         </field>
     </record>
@@ -115,12 +115,12 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='origin']" position="after">
                 <field name="product_id" filter_domain="[ ('product_id.tag_ids.name', 'ilike', self)]" string="Tag"/>
-                <!-- <field name="tag_ids" string="Tags" filter_domain="['|',('tag_ids','ilike',self),('tag_ids','child_of',self)]"/> -->
+                <field name="tag_ids" string="Tags" filter_domain="['|',('tag_ids','ilike',self),('tag_ids','child_of',self)]"/>
 
               
             </xpath>
         </field>
-    </record>
+    </record> -->
 
        
         
