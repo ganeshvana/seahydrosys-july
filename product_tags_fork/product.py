@@ -77,3 +77,8 @@ class ProductTemplate(models.Model):
                                column2='product_id')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+class UserRestriction(models.Model):
+    _inherit = "mrp.production"
+    
+    tag_ids = fields.Many2many(related='product_id.tag_ids', string="Product Tags")
