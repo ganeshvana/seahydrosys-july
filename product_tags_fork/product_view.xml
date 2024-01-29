@@ -95,11 +95,6 @@
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="tag_ids" widget="many2many_tags" placeholder="Tags..."/>
                 </xpath>
-<!--                 <div name="tags" position="inside">
-                    <ul>
-                        <li><field name="tag_ids"/></li>
-                    </ul>
-                </div> -->
             </field>
         </record>
     <!-- <record id="mrp_production_form_view_inherit" model="ir.ui.view">

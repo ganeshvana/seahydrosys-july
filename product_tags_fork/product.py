@@ -84,9 +84,9 @@ class UserRestriction(models.Model):
     
     tag_ids = fields.Many2many(string='Tags',
                                comodel_name='product.tag',
-                               relation='product_product_tag_rel',
-                               column1='tag_id',
-                               column2='product_id')
+                               relation='product_template_tag_rel',
+                               column1='tag_ids',
+                               column2='product_id_tag')
 
 
     # tag_ids = fields.Many2many( related='product_id.tag_ids', string="Product Tags")
