@@ -90,7 +90,7 @@ class BOMStructureXl(models.TransientModel):
                     rec['code'],
                     ref,
                     rec['product'].categ_id.complete_name,
-                    str(rec['quantity'])+'0',
+                    str(rec['product_qty'])+'0',
                     rec['bom'].product_uom_id.name,
                 ))
                 is_main_component = False  # Update flag after processing the main component
@@ -119,7 +119,7 @@ class BOMStructureXl(models.TransientModel):
                         line['name'],
                         ref,
                         categ,
-                        str(line['quantity']) + '0',
+                        str(line['product_qty']) + '0',
                         line['uom'],
                         currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
                         currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),
