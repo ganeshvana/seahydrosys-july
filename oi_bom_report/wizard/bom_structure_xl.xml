@@ -26,6 +26,6 @@
         <field name="view_id" ref="bom_structure_xl_view_form"/>
         <field name="target">new</field>
         <field name="binding_model_id" ref="mrp.model_mrp_bom"/>
-        <field name="binding_view_types">form,list</field>
+        <field name="binding_view_types">list</field>
     </record>
 </odoo>
