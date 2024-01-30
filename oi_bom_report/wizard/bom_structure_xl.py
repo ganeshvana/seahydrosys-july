@@ -81,8 +81,8 @@ class BOMStructureXl(models.TransientModel):
 
             for rec in vals['docs']:
                 currency = rec['currency']
-                # split_ref = rec['code'].split(']')
-                # ref = split_ref[0].replace('[','')
+                split_ref = rec['code'].split(']')
+                ref = split_ref[0].replace('[','')
                 # product_name = split_ref[1]
                 rows.append((
                     count if is_main_component else '',  # Add sequence number only for the main component
