@@ -29,7 +29,7 @@
             </div>
         </xpath>
 
-        <xpath expr="//table/thead/tr/th[@name='th_quantity']" position="after">
+        <!-- <xpath expr="//table/thead/tr/th[@name='th_quantity']" position="after">
             <th
                 t-if="o.display_total_weight_in_report"
                 name="th_weight"
@@ -55,7 +55,7 @@
                 <span t-field="order_line.line_volume" />
                 <span t-field="order_line.order_id.volume_uom_name" />
             </td>
-        </xpath>
+        </xpath> -->
     </template>
 
     <template
