@@ -8,7 +8,7 @@
     'description': """This module contains fields additionally added to purchase form & Report""",
     'category': 'purchase',
     'depends': ['base', 'purchase'],
-    'data': ['views/purchase_view.xml','views/purchase_report_extend.xml'],
+    'data': ['views/purchase_view.xml','views/purchase_report_extend.xml','views/purchase_order_view.xml'],
     'installable': True,
     'application': True,
     'auto_install': False,
