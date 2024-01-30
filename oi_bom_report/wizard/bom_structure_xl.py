@@ -81,12 +81,13 @@ class BOMStructureXl(models.TransientModel):
 
             for rec in vals['docs']:
                 currency = rec['currency']
-                split_ref = rec['code'].split(']')
-                ref = split_ref[0].replace('[','')
-                product_name = split_ref[1]
+                # split_ref = rec['code'].split(']')
+                # ref = split_ref[0].replace('[','')
+                # product_name = split_ref[1]
                 rows.append((
                     count if is_main_component else '',  # Add sequence number only for the main component
-                    product_name,
+                    # product_name,
+                    rec['code'],
                     ref,
                     rec['product'].categ_id.complete_name,
                     str(rec['quantity'])+'0',
@@ -102,10 +103,10 @@ class BOMStructureXl(models.TransientModel):
                         line['bom_cost'] = 0.0
                     product_ref = line['name'].split(']')
                     ref = product_ref[0].replace('[','')
-                    if len(product_ref) >1:
-                        product_name = product_ref[1]
-                    else:
-                        product_name = ''
+                    # if len(product_ref) >1:
+                    #     product_name = product_ref[1]
+                    # else:
+                    #     product_name = ''
                     if ref:
                         product = self.env['product.product'].search([('default_code', '=', ref)])
                         if product:
@@ -114,7 +115,8 @@ class BOMStructureXl(models.TransientModel):
                             categ = ''
                     rows.append((
                         '',
-                        product_name,
+                        # product_name,
+                        line['name'],
                         ref,
                         categ,
                         str(line['quantity']) + '0',
