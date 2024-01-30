@@ -24,7 +24,6 @@
                 'mrp_mps',],
 
     # always loaded
-    
     'data': [
         'security/ir.model.access.csv',
         'wizard/bom_structure_xl.xml',
