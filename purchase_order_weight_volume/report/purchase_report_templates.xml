@@ -29,7 +29,7 @@
             </div>
         </xpath>
 
-        <xpath expr="//th[@name='th_quantity']" position="before">
+        <xpath expr="//th[@name='th_quantity']" position="after">
             <th
                 t-if="o.display_total_weight_in_report"
                 name="th_weight"
