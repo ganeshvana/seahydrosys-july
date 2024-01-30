@@ -21,9 +21,10 @@
     # any module necessary for this one to work correctly
     'depends': ['mrp',
                 'mrp_plm',
-                'mrp_mps'],
+                'mrp_mps',],
 
     # always loaded
+    
     'data': [
         'security/ir.model.access.csv',
         'wizard/bom_structure_xl.xml',
