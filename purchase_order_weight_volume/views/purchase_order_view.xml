@@ -13,7 +13,7 @@
                 <field name="line_weight" optional="show" />
                 <field name="line_volume" optional="show" />
             </xpath>
-            <field name="fiscal_position_id" position="after">
+            <field name="notes" position="after">
                 <label
                     for="total_weight"
                     attrs="{'invisible':[('weight_uom_name', '=', '')]}"
@@ -42,8 +42,8 @@
                             class="oe_inline"
                         /></span>
                 </div>
-                <field name="display_total_weight_in_report" />
-                <field name="display_total_volume_in_report" />
+                <!-- <field name="display_total_weight_in_report" /> -->
+                <!-- <field name="display_total_volume_in_report" /> -->
             </field>
         </field>
     </record>
