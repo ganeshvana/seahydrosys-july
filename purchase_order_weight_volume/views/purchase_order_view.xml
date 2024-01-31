@@ -14,29 +14,31 @@
                 <field name="line_volume" optional="show" />
             </xpath>
             <field name="notes" position="after">
-                <!-- <label
-                    for="total_weight"
-                    attrs="{'invisible':[('weight_uom_name', '=', '')]}"
-                /> -->
+              
                 <!-- <div
                     name="total_weight"
                     attrs="{'invisible':[('weight_uom_name', '=', '')]}"
                 > -->
                  <div class="o_row">
+                   <label
+                    for="total_weight"
+                    attrs="{'invisible':[('weight_uom_name', '=', '')]}"
+                />
                     <field name="total_weight" style="width: 70%;" class="oe_inline" />
                     <field name="weight_uom_name" style="width: 30%;" class="oe_inline"/>
                 </div>
                    
                 <!-- </div> -->
-                <!-- <label
-                    for="total_volume"
-                    attrs="{'invisible':[('volume_uom_name', '=', '')]}"
-                /> -->
+                
                 <!-- <div
                     name="total_volume"
                     attrs="{'invisible':[('volume_uom_name', '=', '')]}"
                 > -->
                 <div class="o_row">
+                <label
+                    for="total_volume"
+                    attrs="{'invisible':[('volume_uom_name', '=', '')]}"
+                />
                     <field name="total_volume" style="width: 70%;" string="Volume" class="oe_inline" />
                     <field name="volume_uom_name" style="width: 30%;"
                             class="oe_inline"
