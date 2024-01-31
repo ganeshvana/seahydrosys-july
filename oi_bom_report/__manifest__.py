@@ -17,9 +17,10 @@
     # for the full list
     'category': 'Uncategorized',
     'version': '0.1',
-
     # any module necessary for this one to work correctly
-    'depends': ['mrp','mrp_plm','mrp_mps'],
+    'depends': ['mrp',
+                'mrp_plm',
+                'mrp_mps',],
 
     # always loaded
     'data': [
