@@ -18,30 +18,30 @@
                     for="total_weight"
                     attrs="{'invisible':[('weight_uom_name', '=', '')]}"
                 /> -->
-                <div
+                <!-- <div
                     name="total_weight"
                     attrs="{'invisible':[('weight_uom_name', '=', '')]}"
-                >
+                > -->
                     <field name="total_weight" class="oe_inline" />
                     <span style="margin-left:3px;"><field
                             name="weight_uom_name"
                             class="oe_inline"
                         /></span>
-                </div>
+                <!-- </div> -->
                 <!-- <label
                     for="total_volume"
                     attrs="{'invisible':[('volume_uom_name', '=', '')]}"
                 /> -->
-                <div
+                <!-- <div
                     name="total_volume"
                     attrs="{'invisible':[('volume_uom_name', '=', '')]}"
-                >
+                > -->
                     <field name="total_volume" string="Volume" class="oe_inline" />
                     <span style="margin-left:3px;"><field
                             name="volume_uom_name"
                             class="oe_inline"
                         /></span>
-                </div>
+                <!-- </div> -->
                 <!-- <field name="display_total_weight_in_report" /> -->
                 <!-- <field name="display_total_volume_in_report" /> -->
             </field>
