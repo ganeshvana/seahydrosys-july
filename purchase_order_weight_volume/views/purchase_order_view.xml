@@ -14,10 +14,10 @@
                 <field name="line_volume" optional="show" />
             </xpath>
             <field name="notes" position="after">
-                <label
+                <!-- <label
                     for="total_weight"
                     attrs="{'invisible':[('weight_uom_name', '=', '')]}"
-                />
+                /> -->
                 <div
                     name="total_weight"
                     attrs="{'invisible':[('weight_uom_name', '=', '')]}"
@@ -28,10 +28,10 @@
                             class="oe_inline"
                         /></span>
                 </div>
-                <label
+                <!-- <label
                     for="total_volume"
                     attrs="{'invisible':[('volume_uom_name', '=', '')]}"
-                />
+                /> -->
                 <div
                     name="total_volume"
                     attrs="{'invisible':[('volume_uom_name', '=', '')]}"
