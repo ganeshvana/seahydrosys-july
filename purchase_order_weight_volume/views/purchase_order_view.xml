@@ -22,11 +22,11 @@
                     name="total_weight"
                     attrs="{'invisible':[('weight_uom_name', '=', '')]}"
                 > -->
-                    <field name="total_weight" class="oe_inline" />
-                    <span style="margin-left:3px;"><field
-                            name="weight_uom_name"
-                            class="oe_inline"
-                        /></span>
+                 <div class="o_row">
+                    <field name="total_weight" style="width: 70%;" class="oe_inline" />
+                    <field name="weight_uom_name" style="width: 30%;" class="oe_inline"/>
+                </div>
+                   
                 <!-- </div> -->
                 <!-- <label
                     for="total_volume"
@@ -36,11 +36,14 @@
                     name="total_volume"
                     attrs="{'invisible':[('volume_uom_name', '=', '')]}"
                 > -->
-                    <field name="total_volume" string="Volume" class="oe_inline" />
-                    <span style="margin-left:3px;"><field
-                            name="volume_uom_name"
+                <div class="o_row">
+                    <field name="total_volume" style="width: 70%;" string="Volume" class="oe_inline" />
+                    <field name="volume_uom_name" style="width: 30%;"
                             class="oe_inline"
-                        /></span>
+                        />
+                </div>
+                    
+                   
                 <!-- </div> -->
                 <!-- <field name="display_total_weight_in_report" /> -->
                 <!-- <field name="display_total_volume_in_report" /> -->
