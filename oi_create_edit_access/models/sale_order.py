@@ -399,25 +399,6 @@ class SaleOrderLine(models.Model):
     # M2M holding the values of product.attribute with create_variant field set to 'no_variant'
     # It allows keeping track of the extra_price associated to those attribute values and add them to the SO line description
     product_no_variant_attribute_value_ids = fields.Many2many('product.template.attribute.value', string="Extra Values", ondelete='restrict',tracking=True)
-
-    qty_delivered_method = fields.Selection([
-        ('manual', 'Manual'),
-        ('analytic', 'Analytic From Expenses')
-    ], string="Method to update delivered qty", compute='_compute_qty_delivered_method', store=True,
-        help="According to product configuration, the delivered quantity can be automatically computed by mechanism :\n"
-             "  - Manual: the quantity is set manually on the line\n"
-             "  - Analytic From expenses: the quantity is the quantity sum from posted expenses\n"
-             "  - Timesheet: the quantity is the sum of hours recorded on tasks linked to this sale line\n"
-             "  - Stock Moves: the quantity comes from confirmed pickings\n",tracking=True)
-    qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', inverse='_inverse_qty_delivered', store=True, digits='Product Unit of Measure', default=0.0,tracking=True)
-    qty_delivered_manual = fields.Float('Delivered Manually', copy=False, digits='Product Unit of Measure', default=0.0,tracking=True)
-    qty_to_invoice = fields.Float(
-        compute='_get_to_invoice_qty', string='To Invoice Quantity', store=True,
-        digits='Product Unit of Measure',tracking=True)
-    qty_invoiced = fields.Float(
-        compute='_compute_qty_invoiced', string='Invoiced Quantity', store=True,
-        digits='Product Unit of Measure',tracking=True)
-
     untaxed_amount_invoiced = fields.Monetary("Untaxed Invoiced Amount", compute='_compute_untaxed_amount_invoiced', store=True,tracking=True)
     untaxed_amount_to_invoice = fields.Monetary("Untaxed Amount To Invoice", compute='_compute_untaxed_amount_to_invoice', store=True,tracking=True)
 
@@ -649,36 +630,3 @@ class SaleOrderOption(models.Model):
         return res
 
 
-
-# class SaleReport(models.Model):
-#     _name = "sale.report"
-
-
-  
-
-    # def write(self, vals):
-    #     res = super(SaleReport, self).write(vals)
-
-    #     if any(field in vals for field in ['campaign_id', 'medium_id', 'source_id']):
-    #         subtype = self.env['mail.message.subtype'].search(
-    #             [('name', '=', 'Note')], limit=1)
-
-    #         body_dynamic_html = '<p>Sale Order Option edited:</p>'
-    #         if 'campaign_id' in vals:
-    #             body_dynamic_html += '<p>Campaign Id: %s</p>' % (self.campaign_id.name)
-    #         if 'medium_id' in vals:
-    #             body_dynamic_html += '<p>Medium Id: %s</p>' % (self.medium_id.name)
-    #         if 'source_id' in vals:
-    #             body_dynamic_html += '<p>Source Id: %s</p>' % (self.source_id.name)
-            
-
-    #         edit_message = self.env['mail.message'].create({
-    #             'subject': 'Edited Sale Order',
-    #             'body': body_dynamic_html,
-    #             'message_type': 'notification',
-    #             'model': 'sale.order',
-    #             'res_id': self.order_id.id,
-    #             'subtype_id': subtype.id
-    #         })
-
-    #     return res
