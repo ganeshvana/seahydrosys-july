@@ -125,9 +125,9 @@ class SaleOrder(models.Model):
 
     # currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', store=True, digits=(12, 6), help='The rate of the currency to the currency of rate 1 applicable at the date of the order',tracking=True)
 
-    payment_term_id = fields.Many2one(
-        'account.payment.term', string='Payment Terms', check_company=True,tracking=True,  # Unrequired company
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    # payment_term_id = fields.Many2one(
+    #     'account.payment.term', string='Payment Terms', check_company=True,tracking=True,  # Unrequired company
+    #     domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     # fiscal_position_id = fields.Many2one(
     #     'account.fiscal.position', string='Fiscal Position',
     #     domain="[('company_id', '=', company_id)]", check_company=True,
