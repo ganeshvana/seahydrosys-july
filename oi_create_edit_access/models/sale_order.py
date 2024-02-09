@@ -15,6 +15,32 @@ from odoo.addons.payment import utils as payment_utils
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
     
+    
+    @api.model
+    def create(self, vals):
+        res = super(SaleOrderLine, self).create(vals)
+
+        subtype = self.env['mail.message.subtype'].search(
+            [('name', '=', 'Note')], limit=1)
+
+        body_dynamic_html = '<p>Sale Order Line created:</p>'
+        if res.product_id:
+            body_dynamic_html += '<p>Product: %s</p>' % (res.product_id.name)
+        if res.name:
+            body_dynamic_html += '<p>Description: %s</p>' % (res.name)
+        if res.product_uom_qty:
+            body_dynamic_html += '<p>Quantity: %s</p>' % (res.product_uom_qty)
+
+        edit_message = self.env['mail.message'].create({
+            'subject': 'Sale Order Line',
+            'body': body_dynamic_html,
+            'message_type': 'notification',
+            'model': 'sale.order',
+            'res_id': res.order_id.id,
+            'subtype_id': subtype.id
+        })
+
+        return res
 
     def write(self, vals):
         res = super(SaleOrderLine, self).write(vals)
