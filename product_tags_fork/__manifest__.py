@@ -31,6 +31,7 @@
     "depends": [
         'product',
         'sale',
+        'mrp',
     ],
     "demo": [],
     "data": [
