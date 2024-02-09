@@ -28,46 +28,46 @@ class SaleOrder(models.Model):
     
 
     
-    def _get_default_require_payment(self):
-        return self.env.company.portal_confirmation_pay
+    # def _get_default_require_payment(self):
+    #     return self.env.company.portal_confirmation_pay
     
-    def _get_default_require_signature(self):
-        return self.env.company.portal_confirmation_sign
+    # def _get_default_require_signature(self):
+    #     return self.env.company.portal_confirmation_sign
     
-    def _default_validity_date(self):
-        if self.env['ir.config_parameter'].sudo().get_param('sale.use_quotation_validity_days'):
-            days = self.env.company.quotation_validity_days
-            if days > 0:
-                return fields.Date.to_string(datetime.now() + timedelta(days))
-        return False
+    # def _default_validity_date(self):
+    #     if self.env['ir.config_parameter'].sudo().get_param('sale.use_quotation_validity_days'):
+    #         days = self.env.company.quotation_validity_days
+    #         if days > 0:
+    #             return fields.Date.to_string(datetime.now() + timedelta(days))
+    #     return False
     
-    @api.model
-    def _get_default_team(self):
-        return self.env['crm.team']._get_default_team_id()
+    # @api.model
+    # def _get_default_team(self):
+    #     return self.env['crm.team']._get_default_team_id()
 
 
-    origin = fields.Char(string='Source Document', help="Reference of the document that generated this sales order request.",tracking=True)
-    client_order_ref = fields.Char(string='Customer Reference', copy=False,tracking=True)
-    reference = fields.Char(string='Payment Ref.', copy=False,
-        help='The payment communication of this sale order.',tracking=True)
+    # origin = fields.Char(string='Source Document', help="Reference of the document that generated this sales order request.",tracking=True)
+    # client_order_ref = fields.Char(string='Customer Reference', copy=False,tracking=True)
+    # reference = fields.Char(string='Payment Ref.', copy=False,
+    #     help='The payment communication of this sale order.',tracking=True)
    
-    date_order = fields.Datetime(string='Order Date', required=True, readonly=True, index=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, copy=False, default=fields.Datetime.now, help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.",tracking=True)
-    validity_date = fields.Date(string='Expiration', readonly=True, copy=False, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
-                                default=_default_validity_date,tracking=True)
-    is_expired = fields.Boolean(compute='_compute_is_expired', string="Is expired",tracking=True)
-    require_signature = fields.Boolean('Online Signature', default=_get_default_require_signature, readonly=True,
-        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
-        help='Request a online signature to the customer in order to confirm orders automatically.',tracking=True)
-    require_payment = fields.Boolean('Online Payment', default=_get_default_require_payment, readonly=True,
-        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
-        help='Request an online payment to the customer in order to confirm orders automatically.',tracking=True)
-    create_date = fields.Datetime(string='Creation Date', readonly=True, index=True, help="Date on which sales order is created.",tracking=True)
+    # date_order = fields.Datetime(string='Order Date', required=True, readonly=True, index=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, copy=False, default=fields.Datetime.now, help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.",tracking=True)
+    # validity_date = fields.Date(string='Expiration', readonly=True, copy=False, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+    #                             default=_default_validity_date,tracking=True)
+    # is_expired = fields.Boolean(compute='_compute_is_expired', string="Is expired",tracking=True)
+    # require_signature = fields.Boolean('Online Signature', default=_get_default_require_signature, readonly=True,
+    #     states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+    #     help='Request a online signature to the customer in order to confirm orders automatically.',tracking=True)
+    # require_payment = fields.Boolean('Online Payment', default=_get_default_require_payment, readonly=True,
+    #     states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+    #     help='Request an online payment to the customer in order to confirm orders automatically.',tracking=True)
+    # create_date = fields.Datetime(string='Creation Date', readonly=True, index=True, help="Date on which sales order is created.",tracking=True)
 
-    user_id = fields.Many2one(
-        'res.users', string='Salesperson', index=True, tracking=True, default=lambda self: self.env.user,
-        domain=lambda self: "[('groups_id', '=', {}), ('share', '=', False), ('company_ids', '=', company_id)]".format(
-            self.env.ref("sales_team.group_sale_salesman").id
-        ),)
+    # user_id = fields.Many2one(
+    #     'res.users', string='Salesperson', index=True, tracking=True, default=lambda self: self.env.user,
+    #     domain=lambda self: "[('groups_id', '=', {}), ('share', '=', False), ('company_ids', '=', company_id)]".format(
+    #         self.env.ref("sales_team.group_sale_salesman").id
+    #     ),)
     
     
     
@@ -141,11 +141,11 @@ class SaleOrder(models.Model):
     #     help="Technical field to filter the available taxes depending on the fiscal country and fiscal position.",tracking=True)
     # company_id = fields.Many2one('res.company', 'Company', required=True, index=True, default=lambda self: self.env.company,tracking=True)
 
-    team_id = fields.Many2one(
-        'crm.team', 'Sales Team',
-        ondelete="set null", tracking=True,
-        change_default=True, default=_get_default_team, check_company=True,  # Unrequired company
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    # team_id = fields.Many2one(
+    #     'crm.team', 'Sales Team',
+    #     ondelete="set null", tracking=True,
+    #     change_default=True, default=_get_default_team, check_company=True,  # Unrequired company
+    #     domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
 
 
@@ -576,7 +576,7 @@ class SaleOrderLine(models.Model):
         #         'subtype_id': subtype.id
         #     })
 
-        # return res
+        return res
 
  
 
