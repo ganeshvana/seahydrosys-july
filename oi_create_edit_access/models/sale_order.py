@@ -29,26 +29,26 @@ class SaleOrderLine(models.Model):
             self._create_notification_log(self, 'edited')
         return res
 
-    def unlink(self):
-        deleted_lines = self.filtered(lambda line: line.exists())
-        res = super(SaleOrderLine, deleted_lines).unlink()
-        for line in deleted_lines:
-            self._delete_notification_log(line, 'deleted')
-        return res
+    # def unlink(self):
+    #     deleted_lines = self.filtered(lambda line: line.exists())
+    #     res = super(SaleOrderLine, deleted_lines).unlink()
+    #     for line in deleted_lines:
+    #         self._delete_notification_log(line, 'deleted')
+    #     return res
     
-    def _delete_notification_log(self, line, action):
-        subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
-        if action == 'deleted':
-            body = '<p>Sale Order Line deleted:</p>'
+    # def _delete_notification_log(self, line, action):
+    #     subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
+    #     if action == 'deleted':
+    #         body = '<p>Sale Order Line deleted:</p>'
 
-        edit_message = self.env['mail.message'].create({
-            'subject': f'{action.capitalize()} in Sale Order Line',
-            'body': body,
-            'message_type': 'notification',
-            'model': 'sale.order',
-            'res_id': line.order_id.id,
-            'subtype_id': subtype.id
-        })
+    #     edit_message = self.env['mail.message'].create({
+    #         'subject': f'{action.capitalize()} in Sale Order Line',
+    #         'body': body,
+    #         'message_type': 'notification',
+    #         'model': 'sale.order',
+    #         'res_id': line.order_id.id,
+    #         'subtype_id': subtype.id
+    #     })
 
     def _create_notification_log(self, line, action):
         subtype = self.env['mail.message.subtype'].search([('name', '=', 'Note')], limit=1)
