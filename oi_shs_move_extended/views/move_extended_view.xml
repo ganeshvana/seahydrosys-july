@@ -33,5 +33,15 @@
                 </xpath>
             </field>
         </record>
+     <record id="view_account_move_filter_inherit" model="ir.ui.view">
+        <field name="name">view_account_move_filter_inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[@name='partner_id']" position="after">
+                   <field name="line_ids" string="Category" filter_domain="[('line_ids.product_id.categ_id', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
     </data>
 </odoo>
