@@ -111,8 +111,9 @@ class BOMStructureXl(models.TransientModel):
                     if ref:
                         product = self.env['product.product'].search([('default_code', '=', ref)])
                         if product:
-                            for each in product.categ_id:
-                                categ = each.complete_name
+                            if product.categ_id:
+                                for each in product.categ_id:
+                                    categ = each.complete_name
                         else:
                             categ = ''
                     rows.append((
