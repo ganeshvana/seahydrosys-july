@@ -12,7 +12,7 @@
     "author": "Oodu Implementers Pvt. Ltd.",
     "installable": True,
     "depends": [
-                'base', 'stock', 'sale','purchase_requisition'
+                'base', 'stock', 'sale'
                 ],
     "data": [
         'view/partner_view.xml',

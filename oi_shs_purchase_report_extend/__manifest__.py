@@ -7,7 +7,7 @@
     'author': 'Oodu Implementers Pvt. Ltd.',
     'description': """This module contains fields additionally added to purchase form & Report""",
     'category': 'purchase',
-    'depends': ['base', 'purchase'],
+    'depends': ['base', 'purchase','purchase_requisition'],
     'data': ['views/purchase_view.xml',
              'views/purchase_report_extend.xml',
             ],
