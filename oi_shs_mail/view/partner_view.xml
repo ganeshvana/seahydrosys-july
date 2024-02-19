@@ -17,6 +17,19 @@
          </field>
      </record>
 
+     <record id="view_inherit_partner_vendor" model="ir.ui.view">
+         <field name="name">view.inherit.partner</field>
+         <field name="model">res.partner</field>
+         <field name="inherit_id" ref="purchase_requisition.purchase_order_form_inherit"/>
+         <field name="arch" type="xml">
+                <field name="partner_id"  position="attributes">
+                    <attribute name="domain">[('supplier_rank','!=','0')]</attribute>
+                            <!-- <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" attrs="{'readonly': ['|', ('is_quantity_copy', '=', 'none'), ('state', 'in', ['purchase', 'done', 'cancel'])]}" placeholder="Name, TIN, Email, or Reference" force_save="1" domain="[('supplier_rank','!=','0')]"/> -->
+                </field>
+          
+         </field>
+     </record>
+
     <record id="mrp_form_inherit_view_form_packing" model="ir.ui.view">
         <field name="name">mrp.form.view.inherit.packing</field>
         <field name="model">mrp.production</field>
