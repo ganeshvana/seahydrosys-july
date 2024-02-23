@@ -264,7 +264,7 @@ class MRPBOMStructureXl(models.TransientModel):
                         bom_name,
                         ref,
                         rec['product'].categ_id.complete_name,
-                        rec['quantity'],
+                        # rec['quantity'],
                         # str(rec['quantity'])+'0',
                         rec['bom'].product_uom_id.name,
                         '',
