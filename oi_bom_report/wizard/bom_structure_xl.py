@@ -152,5 +152,216 @@ class BOMStructureXl(models.TransientModel):
 
 
 
+#********************************MO BOM**************************
+
+        
+class MRPBOMStructureXl(models.TransientModel):
+    _name = 'mrp.bom.structure.xl'
+    _inherit = 'report.mrp.report_bom_structure'
+    _description = 'BOM Structure Xl'
+    
+    xls_file = fields.Binary(string="XLS file")
+    xls_filename = fields.Char()
+    
+    
+    
+    
+    def action_generate_product_xls(self):
+        context = self._context
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'mrp.bom.structure.xl'
+        datas['form'] = self.read()[0]
+        if 'ids' in datas:
+                mrp_ids = self.env['mrp.production'].search([('id','in',datas['ids'])])
+        for field in datas['form'].keys():
+            if isinstance(datas['form'][field], tuple):
+                datas['form'][field] = datas['form'][field][0]
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('Report')
+        style_highlight_right = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'right'})
+        style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'center'})
+        style_normal = workbook.add_format({'align': 'center'})
+        style_right = workbook.add_format({'align': 'right'})
+        style_left = workbook.add_format({'align': 'left'})
+        count = 0
+        merge_formatb = workbook.add_format({
+                'bold': 1,
+                'border': 1,
+                'align': 'center',
+                'valign': 'vcenter',
+                'bg_color': '#FFFFFF',
+                'text_wrap': True
+                })
+        merge_formatb.set_font_size(9)
+        headers = [
+                                "S.No",
+                                "Product Name",
+                                "Intenal Reference",
+                                "Product Category",
+                                "Quantity",
+                                "Unit of Measure",
+                                "Product Cost",
+                                "BoM Cost",
+                                "MO Number",
+                                "Delivery Date",
+                                "Batch Number",
+                                "MO Qty",
+                                "On-hand Qty"
+
+        ]
+        row = 1
+        col = 0
+ 
+        for header in headers:
+            worksheet.write(row, col, header, style_highlight)
+            worksheet.set_column(col, col, 10)
+            col += 1       
+        row += 1
+           
+        for rec in mrp_ids:
+            
+            is_main_component = True  # Flag to identify the main component
+            
+            name = rec.name
+            bom_name = rec.bom_id.product_tmpl_id.name
+            if rec.sea_delivery_date:
+                delivery_date = str(rec.sea_delivery_date.strftime('%d/%m/%Y'))
+            batch_no = rec.sea_batch_no
+            product_qty = rec.product_qty
+            print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjj",delivery_date)
+            count += 1
+            col = 0 
+
+            for product in rec.bom_id:
+                # print("ddddddddddddddd",product)
+                col = 0
+                worksheet.write(row, col, str(count),style_right)
+                col += 1   
+                data = {'context': {'tz': 'Asia/Kolkata', 'uid': 2, 'allowed_company_ids': [1]}, 'report_type': 'pdf'}
+                vals = self._get_report_values([product.id], data=data)
+                print(rec,product,"==========================================)))))))")
+                cost = 0.0
+                rows = []
+               
+                for rec in vals['docs']:
+                    print("VVVVVVVVVVVVVVVVVVVVVVVDDDDDDDDDDDDDDDDDDDDdddddd",rec)
+                    currency = rec['currency']
+                    split_ref = rec['code'].split(']')
+                    ref = split_ref[0].replace('[','')
+                    # product_name = split_ref[1]
+                    if ref:
+                        product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
+                        # print(product, "product----------")
+                        if product_on_hand:
+                            on_hand = product_on_hand.qty_available
+                        else:
+                            on_hand = ''
+                    rows.append((
+                        # rec['code'],
+                        count if is_main_component else '',  # Add sequence number only for the main component
+                        
+                        bom_name,
+                        ref,
+                        rec['product'].categ_id.complete_name,
+                        str(rec['quantity'])+'0',
+                        rec['bom'].product_uom_id.name,
+                        '',
+                        '',
+                        name,
+                        delivery_date,
+                        batch_no,
+                        product_qty,
+                        on_hand
+                        
+                        
+                        ))
+                    is_main_component = False  # Update flag after processing the main component
+                    
+                    # print("88888888888888888888888888888888888",row)
+                for a in vals['docs']:
+                    for line in a['lines']:
+                        # print("++=====================",line, ref)
+                        if not 'prod_cost' in line:
+                            line['prod_cost'] = 0.0
+                        if not 'bom_cost' in line:
+                            line['bom_cost'] = 0.0
+                        product_ref = line['name'].split(']')
+                        ref = product_ref[0].replace('[','')
+                        if len(product_ref) >1:
+                            product_name = product_ref[1]
+                        else:
+                            product_name = ''
+                        if ref:
+                            product = self.env['product.product'].search([('default_code', '=', ref)])
+                            product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
+                            if product_on_hand:
+                                on_hand = product_on_hand.qty_available
+                            else:
+                                on_hand = ''
+                            # print(product, "product----------")
+                            if product:
+                                categ = product.categ_id.complete_name
+                            else:
+                                categ = ''
+                            # print(categ, "=====categ")
+                        rows.append((
+                            '',
+                        # line['name'],
+                        product_name,
+                        ref,
+                        categ,
+                    
+                        str(line['quantity']) + '0',
+                        line['uom'],
+                        currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
+                        currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),
+                        '','','','', 
+                        on_hand                       
+                        
+                      
+                        
+
+                    
+                    
+                    
+                    
+                    ))
+                col = 0
+ 
+
+                for lined in rows:
+
+                    col = 0
+                    for d in lined:
+                        worksheet.write(row, col, d, style_normal)
+                        col += 1
+                    row += 1
+                
+
+            
+        row += 1
+        workbook.close()
+        xlsx_data = output.getvalue()
+        self.xls_file = base64.encodebytes(xlsx_data)
+        self.xls_filename = "Report.xlsx"
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'view_mode': 'form',
+            'res_id': self.id,
+            'views': [(False, 'form')],
+            'target': 'new',
+        }   
+
+
+
+
+
+
+
+
+
 
     

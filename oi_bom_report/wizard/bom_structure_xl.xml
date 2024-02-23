@@ -28,4 +28,35 @@
         <field name="binding_model_id" ref="mrp.model_mrp_bom"/>
         <field name="binding_view_types">form,list</field>
     </record>
+
+
+
+     <record id="mrp_bom_structure_xl_view_form" model="ir.ui.view">
+        <field name="name">mrp.bom.structure.xl.view.form</field>
+        <field name="model">mrp.bom.structure.xl</field>
+        <field name="arch" type="xml">
+            <form string="274.XX Sheets">    
+            	<group>
+            		<group>
+            			<field name="xls_file" readonly="1" filename="xls_filename"/>
+            			<field name="xls_filename" readonly="1"/>
+            		</group>
+            	</group>            
+                <footer>
+                    <button name="action_generate_product_xls" string="Export XLSX" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>               
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_bom_structure_xl" model="ir.actions.act_window">
+        <field name="name">BOM Structure Xl</field>
+        <field name="res_model">mrp.bom.structure.xl</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="mrp_bom_structure_xl_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+        <field name="binding_view_types">form,list</field>
+    </record>
 </odoo>
