@@ -227,6 +227,8 @@ class MRPBOMStructureXl(models.TransientModel):
             bom_name = rec.bom_id.product_tmpl_id.name
             if rec.sea_delivery_date:
                 delivery_date = str(rec.sea_delivery_date.strftime('%d/%m/%Y'))
+            else:
+                delivery_date = ''
             batch_no = rec.sea_batch_no
             product_qty = rec.product_qty
             
@@ -264,6 +266,7 @@ class MRPBOMStructureXl(models.TransientModel):
                         bom_name,
                         ref,
                         rec['product'].categ_id.complete_name,
+                        '',
                         # rec['quantity'],
                         # str(rec['quantity'])+'0',
                         rec['bom'].product_uom_id.name,
