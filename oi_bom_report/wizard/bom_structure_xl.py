@@ -229,30 +229,30 @@ class MRPBOMStructureXl(models.TransientModel):
                 delivery_date = str(rec.sea_delivery_date.strftime('%d/%m/%Y'))
             batch_no = rec.sea_batch_no
             product_qty = rec.product_qty
-            print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjj",delivery_date)
+            
             count += 1
             col = 0 
 
             for product in rec.bom_id:
-                # print("ddddddddddddddd",product)
+                
                 col = 0
                 worksheet.write(row, col, str(count),style_right)
                 col += 1   
                 data = {'context': {'tz': 'Asia/Kolkata', 'uid': 2, 'allowed_company_ids': [1]}, 'report_type': 'pdf'}
                 vals = self._get_report_values([product.id], data=data)
-                print(rec,product,"==========================================)))))))")
+                
                 cost = 0.0
                 rows = []
                
                 for rec in vals['docs']:
-                    print("VVVVVVVVVVVVVVVVVVVVVVVDDDDDDDDDDDDDDDDDDDDdddddd",rec)
+                    
                     currency = rec['currency']
                     split_ref = rec['code'].split(']')
                     ref = split_ref[0].replace('[','')
                     # product_name = split_ref[1]
                     if ref:
                         product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
-                        # print(product, "product----------")
+                        
                         if product_on_hand:
                             on_hand = product_on_hand.qty_available
                         else:
@@ -278,10 +278,10 @@ class MRPBOMStructureXl(models.TransientModel):
                         ))
                     is_main_component = False  # Update flag after processing the main component
                     
-                    # print("88888888888888888888888888888888888",row)
+                    
                 for a in vals['docs']:
                     for line in a['lines']:
-                        # print("++=====================",line, ref)
+                        
                         if not 'prod_cost' in line:
                             line['prod_cost'] = 0.0
                         if not 'bom_cost' in line:
@@ -299,12 +299,12 @@ class MRPBOMStructureXl(models.TransientModel):
                                 on_hand = product_on_hand.qty_available
                             else:
                                 on_hand = ''
-                            # print(product, "product----------")
+                            
                             if product:
                                 categ = product.categ_id.complete_name
                             else:
                                 categ = ''
-                            # print(categ, "=====categ")
+                           
                         rows.append((
                             '',
                         # line['name'],
