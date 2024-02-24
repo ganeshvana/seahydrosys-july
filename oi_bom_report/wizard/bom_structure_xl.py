@@ -150,11 +150,8 @@ class BOMStructureXl(models.TransientModel):
             'target': 'new',
         }
 
-
-
 #********************************MO BOM**************************
-
-        
+    
 class MRPBOMStructureXl(models.TransientModel):
     _name = 'mrp.bom.structure.xl'
     _inherit = 'report.mrp.report_bom_structure'
@@ -162,9 +159,7 @@ class MRPBOMStructureXl(models.TransientModel):
     
     xls_file = fields.Binary(string="XLS file")
     xls_filename = fields.Char()
-    
-    
-    
+ 
     
     def action_generate_product_xls(self):
         context = self._context
@@ -201,8 +196,8 @@ class MRPBOMStructureXl(models.TransientModel):
                                 "Product Category",
                                 "Quantity",
                                 "Unit of Measure",
-                                "Product Cost",
-                                "BoM Cost",
+                                # "Product Cost",
+                                # "BoM Cost",
                                 "MO Number",
                                 "Delivery Date",
                                 "Batch Number",
@@ -254,24 +249,19 @@ class MRPBOMStructureXl(models.TransientModel):
                     # product_name = split_ref[1]
                     if ref:
                         product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
-                        
                         if product_on_hand:
                             on_hand = product_on_hand.qty_available
                         else:
                             on_hand = ''
                     rows.append((
-                        # rec['code'],
                         count if is_main_component else '',  # Add sequence number only for the main component
-                        
                         bom_name,
                         ref,
                         rec['product'].categ_id.complete_name,
-                     
-                        # str(rec['quantity'])+'0',
                         str(rec['bom'].product_qty)+'0',
                         rec['bom'].product_uom_id.name,
-                        '',
-                        '',
+                        # '',
+                        # '',
                         name,
                         delivery_date,
                         batch_no,
@@ -281,8 +271,7 @@ class MRPBOMStructureXl(models.TransientModel):
                         
                         ))
                     is_main_component = False  # Update flag after processing the main component
-                    
-                    
+
                 for a in vals['docs']:
                     for line in a['lines']:
                         
@@ -311,24 +300,17 @@ class MRPBOMStructureXl(models.TransientModel):
                            
                         rows.append((
                             '',
-                        # line['name'],
                         product_name,
                         ref,
                         categ,
                     
                         str(line['quantity']) + '0',
                         line['uom'],
-                        currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
-                        currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),
-                        '','','','', 
+                        # currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
+                        # currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),
+                        name,'','',product_qty, 
                         on_hand                       
-                        
-                      
-                        
 
-                    
-                    
-                    
                     
                     ))
                 col = 0
