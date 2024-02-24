@@ -308,7 +308,8 @@ class MRPBOMStructureXl(models.TransientModel):
                         line['uom'],
                         # currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
                         # currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),
-                        name,'','',product_qty, 
+                        name,'','',
+                        line['quantity']* product_qty, 
                         on_hand                       
 
                     
