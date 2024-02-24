@@ -17,6 +17,19 @@
              
             </field>
         </record>
+
+    <record id="view_inherit_partner_vendor" model="ir.ui.view">
+         <field name="name">view.inherit.partner</field>
+         <field name="model">purchase.order</field>
+         <field name="inherit_id" ref="purchase_requisition.purchase_order_form_inherit"/>
+         <field name="arch" type="xml">
+                <field name="partner_id"  position="attributes">
+                    <attribute name="domain">[('supplier_rank','!=','0')]</attribute>
+                           
+                </field>
+          
+         </field>
+     </record>
         
         <!-- <record id="inherit_vpicktree" model="ir.ui.view">
             <field name="name">stock.picking.form.inherit</field>
