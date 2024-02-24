@@ -251,8 +251,8 @@ class MRPBOMStructureXl(models.TransientModel):
                         product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
                         if product_on_hand:
                             on_hand = product_on_hand.qty_available
-                        else:
-                            on_hand = ''
+                        # else:
+                        #     on_hand = ''
                     rows.append((
                         count if is_main_component else '',  # Add sequence number only for the main component
                         bom_name,
@@ -306,8 +306,7 @@ class MRPBOMStructureXl(models.TransientModel):
                     
                         str(line['quantity']) + '0',
                         line['uom'],
-                        # currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
-                        # currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),
+                    
                         name,'','',
                         line['quantity']* product_qty, 
                         on_hand                       
