@@ -214,23 +214,23 @@ class MRPBOMStructureXl(models.TransientModel):
             col += 1       
         row += 1
            
-        for rec in mrp_ids:
+        for record in mrp_ids:
             
             is_main_component = True  # Flag to identify the main component
             
-            name = rec.name
-            bom_name = rec.bom_id.product_tmpl_id.name
-            if rec.sea_delivery_date:
-                delivery_date = str(rec.sea_delivery_date.strftime('%d/%m/%Y'))
+            name = record.name
+            bom_name = record.bom_id.product_tmpl_id.name
+            if record.sea_delivery_date:
+                delivery_date = str(record.sea_delivery_date.strftime('%d/%m/%Y'))
             else:
                 delivery_date = ''
-            batch_no = rec.sea_batch_no
-            product_qty = rec.product_qty
+            batch_no = record.sea_batch_no
+            product_qty = record.product_qty
             
             count += 1
             col = 0 
 
-            for product in rec.bom_id:
+            for product in record.bom_id:
                 
                 col = 0
                 worksheet.write(row, col, str(count),style_right)
@@ -248,7 +248,7 @@ class MRPBOMStructureXl(models.TransientModel):
                     ref = split_ref[0].replace('[','')
                     product_name = split_ref[1]
                     if ref:
-                        product_on_hand = self.env['product.template'].search([('name', '=', product_name)])
+                        product_on_hand = self.env['product.template'].search([('name', '=', record.bom_id.product_tmpl_id.name)])
                         if product_on_hand:
                             on_hand = product_on_hand.qty_available
                         else:
