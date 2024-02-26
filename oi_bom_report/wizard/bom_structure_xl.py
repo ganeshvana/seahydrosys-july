@@ -248,28 +248,28 @@ class MRPBOMStructureXl(models.TransientModel):
                     ref = split_ref[0].replace('[','')
                     # product_name = split_ref[1]
                     if ref:
-                        product_on_hand = self.env['product.template'].search([('name', '=', bom_name)])
+                        product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
                         if product_on_hand:
                             on_hand = product_on_hand.qty_available
                         else:
                             on_hand = ''
-                        rows.append((
-                            count if is_main_component else '',  # Add sequence number only for the main component
-                            bom_name,
-                            ref,
-                            rec['product'].categ_id.complete_name,
-                            str(rec['bom'].product_qty)+'0',
-                            rec['bom'].product_uom_id.name,
-                            # '',
-                            # '',
-                            name,
-                            delivery_date,
-                            batch_no,
-                            product_qty,
-                            on_hand
-                            
-                            
-                            ))
+                    rows.append((
+                        count if is_main_component else '',  # Add sequence number only for the main component
+                        bom_name,
+                        ref,
+                        rec['product'].categ_id.complete_name,
+                        str(rec['bom'].product_qty)+'0',
+                        rec['bom'].product_uom_id.name,
+                        # '',
+                        # '',
+                        name,
+                        delivery_date,
+                        batch_no,
+                        product_qty,
+                        on_hand
+                        
+                        
+                        ))
                     is_main_component = False  # Update flag after processing the main component
 
                 for a in vals['docs']:
