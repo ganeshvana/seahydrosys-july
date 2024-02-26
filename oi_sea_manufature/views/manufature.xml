@@ -12,6 +12,7 @@
                             <group>
                             <field name="sea_delivery_date"/>
                             <field name="sea_batch_no"/>
+                            <field name="origin_name"/>
                         </group>
                     </group>
                     </form>
