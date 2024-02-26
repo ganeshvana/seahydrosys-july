@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 bom_structure_xl,bom_structure_xl,model_bom_structure_xl,,1,1,1,1
+mrp_bom_structure_xl,mrp_bom_structure_xl,model_mrp_bom_structure_xl,,1,1,1,1
+
