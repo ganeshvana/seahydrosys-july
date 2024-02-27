@@ -224,7 +224,10 @@ class MRPBOMStructureXl(models.TransientModel):
                 delivery_date = str(record.sea_delivery_date.strftime('%d/%m/%Y'))
             else:
                 delivery_date = ''
-            batch_no = record.sea_batch_no
+            if record.sea_batch_no: 
+                batch_no = record.sea_batch_no
+            else:
+                batch_no = ''
             product_qty = record.product_qty
             
             count += 1
