@@ -250,7 +250,8 @@ class MRPBOMStructureXl(models.TransientModel):
                     if ref:
                         product_on_hand = self.env['product.template'].search([('name', '=', record.bom_id.product_tmpl_id.name)])
                         if product_on_hand:
-                            on_hand = product_on_hand.qty_available
+                            for record in product_on_hand:
+                                on_hand = record.qty_available
                         else:
                             on_hand = ''
                     rows.append((
