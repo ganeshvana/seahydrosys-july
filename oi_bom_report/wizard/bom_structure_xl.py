@@ -304,7 +304,7 @@ class MRPBOMStructureXl(models.TransientModel):
                            
                         rows.append((
                             '',
-                        product_name,
+                        line['name'],
                         ref,
                         categ,
                     
