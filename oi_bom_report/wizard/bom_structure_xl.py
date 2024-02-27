@@ -249,7 +249,7 @@ class MRPBOMStructureXl(models.TransientModel):
                     currency = rec['currency']
                     split_ref = rec['code'].split(']')
                     ref = split_ref[0].replace('[','')
-                    product_name = split_ref[1]
+                    # product_name = split_ref[1]
                     if ref:
                         product_on_hand = self.env['product.template'].search([('name', '=', record.bom_id.product_tmpl_id.name)])
                         if product_on_hand:
