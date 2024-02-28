@@ -192,7 +192,7 @@ class MRPBOMStructureXl(models.TransientModel):
         headers = [
                                 "S.No",
                                 "Product Name",
-                                "Intenal Reference",
+                                "Internal Reference",
                                 "Product Category",
                                 "Quantity",
                                 "Unit of Measure",
@@ -224,7 +224,10 @@ class MRPBOMStructureXl(models.TransientModel):
                 delivery_date = str(record.sea_delivery_date.strftime('%d/%m/%Y'))
             else:
                 delivery_date = ''
-            batch_no = record.sea_batch_no
+            if record.sea_batch_no: 
+                batch_no = record.sea_batch_no
+            else:
+                batch_no = ''
             product_qty = record.product_qty
             
             count += 1
@@ -246,11 +249,12 @@ class MRPBOMStructureXl(models.TransientModel):
                     currency = rec['currency']
                     split_ref = rec['code'].split(']')
                     ref = split_ref[0].replace('[','')
-                    product_name = split_ref[1]
+                    # product_name = split_ref[1]
                     if ref:
                         product_on_hand = self.env['product.template'].search([('name', '=', record.bom_id.product_tmpl_id.name)])
                         if product_on_hand:
-                            on_hand = product_on_hand.qty_available
+                            for record in product_on_hand:
+                                on_hand = record.qty_available
                         else:
                             on_hand = ''
                     rows.append((
@@ -274,45 +278,46 @@ class MRPBOMStructureXl(models.TransientModel):
 
                 for a in vals['docs']:
                     for line in a['lines']:
-                        
-                        if not 'prod_cost' in line:
-                            line['prod_cost'] = 0.0
-                        if not 'bom_cost' in line:
-                            line['bom_cost'] = 0.0
-                        product_ref = line['name'].split(']')
-                        ref = product_ref[0].replace('[','')
-                        if len(product_ref) >1:
-                            product_name = product_ref[1]
-                        else:
-                            product_name = ''
-                        if ref:
-                            product = self.env['product.product'].search([('default_code', '=', ref)])
-                            product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
-                            if product_on_hand:
-                                on_hand = product_on_hand.qty_available
-                            else:
-                                on_hand = ''
+                        if line['type'] != 'operation':
+                            if not 'prod_cost' in line:
+                                line['prod_cost'] = 0.0
+                            if not 'bom_cost' in line:
+                                line['bom_cost'] = 0.0
+                            product_ref = line['name'].split(']')
+                            ref = product_ref[0].replace('[','')
+                            # if len(product_ref) >1:
+                            #     product_name = product_ref[1]
+                            # else:
+                            #     product_name = ''
+                            if ref:
+                                product = self.env['product.product'].search([('default_code', '=', ref)])
+                                product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
+                                if product_on_hand:
+                                    for record in product_on_hand:
+                                        on_hand = record.qty_available
+                                else:
+                                    on_hand = ''
+                                
+                                if product:
+                                    categ = product.categ_id.complete_name
+                                else:
+                                    categ = ''
                             
-                            if product:
-                                categ = product.categ_id.complete_name
-                            else:
-                                categ = ''
-                           
-                        rows.append((
-                            '',
-                        product_name,
-                        ref,
-                        categ,
-                    
-                        str(line['quantity']) + '0',
-                        line['uom'],
-                    
-                        '','','',
-                        line['quantity']* product_qty, 
-                        on_hand                       
+                            rows.append((
+                                '',
+                            line['name'],
+                            ref,
+                            categ,
+                        
+                            str(line['quantity']) + '0',
+                            line['uom'],
+                        
+                            '','','',
+                            line['quantity']* product_qty, 
+                            on_hand                       
 
-                    
-                    ))
+                        
+                        ))
                 col = 0
  
 
