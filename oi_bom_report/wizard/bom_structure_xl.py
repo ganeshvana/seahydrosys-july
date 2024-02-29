@@ -304,22 +304,23 @@ class MRPBOMStructureXl(models.TransientModel):
                                         categ = product.categ_id.complete_name
                                     else:
                                         categ = ''
+                                    if categ:
                                 
-                                rows.append((
-                                    '',
-                                line['name'],
-                                ref,
-                                categ,
-                            
-                                str(line['quantity']) + '0',
-                                line['uom'],
-                            
-                                '','','',
-                                line['quantity']* product_qty, 
-                                on_hand                       
+                                        rows.append((
+                                            '',
+                                        line['name'],
+                                        ref,
+                                        categ,
+                                    
+                                        str(line['quantity']) + '0',
+                                        line['uom'],
+                                    
+                                        '','','',
+                                        line['quantity']* product_qty, 
+                                        on_hand                       
 
-                            
-                            ))
+                                    
+                                    ))
                 col = 0
  
 
