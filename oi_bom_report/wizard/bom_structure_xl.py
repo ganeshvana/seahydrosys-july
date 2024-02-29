@@ -280,46 +280,46 @@ class MRPBOMStructureXl(models.TransientModel):
                     for line in a['lines']:
                         if line['type'] == 'bom' or line['type'] == 'component':
                            
-                        # if line['type'] != 'operation':
-                            if not 'prod_cost' in line:
-                                line['prod_cost'] = 0.0
-                            if not 'bom_cost' in line:
-                                line['bom_cost'] = 0.0
-                            product_ref = line['name'].split(']')
-                            ref = product_ref[0].replace('[','')
-                            # if len(product_ref) >1:
-                            #     product_name = product_ref[1]
-                            # else:
-                            #     product_name = ''
-                            if ref:
-                                product = self.env['product.product'].search([('default_code', '=', ref)])
-                                product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
-                                if product_on_hand:
-                                    for record in product_on_hand:
-                                        on_hand = record.qty_available
-                                else:
-                                    on_hand = ''
+                            if line['type'] != 'subcontract':
+                                if not 'prod_cost' in line:
+                                    line['prod_cost'] = 0.0
+                                if not 'bom_cost' in line:
+                                    line['bom_cost'] = 0.0
+                                product_ref = line['name'].split(']')
+                                ref = product_ref[0].replace('[','')
+                                # if len(product_ref) >1:
+                                #     product_name = product_ref[1]
+                                # else:
+                                #     product_name = ''
+                                if ref:
+                                    product = self.env['product.product'].search([('default_code', '=', ref)])
+                                    product_on_hand = self.env['product.template'].search([('default_code', '=', ref)])
+                                    if product_on_hand:
+                                        for record in product_on_hand:
+                                            on_hand = record.qty_available
+                                    else:
+                                        on_hand = ''
+                                    
+                                    if product:
+                                        categ = product.categ_id.complete_name
+                                    else:
+                                        categ = ''
                                 
-                                if product:
-                                    categ = product.categ_id.complete_name
-                                else:
-                                    categ = ''
+                                rows.append((
+                                    '',
+                                line['name'],
+                                ref,
+                                categ,
                             
-                            rows.append((
-                                '',
-                            line['name'],
-                            ref,
-                            categ,
-                        
-                            str(line['quantity']) + '0',
-                            line['uom'],
-                        
-                            '','','',
-                            line['quantity']* product_qty, 
-                            on_hand                       
+                                str(line['quantity']) + '0',
+                                line['uom'],
+                            
+                                '','','',
+                                line['quantity']* product_qty, 
+                                on_hand                       
 
-                        
-                        ))
+                            
+                            ))
                 col = 0
  
 
