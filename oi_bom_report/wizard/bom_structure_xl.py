@@ -278,7 +278,7 @@ class MRPBOMStructureXl(models.TransientModel):
 
                 for a in vals['docs']:
                     for line in a['lines']:
-                        if line['type'] not in ('operation','subcontract'):
+                        if line['type'] != 'operation' and line['type'] != 'subcontract':
                         # if line['type'] != 'operation':
                             if not 'prod_cost' in line:
                                 line['prod_cost'] = 0.0
