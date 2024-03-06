@@ -21,7 +21,19 @@
             <field name="arch" type="xml">
            
             <xpath expr="//field[@name='work_phone']" position="replace">
-                    <li t-if="record.work_mobile.raw_value" class="o_force_ltr"><field name="work_mobile"/></li>
+                    <li t-if="record.mobile_phone.raw_value" class="o_force_ltr"><field name="mobile_phone"/></li>
+            </xpath>
+        </field>
+    </record>
+    <!-- Contract -->
+    <record id="hr_contract_form_inherited" model="ir.ui.view">
+            <field name="name">hr.contract.form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+           
+            <xpath expr="//field[@name='hr_responsible_id']" position="after">
+                     <field name="years_of_experience" />
             </xpath>
         </field>
     </record>
