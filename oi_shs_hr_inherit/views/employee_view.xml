@@ -14,20 +14,20 @@
             </xpath>
         </field>
     </record>
-    <record id="hr_employee_kanban_inherited" model="ir.ui.view">
+    <!-- <record id="hr_employee_kanban_inherited" model="ir.ui.view">
             <field name="name">hr.employee.kanban</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
             <field name="arch" type="xml">
            
             <xpath expr="//field[@name='work_phone']" position="replace">
-                    <!-- <li  class="o_force_ltr"><field name="mobile_phone"/></li> -->
-                    <!-- t-if="record.mobile_phone" -->
+                    <li t-if="record.mobile_phone"  class="o_force_ltr"><field name="mobile_phone"/></li>
+                    
             </xpath>
         </field>
-    </record>
+    </record> -->
     <!-- Contract -->
-    <!-- <record id="hr_contract_form_inherited" model="ir.ui.view">
+    <record id="hr_contract_form_inherited" model="ir.ui.view">
             <field name="name">hr.contract.form</field>
             <field name="model">hr.contract</field>
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
@@ -37,7 +37,7 @@
                      <field name="years_of_experience" />
             </xpath>
         </field>
-    </record> -->
+    </record>
 
 
     </data>

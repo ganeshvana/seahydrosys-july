@@ -12,9 +12,9 @@ class HrEmployeePrivate(models.Model):
 
 
 
-# class ContractHistory(models.Model):
-#     _inherit = "hr.contract"
-#     _description = "Contract"
+class ContractHistory(models.Model):
+    _inherit = "hr.contract"
+    _description = "Contract"
 
-#     years_of_experience = fields.Char(
-#        string='Years of Experience')
+    years_of_experience = fields.Char(
+       string='Years of Experience')
