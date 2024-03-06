@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="hr_employee_form_inherited" model="ir.ui.view">
-            <field name="name">hr.employee.product.form</field>
+            <field name="name">hr.employee.form</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
@@ -11,6 +11,17 @@
                     <field name="current_address" widget="res_partner_many2one"
                         context="{'show_address': 1}"
                         options='{"always_reload": True}' />
+            </xpath>
+        </field>
+    </record>
+    <record id="hr_employee_kanban_inherited" model="ir.ui.view">
+            <field name="name">hr.employee.kanban</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+            <field name="arch" type="xml">
+           
+            <xpath expr="//field[@name='work_phone']" position="replace">
+                    <li t-if="record.work_mobile.raw_value" class="o_force_ltr"><field name="work_mobile"/></li>
             </xpath>
         </field>
     </record>
