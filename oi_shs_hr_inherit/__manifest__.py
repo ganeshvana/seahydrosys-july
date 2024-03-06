@@ -7,7 +7,7 @@
     'version': '16.0',
     'author': 'oodu implementers ',
     'description': """""",
-    'depends': ['base','hr','hr_contract'],
+    'depends': ['base','hr'],
     'application': True,
     'data': [
        

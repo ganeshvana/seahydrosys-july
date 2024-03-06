@@ -21,7 +21,7 @@
             <field name="arch" type="xml">
            
             <xpath expr="//field[@name='work_phone']" position="replace">
-                    <li  class="o_force_ltr"><field name="mobile_phone"/></li>
+                    <!-- <li  class="o_force_ltr"><field name="mobile_phone"/></li> -->
                     <!-- t-if="record.mobile_phone" -->
             </xpath>
         </field>
