@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+
+{
+    'name': 'HR',
+    'category': 'HR Master',
+    'summary': 'HR',
+    'version': '16.0',
+    'author': 'oodu implementers ',
+    'description': """""",
+    'depends': ['base','hr'],
+    'application': True,
+    'data': [
+       
+        'views/employee_view.xml',
+    ],
+}
