@@ -32,9 +32,9 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
             <field name="arch" type="xml">
-                <xpath expr="//li[field/@name='work_phone']" position="replace">
-                    <li t-if="record.mobile_phone.raw_value" class="o_force_ltr">
-                        <field name="mobile_phone"/>
+                <xpath expr="//li[field/@name='work_phone']" position="attributes">
+                    <li t-if="record.work_phone.raw_value" class="o_force_ltr">
+                        <attribute name="invisible">True</attribute>
                     </li>
                 </xpath>                
             </field>
