@@ -30,14 +30,14 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
             <field name="arch" type="xml">
-                <xpath expr="//[field/@name='work_phone']" position="replace">
+                <xpath expr="//li/field[@name='work_phone']" position="replace">
                     <li t-if="record.mobile_phone.raw_value" class="o_force_ltr">
                         <field name="mobile_phone"/>
                     </li>
                 </xpath>                
             </field>
         </record>
-
+        
     <!-- <record id="hr_employee_kanban_inherited" model="ir.ui.view">
             <field name="name">hr.employee.kanban</field>
             <field name="model">hr.employee</field>
