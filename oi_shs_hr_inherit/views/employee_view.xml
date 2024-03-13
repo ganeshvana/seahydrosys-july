@@ -6,7 +6,7 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
-             <xpath expr="//form/sheet/div/field[@name='address_home_id']" position="attributes">
+             <xpath expr="//field[@name='address_home_id']" position="attributes">
                     <attribute name="string">Permanent Address</attribute>
                 </xpath>
             <xpath expr="//field[@name='address_home_id']" position="after">
