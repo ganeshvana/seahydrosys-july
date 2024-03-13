@@ -6,7 +6,9 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
-           
+             <xpath expr="//form/sheet/div/field[@name='address_home_id']" position="attributes">
+                    <attribute name="string">Permanent Address</attribute>
+                </xpath>
             <xpath expr="//field[@name='address_home_id']" position="after">
                     <field name="current_address" widget="res_partner_many2one"
                         context="{'show_address': 1}"
@@ -34,6 +36,9 @@
                 <xpath expr="//li[field/@name='work_phone']" position="replace">
                     <li t-if="record.mobile_phone.raw_value" class="o_force_ltr">
                         <field name="mobile_phone"/>
+                    </li>
+                    <li t-if="record.registration_number.raw_value" class="o_force_ltr">
+                        <field name="registration_number"/>
                     </li>
                 </xpath>                
             </field>

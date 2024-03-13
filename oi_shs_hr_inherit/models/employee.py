@@ -7,7 +7,7 @@ class HrEmployeePrivate(models.Model):
     _description = "Employee"
 
     current_address = fields.Many2one(
-        'res.partner', string='Current Address')
+        'res.partner', string='Present Address')
 
 
 
