@@ -9,7 +9,7 @@ class HrEmployee(models.Model):
     current_address = fields.Many2one(
         'res.partner', string='Present Address')
     date_of_joining = fields.Datetime("")
-    actual_doj = fields.Datetime("")
+    actual_doj = fields.Datetime(string="Actual DOJ (Offroll)")
 
 
 
