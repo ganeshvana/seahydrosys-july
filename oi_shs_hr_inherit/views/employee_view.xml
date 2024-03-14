@@ -14,6 +14,12 @@
                         context="{'show_address': 1}"
                         options='{"always_reload": True}' />
             </xpath>
+            <xpath expr="//field[@name='registration_number']" position="after">
+                    <field name="date_of_joining" />
+            </xpath>
+            <xpath expr="//field[@name='first_contract_date']" position="after">
+                    <field name="actual_doj" />
+            </xpath>
         </field>
     </record>
     <record id="view_hr_employee" model="ir.ui.view">

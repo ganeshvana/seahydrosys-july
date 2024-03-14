@@ -2,12 +2,14 @@ from odoo import api, fields, models, tools, _
 
 
 
-class HrEmployeePrivate(models.Model):
+class HrEmployee(models.Model):
     _inherit = "hr.employee"
     _description = "Employee"
 
     current_address = fields.Many2one(
         'res.partner', string='Present Address')
+    date_of_joining = fields.Datetime("")
+    actual_doj = fields.Datetime("")
 
 
 
@@ -37,4 +39,12 @@ class ContractHistory(models.Model):
             else:
                 record.years_of_experience = 'N/A'
             
+            
+            
+class ResPartnerBank(models.Model):
+    _inherit = "res.partner.bank"
+    _description = "Bank"
+
+    ifsc_code = fields.Char(
+         string='IFSC Code')
     
