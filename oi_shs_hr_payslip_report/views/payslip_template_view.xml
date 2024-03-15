@@ -21,7 +21,7 @@
                                 <td width="50%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span>EMP No.</span>
                                   <span>:</span>
-                                  <span t-field="o.identification_id"/>
+                                  <span t-field="o.employee_id.identification_id"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>BANK DETAILS</span>
