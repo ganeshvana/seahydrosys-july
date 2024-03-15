@@ -21,12 +21,12 @@
                                 <td width="50%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span>EMP No.</span>
                                   <span>:</span>
-                                  <span></span>
+                                  <span t-field="o.identification_id"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>BANK DETAILS</span>
                                    <span>:</span>
-                                  <span></span>
+                                   <span t-field="o.employee_id.bank_account_id"/>
                                 </td>  
                               </tr>  
                               <tr>
@@ -207,7 +207,7 @@
                             <!--        </tbody>-->
                             <!--    </table>-->
                             <!--</div>-->
-                            <!--<p t-if="o.net_wage &gt;= 0">To pay on <b><span t-field="o.employee_id.bank_account_id"/></b> of <i><span t-field="o.employee_id"/></i>: <span t-field="o.net_wage"/></p>-->
+                            <!-- <p t-if="o.net_wage &gt;= 0">To pay on <b><span t-field="o.employee_id.bank_account_id"/></b> of <i><span t-field="o.employee_id"/></i>: <span t-field="o.net_wage"/></p> -->
                             <!--<p t-if="o.net_wage &lt; 0">The net amount will be recovered from the first positive remuneration established after this.</p>-->
                 
                             <p class="text-center">Made by Odoo with ❤️</p>
