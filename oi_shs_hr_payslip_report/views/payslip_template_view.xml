@@ -3,450 +3,146 @@
     <data>
 
 
-        <template id="report_inspection_document_out">
-            <t t-call="web.basic_layout">
-                <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
-                <t t-foreach="docs" t-as="o">
+        <template id="report_template_hr_payslip">
+            <t t-name="hr_payroll.report_payslip">
+                <t t-call="web.external_layout">
                     <div class="page">
-                      
-                        <table>
-                            <style>
-                                table, td, th {
-                                border: 1px solid black;
-                                width: 1250px;
-                                }
-                                p, h1, h2, h3, h4, h5, h6 {
-                                font-family: "Times New Roman";
-                                }
-                                td{
-                                padding-left:15px;
-                                padding-top:5px;
-                                }
-                            </style>
-
-                          
-                        </table>
-                            
-                      
-                        <table>
-                            <tr style="border-bottom:hidden;margin-top:100px;height:2cm">
-                                <td style="width:169px;border-right:hidden">
-                                    <div>
-                                       <!--  <img t-if="o.partner_id.image" t-att-src="image_data_uri(o.partner_id.image)" style="max-height: 45px;"
-                                     alt="Logo"/> -->
-                                    </div>
-
-                                </td>
-                                <td style="width:390px;">
-                                    <div>
-                                        <left><h6><b><span t-field="o.partner_id.name"/></b></h6></left>
-                                    </div>
-                                </td>
-                                <td style="width:470px;">
-                                    <div>
-                                        <center><h6><b>FINAL INSPECTION REPORT</b></h6></center>
-                                    </div>
-                                </td>
-                                <td style="width:150px;border-left:hidden">
-                                    <!-- <div>
-                                        <center><h6><b>QAD/R/01</b></h6></center>
-                                    </div>  -->                                   
+                        <h2 t-field="o.name"/>
+                        <t t-set="is_invalid" t-value="o._is_invalid()"/>
+                        <t t-if="is_invalid">
+                            <strong><t t-esc="is_invalid"/></strong>
+                        </t>
+                        <table name="employee-infos" class="table table-sm table-bordered">
+                            <tr>
+                                <td class="w-25"><strong>Employee</strong></td>
+                                <td class="w-25"><strong>Marital Status</strong></td>
+                                <td class="w-25"><strong>Designation</strong></td>
+                                <td class="w-25"><strong>Pay Period</strong></td>
+                            </tr>
+                            <tr>
+                                <td><span t-field="o.employee_id"/></td>
+                                <td><span t-field="o.employee_id.marital"/></td>
+                                <td><span t-field="o.employee_id.job_title"/></td>
+                                <td>
+                                    <t t-if="o.date_from &lt; o.contract_id.date_start">
+                                        <span t-field="o.contract_id.date_start"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-field="o.date_from"/>
+                                    </t>
+                                     - 
+                                    <t t-if="o.contract_id.date_end and o.date_to &gt; o.contract_id.date_end">
+                                        <span t-field="o.contract_id.date_end"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-field="o.date_to"/>
+                                    </t>
                                 </td>
                             </tr>
+                            <tr>
+                                <td><span t-field="o.employee_id.address_home_id.street"/></td>
+                                <td/>
+                                <td/>
+                                <td/>
+                            </tr>
+                            <tr>
+                                <td><span t-field="o.employee_id.address_home_id.city"/> <span t-field="o.employee_id.address_home_id.zip"/></td>
+                                <td><strong>Person in charge</strong></td>
+                                <td><strong>Identification</strong></td>
+                                <td><strong>Computed on </strong></td>
+                            </tr>
+                            <tr>
+                                <td><span t-field="o.employee_id.work_email"/></td>
+                                <td name="personne-in-charge"><t t-esc="o.employee_id.children"/></td>
+                                <td><span t-field="o.employee_id.identification_id"/></td>
+                                <td><span t-field="o.compute_date"/></td>
+                            </tr>
+                            <tr>
+                                <td class="w-25"><strong>Contract Start Date</strong></td>
+                                <td class="w-25"><strong>Contract Type </strong></td>
+                                <td class="w-25"><strong>Working Schedule</strong></td>
+                                <td class="w-25" name="company-car-title"/>
+                            </tr>
+                            <tr>
+                                <td><span t-field="o.employee_id.first_contract_date"/></td>
+                                <td><span t-field="o.employee_id.contract_id.contract_type_id"/></td>
+                                <td><span t-field="o.employee_id.contract_id.hours_per_week"/></td>
+                                <td class="w-25" name="company-car-model"/>
+                            </tr>
                         </table>
-
-                           
-                            <table>
-                                <tr>
-                                    <td style="width:169px;">
-                                        <span>Inspection No</span>
-                                    </td>
-                                    <td style="width:449px;">
-                                         <span t-field="o.name"/>
-                                    </td>
-                                    <td style="width:239px;" colspan="2">
-                                         <span>WO.No.</span> <br/>
-                                         <span t-field="o.wo_no"/>
-                                    </td>
-                                    <!-- <td style="width:119.5px;">
-                                         <span></span> 
-                                    </td> -->
-                                    
-                                    <td style="width:150px;">
-                                         <span>Inspection Date</span>
-                                    </td>
-                                    <td style="width:300px;">
-                                         <span t-field="o.inspection_date"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:169px;">
-                                        <span>Part Description</span>
-                                    </td>
-                                    <td style="width:449px;">
-                                         <span t-field="o.product_id"/>
-                                    </td>
-                                    <td style="width:119.5px;">
-                                        <span>Part SL.NO./</span>
-                                        <span>From</span> 
-                                    </td>
-                                    <td style="width:119.5px;">
-                                         <span>To</span> 
-                                    </td>
-                                    <td style="width:150px;">
-                                        <span>Inspection Qty</span>
-                                    </td>
-                                    <td style="width:300px;">
-                                         <span t-field="o.inspection_qty"/>
-                                    </td>
-                                    
-
-                                   
-                                </tr>
-                                <tr>
-
-                                    <td style="width:169px;">
-                                        <span>Drawing Number</span>
-                                    </td>
-                                    <td style="width:449px;">
-                                         <span t-field="o.drawing_no"/>
-                                    </td>
-                                    <td style="width:119.5px;border-top:hidden;border-bottom:hidden">
-                                         <span></span> 
-                                    </td>
-                                    <td style="width:119.5px;border-top:hidden;border-bottom:hidden">
-                                         <span></span> 
-                                    </td>
-                                     <td style="width:150px;">
-                                         <span>Lot Qty</span>
-                                    </td>
-                                    <td style="width:300px;">
-                                         <span t-field="o.lot_qty"/>
-                                    </td>
-                                    
-                                    
-                                </tr>
-                                <tr>
-                                    <td style="width:169px;">
-                                        <span>Invoice Number &amp; Date</span>
-                                    </td>
-                                    <td style="width:449px;">
-                                         <span t-field="o.inv_no_date"/>
-                                    </td>
-                                    <td style="width:119.5px;;border-top:hidden;border-bottom:hidden">
-                                         <span t-field="o.sl_no_from"/>
-                                    </td>
-                                    <td style="width:119.5px;;border-top:hidden;border-bottom:hidden">
-                                         <span t-field="o.sl_no_to"/>
-                                    </td>
-                                    <td style="width:150px;">
-                                         <span>Purchase Order Number</span>
-                                    </td>
-                                    <td style="width:300px;">
-                                         <span t-field="o.po_no"/>
-                                    </td>
-                                   
-                                </tr>
-                                <tr>
-                                    <td style="width:169px;">
-                                        <span>Delivery Order Number</span>
-                                    </td>
-                                    <td style="width:449px;">
-                                         <span t-field="o.picking_id"/>
-                                    </td>
-                                    <td style="width:119.5px;;border-top:hidden;border-bottom:hidden">
-                                         <span></span> 
-                                    </td>
-                                    <td style="width:119.5px;;border-top:hidden;border-bottom:hidden">
-                                         <span></span> 
-                                    </td>
-                                   
-                                    <td style="width:150px;">
-                                         <span>Inspected By</span>
-                                    </td>
-                                    <td style="width:300px;">
-                                         <span t-field="o.inspected_by.name"/>
-                                    </td>
-
-                                </tr>
-                                <tr>
-
-                                    <td style="width:169px;">
-                                        <span>Customer Name</span>
-                                    </td>
-                                    <td style="width:449px;">
-                                         <span t-field="o.partner_id"/>
-                                    </td>
-                                    <td style="width:119.5px;;border-top:hidden">
-                                         <span></span> 
-                                    </td>
-                                    <td style="width:119.5px;;border-top:hidden">
-                                         <span></span> 
-                                    </td>
-                                    <td style="width:150px;">
-                                         <span></span>
-                                    </td>
-                                    <td style="width:300px;">
-                                         <!-- <span t-field="o.inspected_by.name"/> -->
-                                    </td>
-
-                                    
-                                </tr>
-                                 
-                               <!--  <tr>
-                                    <td style="width:169px;">
-                                        <span>Template</span>
-                                    </td>
-                                    <td style="width:469px;">
-                                         <span t-field="o.template_id"/>
-                                    </td>
-                                    <td style="width:150px;">
-                                         <span>Corrective Action</span>
-                                    </td>
-                                    <td style="width:450px;">
-                                         <span t-field="o.corrective_action"/>
-                                    </td>
-                                    
-                                </tr>
-    -->
-                                
-                            </table>
-
-                           
-                          
-                            <!-- <br/> -->
-                            <table>
-                                <thead>
-                                    <tr style="font-size:16px">
-                                        <th class="text-center" style="width:50px">
-                                            <span>S.No</span>
-                                        </th>
-                                        <th class="text-center" style="width:250px">
-                                            <span>Description</span>
-                                        </th>
-                                        
-                                        <th class="text-center" style="width:100px">
-                                            <span>Specification</span>
-                                        </th>
-                                        <th class="text-center" style="width:60px">
-                                            <span>Min</span>
-                                        </th>
-                                        <th class="text-center" style="width:60px">
-                                            <span>Max</span>
-                                        </th>
-                                      
-                                       <!--  <th class="text-center" style="width:50px">
-                                            <span>Max</span>
-                                        </th> -->
-                                        <th class="text-center" style="width:168px">
-                                            <span>Inspection Method</span>
-                                        </th>
-                                        <th class="text-center" colspan="7" style="width:4500px">
-                                            <span>Observed Value</span>
-                                        
-                                        </th>
-                                        
-                                        
-                                    </tr>
-                                    <tr style="font-size:14px;height:2cm">
-                                        <th class="text-center" style="width:50px">
-                                            <!-- <span>S.No</span> -->
-                                        </th>
-                                        <th class="text-center" style="width:250px">
-                                            <!-- <span>Dimension</span> -->
-                                        </th>
-                                        
-                                        <th class="text-center" style="width:100px">
-                                            <!-- <span>Values</span> -->
-                                        </th>
-                                        <th class="text-center" style="width:60px">
-                                            <!-- <span>Range 1</span> -->
-                                        </th>
-                                        <th class="text-center" style="width:60px">
-                                            <!-- <span>Range 1</span> -->
-                                        </th>
-                                      
-                                        <!-- <th class="text-center" style="width:50px"> -->
-                                            <!-- <span>Range 2</span> -->
-                                        <!-- </th> -->
-                                        <th class="text-center" style="width:168px">
-                                            <!-- <span>Inspection Method</span> -->
-                                        </th>
-                                        <th class="text-center" style="width:50px">
-                                            <span>1</span>
-                                        </th>
-                                        <th class="text-center" style="width:50px">
-                                            <span>2</span>
-                                        </th>
-                                        <th class="text-center" style="width:50px">
-                                            <span>3</span>
-                                        </th>
-                                        <th class="text-center" style="width:50px">
-                                            <span>4</span>
-                                        </th>
-                                        <th class="text-center" style="width:50px">
-                                            <span>5</span>
-                                        </th>
-                                        <th class="text-center" style="width:200px">
-                                            <span>Remarks</span>
-                                        </th>
-                                        <!-- <th class="text-center" style="width:140px">
-                                            <span>Status</span>
-                                        </th> -->
-                                        
-                                        
+            
+                        <!-- YTI TODO master: Remove this horrible bidouille and add a field on the structure to display the basic
+                             salary on the payslip report -->
+                        <t t-set="holiday_attest_n1" t-value="o.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays', raise_if_not_found=False)"/>
+                        <t t-set="holiday_attest_n" t-value="o.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays', raise_if_not_found=False)"/>
+                        <table class="table table-sm" t-if="o.struct_id not in [holiday_attest_n, holiday_attest_n1]">
+                            <tr>
+                                <td class="w-25"><strong>Basic Salary</strong></td>
+                                <td style="color:#875A7B" class="w-25">
+                                    <span t-esc="o.contract_id._get_contract_wage()" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </td>
+                                <td class="w-25"/>
+                                <td class="w-25"/>
+                            </tr>
+                        </table>
+                        <div id="total">
+                            <table class="table table-sm">
+                                <thead class="o_black_border">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Number of Hours</th>
+                                        <th>Number of Days</th>
+                                        <th class="text-right">Amount</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
-                                    <tr t-foreach="o.out_inspection_line_ids" t-as="l">
-                                        <td style="width:50px">
-                                            <span t-esc="l_index+1"/>
-                                        </td>
-                                      
-                                        <td style="width:250px">
-                                            <span t-field="l.description"/> 
-                                        </td>
-                                        <td style="width:100px">
-                                            <span t-field="l.specification"/>
-                                        </td>
-                                        <td style="width:60px">
-                                            <span t-field="l.range_one"/>
-                                        </td>
-                                        <td style="width:60px">
-                                            <span t-field="l.range_two"/>
-                                        </td>
-                                        <!-- <td style="width:50px">
-                                            <span t-field="l.range_two"/>
-                                        </td> -->
-                                        <td style="width:168px">
-                                            <span t-field="l.inspection_method"/>
-                                        </td>
-                                        <td style="width:50px">
-                                            <span t-if="l.s1!=0" t-field="l.s1"/>
-                                            <span t-if="l.s1==0"/>
-                                        </td>
-                                        <td style="width:50px">
-                                            <span t-if="l.s2!=0" t-field="l.s2"/>
-                                            <span t-if="l.s2==0"/>
-                                        </td>
-                                        <td style="width:50px">
-                                            <span t-if="l.s3!=0" t-field="l.s3"/>
-                                            <span t-if="l.s3==0"/>
-                                        </td>
-                                        <td style="width:50px">
-                                            <span t-if="l.s4!=0" t-field="l.s4"/>
-                                            <span t-if="l.s4==0"/>
-                                        </td>
-                                        <td style="width:50px">
-                                            <span t-if="l.s5!=0" t-field="l.s5"/>
-                                            <span t-if="l.s5==0"/>
-                                        </td>
-                                        <td style="width:200px">
-                                            <span t-field="l.remarks"/>
-                                        </td>
-                                        <!-- <td style="width:140px">
-                                            <span t-field="l.state"/>
-                                        </td> -->
-                                        
-                                    </tr>
+                                    <span t-foreach="o.worked_days_line_ids" t-as="worked_days">
+                                        <t t-if="worked_days.code != 'OUT'">
+                                            <tr style="color:none">
+                                                <td>
+                                                    <span t-field="worked_days.name"/>
+                                                </td>
+                                                <td><span t-field="worked_days.number_of_hours"/></td>
+                                                <td><span t-field="worked_days.number_of_days"/></td>
+                                                <td class="text-right"><span t-esc="worked_days.amount" digits="[42, 2]" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                                            </tr>
+                                        </t>
+                                    </span>
+                                    <span t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                                        <t t-set="line_style"/>
+                                        <t t-set="line_class"/>
+                                        <t t-if="line.code == 'NET'">
+                                            <t t-set="line_style" t-value="'color:#875A7B;'"/>
+                                            <t t-set="line_class" t-value="'o_total o_border_bottom font-weight-bold'"/>
+                                        </t>
+                                        <t t-if="(line.code == 'BASIC') or (line.code == 'GROSS')">
+                                            <t t-set="line_style" t-value="'color:#00A09D;'"/>
+                                            <t t-set="line_class" t-value="'o_subtotal o_border_bottom'"/>
+                                        </t>
+                                        <tr t-att-class="line_class" t-att-style="line_style">
+                                            <td><span t-field="line.name"/></td>
+                                            <td/>
+                                            <td><span t-if="line.quantity &gt; 1" t-esc="line.quantity"/></td>
+                                            <td class="text-right"><span t-esc="line.total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}" t-att-style="'color:#875A7B;' if line.total &lt; 0 else ''"/></td>
+                                        </tr>
+                                    </span>
                                 </tbody>
-                                <tr>
-                                    <td style="width:300px" colspan="2">
-                                        <!-- <span>Cylinder Inspection Status</span> -->
-                                    </td>
-                                  
-                                    <td style="width:220px" colspan="3">
-                                        <!-- <span>Accepted</span> -->
-                                    </td>
-                                  
-                                    <td style="width:168px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:200px">
-                                        <!-- <span>Approved</span> -->
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:300px;border-bottom:hidden" colspan="2">
-                                        <span>Cylinder Inspection Status</span>
-                                    </td>
-                                  
-                                    <td style="width:220px" colspan="3">
-                                        <span>Accepted</span>
-                                    </td>
-                                  
-                                    <td style="width:168px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:200px;border-bottom:hidden">
-                                        <span>Approved</span>
-
-                                    </td>
-                                       
-                                        
-                                </tr>
-                                <tr>
-                                    <td style="width:300px;border-top:hidden" colspan="2">
-                                        <!-- <span>Cylinder Inspection Status</span> -->
-                                    </td>
-                                  
-                                    <td style="width:220px" colspan="3">
-                                        <span>Rejected</span>
-                                    </td>
-                                  
-                                    <td style="width:168px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:50px">
-                                    </td>
-                                    <td style="width:200px;border-top:hidden">
-                                    </td>
-                                       
-                                        
-                                </tr>
-                                
                             </table>
-                          
-
-                            
-
+                        </div>
+                        <p t-if="o.net_wage &gt;= 0">To pay on <b><span t-field="o.employee_id.bank_account_id"/></b> of <i><span t-field="o.employee_id"/></i>: <span t-field="o.net_wage"/></p>
+                        <p t-if="o.net_wage &lt; 0">The net amount will be recovered from the first positive remuneration established after this.</p>
+            
+                        <p class="text-center">Made by Odoo with ❤️</p>
                     </div>
                 </t>
             </t>
 
         </template>
 
-        <template id="report_inspection_out">
+        <template id="report_hr_payslip">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
-                    <t t-call="oodu_shs_out_inspection_report.report_inspection_document_out" t-lang="doc.partner_id.lang"/>
+                    <t t-call="oi_shs_hr_payslip_report.report_template_hr_payslip" t-lang="doc.partner_id.lang"/>
                 </t>
             </t>
         </template>

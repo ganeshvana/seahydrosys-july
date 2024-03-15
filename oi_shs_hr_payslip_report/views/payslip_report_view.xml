@@ -18,13 +18,13 @@
             <field name="dpi">90</field>
         </record>
 
-        <report id="action_report_inspection_out"
-                string="Out Inspection Report"
-                model="quality.inspection.out"
+        <report id="action_report_hr_payslip"
+                string="HR Payslip"
+                model="hr.payslip"
                 report_type="qweb-pdf"
-                file="oodu_shs_out_inspection_report.report_inspection_out"
-                name="oodu_shs_out_inspection_report.report_inspection_out"
-                paperformat = "oodu_shs_out_inspection_report.paper_format_inspection"
+                file="oi_shs_hr_payslip_report.report_hr_payslip"
+                name="oi_shs_hr_payslip_report.report_hr_payslip"
+                paperformat = "oi_shs_hr_payslip_report.paper_format_inspection"
 
         />
     </data>
