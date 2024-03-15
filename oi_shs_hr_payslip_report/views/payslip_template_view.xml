@@ -45,7 +45,7 @@
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>FATHER'S NAME</span>
                                   <span>:</span>
-                                  <span></span>
+                                  <span t-field="o.employee_id.father_name"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>ESI NO.</span>

@@ -11,7 +11,7 @@
     'data': [
             'views/payslip_report_view.xml',
             'views/payslip_template_view.xml',
-            # 'views/hr_employee_view.xml',
+            'views/hr_employee_view.xml',
             ],
     'installable': True,
     'application': True,
