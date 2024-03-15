@@ -9,8 +9,8 @@
     'category': 'HR Payslip',
     'depends': ['base', 'stock',],
     'data': [
-            # 'views/inspection_report_view.xml',
-            # 'views/inspection_template_view.xml'
+            'views/payslip_report_view.xml',
+            'views/payslip_template_view.xml'
             ],
     'installable': True,
     'application': True,
