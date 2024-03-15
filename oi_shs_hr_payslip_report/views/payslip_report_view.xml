@@ -26,5 +26,17 @@
                 name="oi_shs_hr_payslip_report.report_hr_payslip"
                 paperformat="oi_shs_hr_payslip_report.paper_format_inspection"
         />
+
+
+        <record id="view_hr_payslip_report_inherit" model="ir.ui.view">
+            <field name="name">hr.payslip.form.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_print_payslip']" position="after">
+                    <button name="print_payslip_report" string="Print HR Payslip" type="object" class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
