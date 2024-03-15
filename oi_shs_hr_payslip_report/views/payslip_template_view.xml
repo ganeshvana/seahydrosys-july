@@ -18,50 +18,84 @@
                             
                             <table width="100%" name="employee-infos" class="table table-sm table-bordered">
                               <tr>
-                                <td width="50%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span>EMP No.</span>
-                                  <span>:</span>
-                                  <span t-field="o.employee_id.identification_id"/>
                                 </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span t-field="o.employee_id.identification_id"/>
+                                </td> 
+                                  
+                               
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>BANK DETAILS</span>
-                                   <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                    <span t-field="o.employee_id.bank_account_id"/>
                                 </td>  
                               </tr>  
                               <tr>
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>EMP NAME</span>
-                                  <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span t-field="o.employee_id"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>PF NO.</span>
-                                   <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span></span>
                                 </td>  
                               </tr>  
                               <tr>
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>FATHER'S NAME</span>
-                                  <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span t-field="o.employee_id.father_name"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>ESI NO.</span>
-                                   <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                    <span t-field="o.employee_id.esic_number"/>
                                 </td>  
                               </tr>  
                               <tr>
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>DATE OF BIRTH</span>
-                                  <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span t-field="o.employee_id.birthday"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>PRESENT DAYS</span>
-                                   <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                    <span t-foreach="o.worked_days_line_ids" t-as="worked_days">
                                             <t t-if="worked_days.code != 'OUT'">
                                                 <span t-field="worked_days.number_of_days"/>
@@ -72,48 +106,80 @@
                               <tr>
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>UAN NO.</span>
-                                  <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                    <span t-field="o.employee_id.uan"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>N/F/P DAYS</span>
-                                   <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span></span>
                                 </td>  
                               </tr>  
                               <tr>
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>DESIGNATION</span>
-                                  <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span t-field="o.employee_id.job_title"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>LEAVE WITH WAGES</span>
-                                   <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span></span>
                                 </td>  
                               </tr>  
                               <tr>
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>DEPARTMENT</span>
-                                  <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span t-field="o.employee_id.department_id"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>LOP DAYS</span>
-                                   <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span></span>
                                 </td>  
                               </tr>  
                               <tr>
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>DATE OF APPOINTMENT</span>
-                                  <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span t-field="o.employee_id.date_of_joining"/>
                                 </td>  
                                 <td width="50%" style="font-size:15px;text-align:left;border:hidden;">
                                   <span>OT HOURS</span>
-                                   <span>:</span>
+                                </td>  
+                                <td width="5%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
+                                <span>:</span>
+                                </td> 
+                                <td width="20%" style="font-size:15px;text-align:left;border-bottom:hidden;border-left:hidden;border-right:hidden;">
                                   <span></span>
                                 </td>  
                               
@@ -127,8 +193,7 @@
                                       <th style="font-size: 15px;text-align:left;padding:6px">DESCRIPTION</th>
                                       <th style="font-size:15px;text-align:left;padding:6px;">STANDARD</th>
                                       <th style="font-size:15px;text-align:left;padding:6px;">EARNINGS</th>
-                                      <!--<th style="font-size: 15px;text-align:center;padding:6px;color:#94AA81 !important">QUANTITY</th>          -->
-                                      <th style="font-size: 15px;text-align:left;padding:6px;">DEDUCTIONS</th>
+                                      <!-- <th style="font-size: 15px;text-align:left;padding:6px;">DEDUCTIONS</th> -->
                                       
                                   </b>
                               </tr>
@@ -137,12 +202,7 @@
                                         <td style="font-size: 15px; text-align: left; padding: 6px;"><span t-field="line.name"/></td>
                                         <td style="font-size: 15px; text-align: left; padding: 6px;"><span t-field="line.amount"/></td>
                                         <td style="font-size: 15px; text-align: left; padding: 6px;"><span t-field="line.amount"/></td>
-                                        <!--<td style="font-size: 15px; text-align: right; padding: 6px;"><span t-field="line.quantity"/></td>-->
-                                        <td style="font-size: 15px; text-align: left; padding: 6px;"><span t-field="line.total"/></td>
-                                        <!--<td style="font-size: 15px; text-align: left; padding: 6px;">-->
-                                        <!--    <span t-esc="', '.join(map(lambda x: x.description or x.name, line.tax_ids))"/>-->
-                                        <!--</td>-->
-                                        <!--<td style="font-size: 15px; text-align: right; padding: 6px;"><span t-field="line.price_subtotal"/></td>-->
+                                        <!-- <td style="font-size: 15px; text-align: left; padding: 6px;"><span t-field="line.total"/></td> -->
                                     </tr>
                                 
                           </table>
@@ -210,7 +270,7 @@
                             <!-- <p t-if="o.net_wage &gt;= 0">To pay on <b><span t-field="o.employee_id.bank_account_id"/></b> of <i><span t-field="o.employee_id"/></i>: <span t-field="o.net_wage"/></p> -->
                             <!--<p t-if="o.net_wage &lt; 0">The net amount will be recovered from the first positive remuneration established after this.</p>-->
                 
-                            <p class="text-center">Made by Odoo with ❤️</p>
+                            <!-- <p class="text-center">Made by Odoo with ❤️</p> -->
                         </div>
                     </t>
                 </t>
