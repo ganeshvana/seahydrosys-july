@@ -24,8 +24,7 @@
                 report_type="qweb-pdf"
                 file="oi_shs_hr_payslip_report.report_hr_payslip"
                 name="oi_shs_hr_payslip_report.report_hr_payslip"
-                paperformat = "oi_shs_hr_payslip_report.paper_format_inspection"
-
+                paperformat="oi_shs_hr_payslip_report.paper_format_inspection"
         />
     </data>
 </odoo>
