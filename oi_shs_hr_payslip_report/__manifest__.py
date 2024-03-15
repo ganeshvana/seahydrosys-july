@@ -7,7 +7,7 @@
     'author':"Oodu Implementers Private Limited",
     'description': """This module fetches data from Payslip in PDF format""",
     'category': 'HR Payslip',
-    'depends': ['base', 'stock',],
+    'depends': ['base', 'stock','hr',],
     'data': [
             'views/payslip_report_view.xml',
             'views/payslip_template_view.xml'
@@ -15,5 +15,7 @@
     'installable': True,
     'application': True,
     'auto_install': False,
+    
+    
 
 }
