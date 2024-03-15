@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'HR Payslip',
-    "version": "1.0",
+    "version": "12.0.1.0.0",
     'summary': '',
     'author':"Oodu Implementers Private Limited",
     'description': """This module fetches data from Payslip in PDF format""",

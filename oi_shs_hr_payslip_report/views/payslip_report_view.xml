@@ -18,7 +18,7 @@
             <field name="dpi">90</field>
         </record>
 
-        <report id="action_report_hr_payslip"
+        <report id="action_print_report_hr_payslip"
                 string="HR Payslip"
                 model="hr.payslip"
                 report_type="qweb-pdf"
