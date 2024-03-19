@@ -48,3 +48,8 @@ class ResPartnerBank(models.Model):
     ifsc_code = fields.Char(
          string='IFSC Code')
     
+
+
+class JobTitle(models.Model):
+    _name = "job.title"
+    _description = "Job Titles"
