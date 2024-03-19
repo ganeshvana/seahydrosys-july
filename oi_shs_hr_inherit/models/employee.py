@@ -11,7 +11,7 @@ class HrEmployee(models.Model):
     date_of_joining = fields.Datetime("")
     actual_doj = fields.Datetime(string="Actual DOJ (Offroll)")
     job_title_id = fields.Many2one(
-        'job.title', string='Job Title')
+        'hr.job', string='Job Title')
 
 
 
