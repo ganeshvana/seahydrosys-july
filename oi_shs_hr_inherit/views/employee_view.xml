@@ -23,8 +23,8 @@
             <xpath expr="//field[@name='user_id']" position="before">
                     <field name="actual_doj" />
             </xpath>
-            <xpath expr="//field[@name='job_title']" position="attributes">
-                <attributes name="invisible">True</attributes>
+            <xpath expr="//field[@name='job_title']" position="replace">
+                <field name="job_title_id" placeholder="Job Position"/>
             </xpath>
 
             
