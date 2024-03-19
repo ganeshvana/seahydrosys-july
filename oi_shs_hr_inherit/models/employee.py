@@ -10,7 +10,8 @@ class HrEmployee(models.Model):
         'res.partner', string='Present Address')
     date_of_joining = fields.Datetime("")
     actual_doj = fields.Datetime(string="Actual DOJ (Offroll)")
-
+    job_title_id = fields.Many2one(
+        'job.title', string='Job Title')
 
 
 
@@ -53,3 +54,5 @@ class ResPartnerBank(models.Model):
 class JobTitle(models.Model):
     _name = "job.title"
     _description = "Job Titles"
+    
+    name = fields.Char("Father's Name")
