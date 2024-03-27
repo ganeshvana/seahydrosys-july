@@ -30,11 +30,11 @@ class ProductTemplate(models.Model):
             if record.sale_delay <= 0.00:
                 raise ValidationError('The value of Customer Lead Time  must be greater than 0.00.')
 
-    @api.constrains('produce_delay')
-    def _check_produce_delay(self):
-        for record in self:
-            if record.produce_delay <= 0.00:
-                raise ValidationError('The value of Manuf. Lead Time  must be greater than 0.00.')
+    # @api.constrains('produce_delay')
+    # def _check_produce_delay(self):
+    #     for record in self:
+    #         if record.produce_delay <= 0.00:
+    #             raise ValidationError('The value of Manuf. Lead Time  must be greater than 0.00.')
 
 
     @api.constrains('sale_ok', 'sale_delay')
