@@ -36,7 +36,10 @@
                 <attribute name="readonly">1</attribute>
             </xpath>
             <xpath expr="//field[@name='user_id']" position="after">
-            <field name="sea_batch_no" optional="hide"></field></xpath>
+            <field name="sea_batch_no" optional="hide"></field>
+            <field name="sea_delivery_date" optional="hide"></field>
+            
+            </xpath>
         </field>
     </record>
     <record id="view_mrp_production_filter_inherit" model="ir.ui.view">
