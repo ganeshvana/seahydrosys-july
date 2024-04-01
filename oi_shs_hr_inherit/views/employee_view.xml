@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_employee_form_inherited" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+             <xpath expr="//field[@name='address_home_id']" position="attributes">
+                    <attribute name="string">Permanent Address</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="string">Personal Mobile</attribute>
+                </xpath>
+            <xpath expr="//field[@name='address_home_id']" position="after">
+                    <field name="current_address" widget="res_partner_many2one"
+                        context="{'show_address': 1}"
+                        options='{"always_reload": True}' />
+            </xpath>
+            <xpath expr="//field[@name='registration_number']" position="after">
+                    <field name="date_of_joining" />
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="before">
+                    <field name="actual_doj" />
+            </xpath>
+            <xpath expr="//field[@name='job_title']" position="replace">
+                <field name="job_title_id" placeholder="Job Position"/>
+            </xpath>
+
+            
+        </field>
+    </record>
+
+
+    <record id="hr_employee_contract_form_inherited" model="ir.ui.view">
+            <field name="name">hr.employee.contract.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='first_contract_date']" position="after">
+                    <field name="actual_doj" />
+            </xpath>
+        </field>
+    </record>
+
+
+     <record id="res_partner_bank_form_inherited" model="ir.ui.view">
+            <field name="name">res.partner.bank.form</field>
+            <field name="model">res.partner.bank</field>
+            <field name="inherit_id" ref="base.view_partner_bank_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="ifsc_code" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_employee" model="ir.ui.view">
+            <field name="name">hr.employee.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div/field[@name='category_ids']" position="attributes">
+                    <attribute name="options">{'color_field': 'color','always_reload': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+      
+        <record id="view_hr_employee_kanban" model="ir.ui.view">
+            <field name="name">hr.employee.kanban.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+            <field name="arch" type="xml">
+                <xpath expr="//li[field/@name='work_phone']" position="replace">
+                    <li t-if="record.mobile_phone.raw_value" class="o_force_ltr">
+                        <field name="mobile_phone"/>
+                    </li>
+                    <li t-if="record.registration_number.raw_value" class="o_force_ltr">
+                        <field name="registration_number"/>
+                    </li>
+                </xpath>                
+            </field>
+        </record>
+        
+    <!-- Contract -->
+    <record id="hr_contract_form_inherited" model="ir.ui.view">
+            <field name="name">hr.contract.form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+           
+            <xpath expr="//field[@name='hr_responsible_id']" position="after">
+                     <field name="years_of_experience" readonly="0"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    </data>
+</odoo>
