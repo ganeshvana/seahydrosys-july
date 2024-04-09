@@ -301,7 +301,8 @@ class MRPBOMStructureXl(models.TransientModel):
                                         on_hand = ''
                                     
                                     if product:
-                                        categ = product.categ_id.complete_name
+                                        category_id = product.categ_id
+                                        categ = category_id.complete_name
                                     else:
                                         categ = ''
                                     if categ:
