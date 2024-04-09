@@ -10,8 +10,6 @@ from dateutil.relativedelta import relativedelta
 from lxml import etree
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.modules.module import get_resource_path
 from odoo.tools.misc import xlsxwriter
 
 
@@ -301,8 +299,9 @@ class MRPBOMStructureXl(models.TransientModel):
                                         on_hand = ''
                                     
                                     if product:
-                                        category_id = product.categ_id
-                                        categ = category_id.complete_name
+                                        for categ in product:
+                                            category_id = categ.categ_id
+                                            categ = category_id.complete_name
                                     else:
                                         categ = ''
                                     if categ:
