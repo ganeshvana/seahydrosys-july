@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from datetime import datetime
+
 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    
+    customer_po_date = fields.Date("Customer PO Date")
 
     def _order_revised_count(self):
         for sale_rec in self:

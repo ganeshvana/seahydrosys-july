@@ -53,7 +53,7 @@ class stock_picking_inherit(models.Model):
 class sale_order(models.Model):
 
     _inherit = 'sale.order'
-
+    
 
     def action_confirm(self):
         res = super(sale_order, self).action_confirm()
