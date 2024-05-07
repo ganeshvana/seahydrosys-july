@@ -22,12 +22,22 @@ class stock_picking_inherit(models.Model):
                 weight += line.product_uom_qty * line.product_id.weight
                 self.fcl_weight = weight
 
+    # @api.depends('origin')
+    # def _get_mo(self):
+    #     for pick in self:
+    #         if self.origin:
+    #             mo = self.env['mrp.production'].search([('name', '=', self.origin)])
+    #             self.mrp_id = mo.id
+    
     @api.depends('origin')
     def _get_mo(self):
         for pick in self:
-            if self.origin:
-                mo = self.env['mrp.production'].search([('name', '=', self.origin)])
-                self.mrp_id = mo.id
+            if pick.origin:  
+                mo = self.env['mrp.production'].search([('name', '=', pick.origin)])
+                if mo:
+                    pick.mrp_id = mo[0].id  
+                else:
+                    pick.mrp_id = False 
 
 
     supplier_ref = fields.Char(string="Supplier's Ref")
