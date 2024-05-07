@@ -33,6 +33,14 @@
                 </button>
             </xpath>
 
+            <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                <attribute name="string">Customer PO Reference</attribute>
+            </xpath>
+            
+            <xpath expr="//field[@name='client_order_ref']" position="after">
+               <field name="customer_po_date"/>
+            </xpath>
+
         </field>
     </record>
 
