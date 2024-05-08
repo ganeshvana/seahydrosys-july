@@ -7,12 +7,12 @@ class picking(models.Model):
     
     todo_date = fields.Date("To Do Date")
     
-    def button_validate(self):
-        result = super(picking, self).button_validate()
-        internal = self.env['stock.picking'].search([('origin', '=', self.origin), ('picking_type_code', '=', 'internal')])
-        if internal:        
-            internal.todo_date = fields.Date.today()  +  timedelta(days=3)
-        return result
+    # def button_validate(self):
+    #     result = super(picking, self).button_validate()
+    #     internal = self.env['stock.picking'].search([('origin', '=', self.origin), ('picking_type_code', '=', 'internal')])
+    #     if internal:        
+    #         internal.todo_date = fields.Date.today()  +  timedelta(days=3)
+    #     return result
 
 class purchase_order(models.Model):
     _inherit = "purchase.order"
