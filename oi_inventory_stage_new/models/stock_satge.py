@@ -186,7 +186,7 @@ class ProductProduct(models.Model):
 
                 qty_to_take_on_candidates -= qty_taken_on_candidate
                 tmp_value += value_taken_on_candidate
-                if float_is_zero(qty_to_take_on_candidates, precision_rounding=self.uom_id.rounding):
+                if float_is_zero(qty_to_take_on_candidates, precision_rounding=product.uom_id.rounding):
                     break
 
             # Get the estimated value we will correct.
