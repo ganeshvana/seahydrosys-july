@@ -186,7 +186,7 @@ class ProductProduct(models.Model):
 
                 qty_to_take_on_candidates -= qty_taken_on_candidate
                 tmp_value += value_taken_on_candidate
-                if float_is_zero(qty_to_take_on_candidates, precision_rounding=product.uom_id.rounding):
+                if float_is_zero(qty_to_take_on_candidates, precision_rounding=self.uom_id.rounding):
                     break
 
             # Get the estimated value we will correct.
@@ -222,7 +222,7 @@ class ProductProduct(models.Model):
 
         # If some negative stock were fixed, we need to recompute the standard price.
         product = self.with_company(company.id)
-        if product.cost_method == 'average' and not float_is_zero(product.quantity_svl, precision_rounding=self.uom_id.rounding):
+        if product.cost_method == 'average' and not float_is_zero(product.quantity_svl, precision_rounding=product.uom_id.rounding):
             product.sudo().with_context(disable_auto_svl=True).write({'standard_price': product.value_svl / product.quantity_svl})
 
         self.env['stock.valuation.layer'].browse(x[0].id for x in as_svls)._validate_accounting_entries()
