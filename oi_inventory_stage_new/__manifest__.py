@@ -7,7 +7,7 @@
     'version': '15.0',
     'author': 'oodu implementers ',
     'description': """""",
-    'depends': ['base','stock',],
+    'depends': ['base','stock','stock_account'],
     'application': True,
     'data': [
         'views/inherit.xml',
