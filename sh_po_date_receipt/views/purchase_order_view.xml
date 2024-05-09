@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sh_purchase_order_line_date_form_view" model="ir.ui.view">
+        <field name="name">Purchase Order Form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]/field[@name='order_line']//tree//field[@name='product_qty']" position="after">
+                <field name="po_date" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

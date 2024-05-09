@@ -1,0 +1,95 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sh_po_date_receipt
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-29 07:01+0000\n"
+"PO-Revision-Date: 2020-10-29 07:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sh_po_date_receipt
+#: model:ir.model.fields,help:sh_po_date_receipt.field_stock_move__date_deadline
+msgid "Date Promise to the customer on the top level document (SO/PO)"
+msgstr "Datum Versprechen an den Kunden auf dem Dokument der obersten Ebene (SO / PO)"
+
+#. module: sh_po_date_receipt
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_stock_move__date_deadline
+msgid "Deadline"
+msgstr "Frist"
+
+#. module: sh_po_date_receipt
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_purchase_order__display_name
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_purchase_order_line__display_name
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_stock_move__display_name
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_stock_picking__display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: sh_po_date_receipt
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_purchase_order__id
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_purchase_order_line__id
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_stock_move__id
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_stock_picking__id
+msgid "ID"
+msgstr "ICH WÜRDE"
+
+#. module: sh_po_date_receipt
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_purchase_order____last_update
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_purchase_order_line____last_update
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_stock_move____last_update
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_stock_picking____last_update
+msgid "Last Modified on"
+msgstr "Zuletzt geändert am"
+
+#. module: sh_po_date_receipt
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_purchase_order_line__po_date
+msgid "Purchase Order Date"
+msgstr "Bestelldatum"
+
+#. module: sh_po_date_receipt
+#: model:ir.model,name:sh_po_date_receipt.model_purchase_order
+msgid "Purchase Order"
+msgstr "Bestellung"
+
+#. module: sh_po_date_receipt
+#: model:ir.model,name:sh_po_date_receipt.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Bestellposition"
+
+#. module: sh_po_date_receipt
+#: model:ir.model.fields,field_description:sh_po_date_receipt.field_stock_picking__scheduled_date
+msgid "Scheduled Date"
+msgstr "Geplantes Datum"
+
+#. module: sh_po_date_receipt
+#: model:ir.model.fields,help:sh_po_date_receipt.field_stock_picking__scheduled_date
+msgid ""
+"Scheduled time for the first part of the shipment to be processed. Setting "
+"manually a value here would set it as expected date for all the stock moves."
+msgstr ""
+"Geplante Zeit für die Bearbeitung des ersten Teils der Sendung. Einstellung"
+"Manuell würde ein Wert hier das erwartete Datum für alle Aktienbewegungen festlegen."
+
+#. module: sh_po_date_receipt
+#: model:ir.model,name:sh_po_date_receipt.model_stock_move
+msgid "Stock Move"
+msgstr "Lager bewegen"
+
+#. module: sh_po_date_receipt
+#: model:ir.model,name:sh_po_date_receipt.model_stock_picking
+msgid "Transfer"
+msgstr "Transfer"
+
+#. module: sh_po_date_receipt
+#: code:addons/sh_po_date_receipt/models/purchase_order.py:0
+#, python-format
+msgid "You must set a Vendor Location for this partner %s"
+msgstr "Sie müssen einen Lieferantenstandort für diesen Partner% s festlegen"
