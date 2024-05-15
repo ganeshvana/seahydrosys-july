@@ -20,7 +20,8 @@
 #
 #############################################################################
 from odoo import api, fields, models, _
-
+import logging
+_logger = logging.getLogger(__name__)
 
 class OrderMrpMerge(models.TransientModel):
     """
@@ -191,6 +192,10 @@ class OrderMrpMerge(models.TransientModel):
     def merge_manufacturing_order(self, order_ids, total_quantity,
                                   location_src_id, location_dest_id):
         """Creating a new manufacturing order based on selected mrp orders."""
+        origin = ''
+        for o in order_ids:
+            origin += o.origin + ' - '
+
         if self.manage_qty:
             total_quantity = self.merge_line_ids.quantity
         mrp_order = self.env['mrp.production'].create([{
@@ -200,15 +205,17 @@ class OrderMrpMerge(models.TransientModel):
             'qty_produced': total_quantity,
             'product_uom_id': order_ids[0].product_uom_id.id,
             'bom_id': order_ids[0].bom_id.id,
-            'origin': order_ids[0].origin,
+            'origin': origin,
             'location_src_id': location_src_id,
             'location_dest_id': location_dest_id,
         }])
+        _logger.info("mrp_order---+++++++++++++++++++++---- : %s", mrp_order)
         mrp_order._compute_product_uom_qty()
         mrp_order._compute_state()
         mrp_order._onchange_product_qty()
         mrp_order._onchange_move_raw()
         mrp_order._onchange_move_finished()
+        mrp_order._create_workorder()
         name = ''
         for value in range(len(order_ids)):
             if value == 0:
