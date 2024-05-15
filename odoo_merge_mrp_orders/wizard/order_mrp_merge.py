@@ -215,6 +215,7 @@ class OrderMrpMerge(models.TransientModel):
         mrp_order._onchange_product_qty()
         mrp_order._onchange_move_raw()
         mrp_order._onchange_move_finished()
+        mrp_order._create_workorder()
         name = ''
         for value in range(len(order_ids)):
             if value == 0:
