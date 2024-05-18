@@ -54,10 +54,10 @@
                     <strong>Expiration:</strong>
                     <p class="m-0" t-field="doc.validity_date"/>
                 </div>
-                <div t-if="doc.date_order" class="col-auto col-3 mw-100 mb-2">
-                    <strong>Shipment Date:</strong>
-                    <p class="m-0" t-field="doc.date_order"/>
-                </div>
+<!--                <div t-if="doc.date_order" class="col-auto col-3 mw-100 mb-2">-->
+<!--                    <strong>Shipment Date:</strong>-->
+<!--                    <p class="m-0" t-field="doc.date_order"/>-->
+<!--                </div>-->
             </div>
 
             <!-- Is there a discount on at least one line? -->
