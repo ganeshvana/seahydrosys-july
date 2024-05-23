@@ -7,11 +7,10 @@
     'author': 'Oodu Implementers Pvt. Ltd',
     'description': """This module contains extended view of sale document""",
     'category': 'Sales',
-    'depends': ['base', 'sale'],
+    'depends': ['base', 'sale', 'sale_stock],
     'data': [
-    # 'views/purchase_view.xml',
+    'views/sale_view.xml',
     'views/sale_report_view.xml',
-
     'views/sale_report_extend.xml',
     'views/sale_report_without_price.xml',
     ],
