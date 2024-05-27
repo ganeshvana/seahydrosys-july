@@ -66,6 +66,9 @@ class crm_lead(models.Model):
 class CrmLeadLost(models.TransientModel):
     _inherit = 'crm.lead.lost'
     
+    
+    lost_reason_id = fields.Many2one('crm.lost.reason', 'Lost Reason') 
+    
     def action_lost_reason_apply(self):
         leads = self.env['crm.lead'].browse(self.env.context.get('active_ids'))
         # Find the stage where is_lost is True
