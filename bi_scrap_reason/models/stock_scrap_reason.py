@@ -6,7 +6,7 @@ from odoo import models, fields, _
 # This model is for the scrap reasons
 # ---------------------------------------------------------------------
 
-class StockScrapReason(models.Model):
+class   StockScrapReason(models.Model):
     _name = "stock.scrap.reason"
     _description = "Stock Scrap Reason"
     _order = "sequence asc"
