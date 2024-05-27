@@ -75,7 +75,7 @@ class CrmLeadLost(models.TransientModel):
         lost_stage = self.env['crm.stage'].search([('is_lost', '=', True)], limit=1)
         if lost_stage:
             leads.write({'stage_id': lost_stage.id})
-        return leads.action_set_lost(lost_reason_id=self.lost_reason_id.id)
+        return leads.action_set_lost(lost_reason=self.lost_reason_id.id)
     
   
     
