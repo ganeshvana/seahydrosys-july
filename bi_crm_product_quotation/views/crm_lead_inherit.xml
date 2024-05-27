@@ -47,4 +47,17 @@
         }</field>
         <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
     </record>
+
+
+       <record id="view_crm_stage_form_inherit" model="ir.ui.view">
+            <field name="name">crm.stage.form.inherit</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_form" />
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_won']" position="after">
+                  <field name="is_lost"/>
+            </xpath>
+            </field>
+        </record>    
+
 </odoo>
