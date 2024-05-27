@@ -77,7 +77,7 @@ class crm_lead(models.Model):
   
     
     
-class CRMStage(models.Model):
-    _inherit = 'crm.stage'
+# class CRMStage(models.Model):
+#     _inherit = 'crm.stage'
     
-    is_lost  = fields.Boolean("")
+#     is_lost  = fields.Boolean("")
