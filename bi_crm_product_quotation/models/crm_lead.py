@@ -63,21 +63,21 @@ class crm_lead(models.Model):
 
 
    
-# class CrmLeadLost(models.TransientModel):
-#     _inherit = 'crm.lead.lost'
+class CrmLeadLost(models.TransientModel):
+    _inherit = 'crm.lead.lost'
     
-#     def action_lost_reason_apply(self):
-#         leads = self.env['crm.lead'].browse(self.env.context.get('active_ids'))
-#         # Find the stage where is_lost is True
-#         lost_stage = self.env['crm.stage'].search([('is_lost', '=', True)], limit=1)
-#         if lost_stage:
-#             leads.write({'stage_id': lost_stage.id})
-#         return leads.action_set_lost(lost_reason_id=self.lost_reason_id.id)
+    def action_lost_reason_apply(self):
+        leads = self.env['crm.lead'].browse(self.env.context.get('active_ids'))
+        # Find the stage where is_lost is True
+        lost_stage = self.env['crm.stage'].search([('is_lost', '=', True)], limit=1)
+        if lost_stage:
+            leads.write({'stage_id': lost_stage.id})
+        return leads.action_set_lost(lost_reason_id=self.lost_reason_id.id)
     
   
     
     
-# class CRMStage(models.Model):
-#     _inherit = 'crm.stage'
+class CRMStage(models.Model):
+    _inherit = 'crm.stage'
     
-#     is_lost  = fields.Boolean("")
+    is_lost  = fields.Boolean("")
