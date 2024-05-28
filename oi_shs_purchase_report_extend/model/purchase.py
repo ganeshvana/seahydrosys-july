@@ -51,7 +51,7 @@ class purchase_order_line(models.Model):
  
    
     price_unit = fields.Float(string='Unit Price', digits=dp.get_precision('Purchase Price'))
-    po_date =  fields.Datetime(string='Receipt Date')
+    # po_date =  fields.Datetime(string='Receipt Date')
 
 class accoount_invoice_line(models.Model):
     _inherit = "account.move.line"

@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="purchase.purchase_order_form" />
         <field name="arch" type="xml">
             <xpath expr="//notebook/page[1]/field[@name='order_line']//tree//field[@name='product_qty']" position="after">
-                <field name="po_date" />
+                <field name="po_date" string="Receipt Date" />
             </xpath>
         </field>
     </record>
