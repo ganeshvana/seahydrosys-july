@@ -50,11 +50,11 @@
         <field name="arch" type="xml">
             <form string="Purchase Order">
                 <sheet>
-                    <group>
+                    <!-- <group>
                         <field name="partner_id"/>
                         <field name="date_order" string="Order Date"/>
-                        <!-- Other fields -->
-                    </group>
+                    
+                    </group> -->
                     <notebook>
                         <page string="Order Lines">
                             <field name="order_line">
