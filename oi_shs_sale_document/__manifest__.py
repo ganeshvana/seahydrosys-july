@@ -9,7 +9,7 @@
     'category': 'Sales',
     'depends': ['base', 'sale', 'sale_stock'],
     'data': [
-    # 'views/sale_view.xml',
+    'views/sale_view.xml',
     'views/sale_report_view.xml',
     'views/sale_report_extend.xml',
     'views/sale_report_without_price.xml',
