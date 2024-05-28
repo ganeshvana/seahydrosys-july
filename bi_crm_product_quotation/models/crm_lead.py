@@ -91,6 +91,8 @@ class CrmLead(models.Model):
     _inherit = 'crm.lead'
     
     
+    is_lost = fields.Boolean(related='stage_id.is_lost',string="Lost")
+    
     def action_set_lost(self, **additional_values):
         """ Lost semantic: probability = 0 or active = False """
         if additional_values:
