@@ -60,7 +60,7 @@
                             <field name="order_line">
                                 <tree editable="bottom">
                                     
-                                    <field name="date_planned" string="Receipt Date"/>
+                                    <field name="po_date" string="Receipt Date"/>
                                     
                                 </tree>
                             </field>
