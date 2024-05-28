@@ -50,18 +50,21 @@
         <field name="arch" type="xml">
             <form string="Purchase Order">
                 <sheet>
-                    <!-- <group>
+                    <group>
                         <field name="partner_id"/>
-                        <field name="date_order" string="Receipt Date"/>
-                        Other fields
-                    </group> -->
+                        <field name="date_order" string="Order Date"/>
+                        <!-- Other fields -->
+                    </group>
                     <notebook>
                         <page string="Order Lines">
                             <field name="order_line">
                                 <tree editable="bottom">
-                                    
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="product_qty"/>
                                     <field name="po_date" string="Receipt Date"/>
-                                    
+                                    <field name="price_unit"/>
+                                    <field name="taxes_id"/>
                                 </tree>
                             </field>
                         </page>
