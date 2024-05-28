@@ -23,9 +23,9 @@
                     <strong>Your Reference:</strong>
                     <p class="m-0" t-field="doc.client_order_ref"/>
                 </div>
-                <div t-if="doc.quatation_order_date and doc.state not in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
+                <div t-if="doc.date_order and doc.state not in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
                     <strong>Order Date:</strong>
-                    <p class="m-0" t-field="doc.quatation_order_date"/>
+                    <p class="m-0" t-field="doc.date_order"/>
                     <p class="m-0" t-field="doc.pricelist_id"/>
                 </div>
                 <div t-if="doc.date_order and doc.state in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
@@ -52,11 +52,10 @@
                         <th name="th_description" class="text-left">Description</th>
                         <th name="th_quantity" class="text-right">Quantity</th>
                         <th name="th_priceunit" class="text-right">Unit Price (<span t-field="doc.pricelist_id.currency_id"/>)</th>
-                        <th></th>
                         <th name="th_discount" t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
                             <span>Disc.%</span>
                         </th>
-                        <t t-if="doc.pricelist_id.currency_id == 'INR'">
+                        <t t-if="doc.pricelist_id.currency_id.name == 'INR'">
                             <th name="th_taxes" class="text-right">Taxes</th>
                         </t>
                         <th name="th_subtotal" class="text-right">
@@ -128,7 +127,7 @@
                 </tbody>
             </table>
             
-            <div class="clearfix" name="so_total_summary">
+            <!-- <div class="clearfix" name="so_total_summary">
                 <div id="total" class="row" name="total">
                     <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
                         <table class="table table-sm">
@@ -138,7 +137,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
             <div t-if="doc.signature" class="mt32 ml64 mr4" name="signature">
@@ -166,21 +165,21 @@
         </div>
             </xpath>            
         </template>
-
-<record model="ir.ui.view" id="view_sale_order_extend_form">
+        <record model="ir.ui.view" id="view_sale_order_extend_form">
     <field name="name">view.sale.order.extend.form</field>
     <field name="model">sale.order</field>
     <field name="inherit_id" ref="sale.view_order_form"/>
     <field name="arch" type="xml">
-        <!-- Add date field in Sale order -->
-        <xpath expr="//field[@name='date_order']" position="replace">
-            <field name="quatation_order_date"/>
+
+        <xpath expr="//field[@name='date_order']" position="after">
+            <field name="commitment_date"/>
         </xpath>
-        <xpath expr="//field[@name='quatation_order_date']" position="after">
+
+        <xpath expr="//field[@name='commitment_date']" position="after">
             <field name="customer_delivery_date"/>
         </xpath>
+
     </field>
 </record>
-
     </data>
 </odoo>
