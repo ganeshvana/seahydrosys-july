@@ -88,11 +88,11 @@
                                     <span t-field="line.discount"/>
                                 </td>
                                 
-                                <!-- <t t-if="doc.pricelist_id.currency_id == 'INR'"> -->
+                                 <t t-if="doc.pricelist_id.currency_id == 'INR'">
                                     <td name="td_taxes" class="text-right">
                                         <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
                                     </td>
-                                <!-- </t> -->
+                                 </t>
 
                                 <td name="td_subtotal" class="text-right o_price_total">
                                     <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
