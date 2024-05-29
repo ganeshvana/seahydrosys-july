@@ -17,11 +17,11 @@
 
                  <xpath expr="//form/sheet/group/group/field[@name='show_update_pricelist']" position="before">
 
-                        <label for="commitment_date" string="Delivery Date"/>
-                        <div name="commitment_date_div" class="o_row">
-                            <field name="commitment_date"/>
+<!--                        <label for="commitment_date" string="Delivery Date"/>-->
+<!--                        <div name="commitment_date_div" class="o_row">-->
+<!--                            <field name="commitment_date"/>-->
 <!--                            <span name="expected_date_span" class="text-muted">Expected: <field name="expected_date" widget="date"/></span>-->
-                        </div>
+<!--                        </div>-->
                     <!-- <field name="customer_delivery_date"/> -->
                 </xpath>
             </field>
