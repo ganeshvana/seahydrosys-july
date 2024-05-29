@@ -26,7 +26,6 @@
                 <div t-if="doc.date_order and doc.state not in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
                     <strong>Order Date:</strong>
                     <p class="m-0" t-field="doc.date_order" t-options='{"widget": "date"}'/>
-                    <p class="m-0" t-field="doc.pricelist_id"/>
                 </div>
                 <div t-if="doc.date_order and doc.state in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
                     <strong>Quotation Date:</strong>
@@ -36,10 +35,10 @@
                     <strong>Expiration:</strong>
                     <p class="m-0" t-field="doc.validity_date"/>
                 </div>
-                <div t-if="doc.customer_delivery_date" class="col-auto col-3 mw-100 mb-2">
-                    <strong>Shipment Date:</strong>
-                    <p class="m-0" t-field="doc.customer_delivery_date"/>
-                </div>
+<!--                <div t-if="doc.customer_delivery_date" class="col-auto col-3 mw-100 mb-2">-->
+<!--                    <strong>Shipment Date:</strong>-->
+<!--                    <p class="m-0" t-field="doc.customer_delivery_date"/>-->
+<!--                </div>-->
             </div>
 
             <!-- Is there a discount on at least one line? -->
