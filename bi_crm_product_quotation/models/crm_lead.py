@@ -10,6 +10,13 @@ class crm_lead(models.Model):
     lead_product_ids = fields.One2many('lead.line', 'lead_line_id', string='Products', copy=True)
     crm_count = fields.Integer(string="Quotation",compute="get_quotation_count")
     is_crm_quotation = fields.Boolean('Is CRM Quotation')
+    is_lost = fields.Boolean(related='stage_id.is_lost',string="Lost")
+    
+    def action_set_lost(self, **additional_values):
+        """ Lost semantic: probability = 0 or active = False """
+        if additional_values:
+            self.write(dict(additional_values))
+        return True
 
     def action_quotations_view(self):
         order_line = [] 
@@ -58,3 +65,33 @@ class crm_lead(models.Model):
     def get_quotation_count(self):
         count = self.env['sale.order'].search_count([('partner_id','=',self.partner_id.id),('opportunity_id','=',self.id)])
         self.crm_count = count
+
+
+
+
+   
+class CrmLeadLost(models.TransientModel):
+    _inherit = 'crm.lead.lost'
+    
+    
+    lost_reason_id = fields.Many2one('crm.lost.reason', 'Lost Reason') 
+    
+    def action_lost_reason_apply(self):
+        leads = self.env['crm.lead'].browse(self.env.context.get('active_ids'))
+        # Find the stage where is_lost is True
+        lost_stage = self.env['crm.stage'].search([('is_lost', '=', True)], limit=1)
+        if lost_stage:
+            leads.write({'stage_id': lost_stage.id})
+        return leads.action_set_lost(lost_reason=self.lost_reason_id.id)
+    
+  
+    
+    
+class CRMStage(models.Model):
+    _inherit = 'crm.stage'
+    
+    is_lost  = fields.Boolean("")
+    
+    
+    
+    
