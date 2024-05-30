@@ -35,18 +35,35 @@
                     <strong>Expiration:</strong>
                     <p class="m-0" t-field="doc.validity_date"/>
                 </div>
-                <div t-if="doc.customer_delivery_date" class="col-auto col-3 mw-100 mb-2">
+                <!-- <div t-if="doc.customer_delivery_date" class="col-auto col-3 mw-100 mb-2">
                     <strong>Shipment Date:</strong>
                     <p class="m-0" t-field="doc.customer_delivery_date"/>
-                </div>
+                </div> -->
             </div>
 
             <!-- Is there a discount on at least one line? -->
             <t t-set="display_discount" t-value="any(l.discount for l in doc.order_line)"/>
 
-            <table class="table table-sm o_main_table">
+            <table class="table table-sm o_main_table" width = "100%">
                 <!-- In case we want to repeat the header, remove "display: table-row-group" -->
                 <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-left" style="width:60%">Product</th>
+                        <th name="th_quantity" class="text-right" style="width:10%">Quantity</th>
+                        <th name="th_priceunit" class="text-center" style="width:10%">Unit Price (<span t-field="doc.pricelist_id.currency_id"/>)</th>
+                        <th name="th_discount" style="width:10%" t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                            <span>Disc.%</span>
+                        </th>
+                        <t t-if="doc.pricelist_id.currency_id.name == 'INR'">
+                            <th name="th_taxes" class="text-center" style="width:10%">Taxes</th>
+                        </t>
+                        <th name="th_subtotal" class="text-right" style="width:10%">
+                            <!-- <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span> -->
+                            <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                        </th>
+                    </tr>
+                </thead>
+                <!-- <thead style="display: table-row-group">
                     <tr>
                         <th name="th_description" class="text-left">Product</th>
                         <th name="th_quantity" class="text-right">Quantity</th>
@@ -62,7 +79,7 @@
                             <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
                         </th>
                     </tr>
-                </thead>
+                </thead> -->
                 <tbody class="sale_tbody">
 
                     <t t-set="current_subtotal" t-value="0"/>
@@ -81,7 +98,7 @@
                                 </td>
 
                                 <td name="td_priceunit" class="text-right">
-                                    <span t-esc="int(line.price_unit)"/>
+                                    <span t-esc="int(line.price_unit)" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: doc.pricelist_id.currency_id}"/>
                                 </td>
                                 
                                 <td t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
@@ -95,14 +112,14 @@
                                  </t>
 
                                 <td name="td_subtotal" class="text-right o_price_total">
-                                    <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <!-- <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/> -->
                                     <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
                                 </td>
                             </t>
                             <t t-if="line.display_type == 'line_section'">
                                 <td name="td_section_line" colspan="99">
                                     <span t-field="line.name"/>
-                                </td>
+                                </td>   
                                 <t t-set="current_section" t-value="line"/>
                                 <t t-set="current_subtotal" t-value="0"/>
                             </t>
@@ -127,7 +144,6 @@
                     </t>
                 </tbody>
             </table>
-            
             <!-- <div class="clearfix" name="so_total_summary">
                 <div id="total" class="row" name="total">
                     <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
@@ -154,11 +170,11 @@
             </div>
 
             <div class="oe_structure"/>
-
+            <br/>
             <p t-field="doc.note" />
-            <p t-if="not is_html_empty(doc.payment_term_id.note)">
+            <!-- <p t-if="not is_html_empty(doc.payment_term_id.note)">
                 <span t-field="doc.payment_term_id.note"/>
-            </p>
+            </p> -->
             <p id="fiscal_position_remark" t-if="doc.fiscal_position_id and not is_html_empty(doc.fiscal_position_id.sudo().note)">
                 <strong>Fiscal Position Remark:</strong>
                 <span t-field="doc.fiscal_position_id.sudo().note"/>
