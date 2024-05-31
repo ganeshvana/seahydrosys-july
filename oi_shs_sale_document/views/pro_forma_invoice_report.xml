@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="report_proforma_invoices" inherit_id="sale.report_saleorder_document">
+        <template id="report_proforma_invoices">
 
-            <xpath expr="//div[@class='page']" position="replace">
                 <div class="page">
             <div class="oe_structure"/>
 
@@ -180,22 +179,8 @@
                 <span t-field="doc.fiscal_position_id.sudo().note"/>
             </p>
         </div>
-            </xpath>            
         </template>
 
-<record model="ir.ui.view" id="view_sale_order_extend_form">
-    <field name="name">view.sale.order.extend.form</field>
-    <field name="model">sale.order</field>
-    <field name="inherit_id" ref="sale.view_order_form"/>
-    <field name="arch" type="xml">
-        <xpath expr="//field[@name='date_order']" position="after">
-            <field name="commitment_date"/>
-        </xpath>
-        <xpath expr="//field[@name='commitment_date']" position="after">
-            <field name="customer_delivery_date"/>
-        </xpath>
-    </field>
-</record>
-    
+
     </data>
 </odoo>
