@@ -49,6 +49,13 @@ class ProductTemplate(models.Model):
     #     for product in self:
     #         if product.route_ids and not product.produce_delay:
     #             raise ValidationError("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+    
+    shs_bore = fields.Char(string="Bore")
+    shs_stroke = fields.Char(string="Stroke")
+    shs_rod = fields.Char(string="Rod")
+    shs_class = fields.Char(string="Class")
+    shs_heavy_light = fields.Char(string="Heavy / Light")
+    
 
 
 
