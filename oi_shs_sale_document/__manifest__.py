@@ -14,6 +14,8 @@
 
     'views/sale_report_extend.xml',
     'views/sale_report_without_price.xml',
+    'views/pro_forma_invoice_report.xml',
+    'views/pro_forma_invoice_template.xml',
     ],
     'installable': True,
     'application': True,

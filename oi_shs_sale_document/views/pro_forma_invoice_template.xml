@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_proforma_invoice"
+                string="Pro-Forma Invoice"
+                model="sale.order"
+                report_type="qweb-pdf"
+                file="oi_shs_sale_document.report_proforma_invoices"
+                name="oi_shs_sale_document.report_proforma_invoices"
+        />
+    </data>
+</odoo>
