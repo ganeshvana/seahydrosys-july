@@ -175,7 +175,7 @@
     </t>
 </template>
 
-<template id="action_report_proforma_invoice">
+<template id="report_proforma_invoices">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="doc">
             <t t-call="oi_shs_sale_document.report_proforma_invoice_container" t-lang="doc.partner_id.lang"/>
