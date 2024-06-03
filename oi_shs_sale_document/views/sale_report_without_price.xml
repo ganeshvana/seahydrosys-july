@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <template id="report_saleorder_document_wp">
-    <t t-call="web.external_layout">
-        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+     <t t-call="web.external_layout">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
         <t t-set="address">
-            <div t-field="doc.partner_id"
-                t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+            <div t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
             <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.account_fiscal_country_id.vat_label or 'Tax ID'"/>: <span t-field="doc.partner_id.vat"/></p>
         </t>
-        <t t-if="doc.partner_shipping_id == doc.partner_invoice_id
-                             and doc.partner_invoice_id != doc.partner_id
-                             or doc.partner_shipping_id != doc.partner_invoice_id">
+        <t t-if="doc.partner_shipping_id == doc.partner_invoice_id                              and doc.partner_invoice_id != doc.partner_id                              or doc.partner_shipping_id != doc.partner_invoice_id">
             <t t-set="information_block">
                 <strong t-if="doc.partner_shipping_id == doc.partner_invoice_id">Invoicing and Shipping Address:</strong>
                 <strong t-if="doc.partner_shipping_id != doc.partner_invoice_id">Invoicing Address:</strong>
-                <div t-field="doc.partner_invoice_id"
-                t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                <div t-field="doc.partner_invoice_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
                 <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
                     <strong>Shipping Address:</strong>
-                    <div t-field="doc.partner_shipping_id"
-                        t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    <div t-field="doc.partner_shipping_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
                 </t>
             </t>
         </t>
@@ -28,8 +23,7 @@
             <h2 class="mt16">
                 <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
                     <span t-if="doc.state not in ['draft','sent']">Order Acknowledgement # </span>
-<!--                    <span t-if="doc.state in ['draft','sent']">Quotation Acknowledgement # </span>-->
-                    <span>Quotation Acknowledgement # </span>
+                    <span t-if="doc.state in ['draft','sent']">Quotation Acknowledgement # </span>
                 </t>
                 <t t-if="env.context.get('proforma', False) or is_pro_forma">
                     <span>Pro-Forma Invoice # </span>
@@ -44,11 +38,11 @@
                 </div>
                 <div t-if="doc.date_order and doc.state not in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
                     <strong>Order Date:</strong>
-                    <p class="m-0" t-field="doc.date_order" t-options='{"widget": "date"}'/>
+                    <p class="m-0" t-field="doc.date_order" t-options="{&quot;widget&quot;: &quot;date&quot;}"/>
                 </div>
                 <div t-if="doc.date_order and doc.state in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
                     <strong>Quotation Date:</strong>
-                    <p class="m-0" t-field="doc.date_order" t-options='{"widget": "date"}'/>
+                    <p class="m-0" t-field="doc.date_order" t-options="{&quot;widget&quot;: &quot;date&quot;}"/>
                 </div>
                 <div t-if="doc.validity_date and doc.state in ['draft', 'sent']" class="col-auto col-3 mw-100 mb-2" name="expiration_date">
                     <strong>Expiration:</strong>
@@ -62,8 +56,10 @@
 
             <!-- Is there a discount on at least one line? -->
             <t t-set="display_discount" t-value="any(l.discount for l in doc.order_line)"/>
+            
+<div class="row mt32 mb32" id="informations">
 
-            <table class="table table-sm o_main_table" width="100%">
+             <table class="table table-sm o_main_table" width="100%">
                 <!-- In case we want to repeat the header, remove "display: table-row-group" -->
                 <thead style="display: table-row-group">
                     <tr>
@@ -80,6 +76,7 @@
                         </th> -->
                     </tr>
                 </thead>
+                
                 <tbody class="sale_tbody">
 
                     <t t-set="current_subtotal" t-value="0"/>
@@ -135,14 +132,15 @@
                     </t>
                 </tbody>
             </table>
-
-            <div class="clearfix" name="so_total_summary">
+        </div>
+        
+        <div class="clearfix" name="so_total_summary">
                 <div id="total" class="row" name="total">
                     <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
                         <table class="table table-sm" style="padding-right: 200px;">
                         <tr>
                         <td style="text-align:right;">
-                        <span style="text-align:left;padding-right:67%;">Total</span>
+                        <span style="text-align:left;padding-right:60%;">Total</span>
                             <b><t t-esc="(i)" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></b>
                         </td>
                         </tr>                                
@@ -150,6 +148,8 @@
                     </div>
                 </div>
             </div>
+
+          
             <div t-if="doc.signature" class="mt32 ml64 mr4" name="signature">
                 <div class="offset-8">
                     <strong>Signature</strong>
@@ -163,7 +163,7 @@
             </div>
             <br/>
             <div class="oe_structure"/>
-            <p t-field="doc.note" />
+            <p t-field="doc.note"/>
             <!-- <p t-if="not is_html_empty(doc.payment_term_id.note)">
                 <span t-field="doc.payment_term_id.note"/>
             </p> -->
