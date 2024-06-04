@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_leap_split_delivery_order_all,access.leap.split.delivery.order.all,model_leap_split_delivery_order,group_allow_split_delivery_orders,1,1,1,1
+access_leap_split_delivery_order_line_all,access.leap.split.delivery.order.line.all,model_leap_split_delivery_order_line,group_allow_split_delivery_orders,1,1,1,1
