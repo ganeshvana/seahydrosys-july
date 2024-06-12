@@ -140,7 +140,7 @@ class SaleOrderConfirmation(models.Model):
         self.with_context(context)._action_confirm()
         if self.env.user.has_group('sale.group_auto_done_setting'):
             self.action_done()
-        self.action_sale_send()
+        # self.action_sale_send()
         return True
 
 
@@ -169,26 +169,29 @@ class SaleOrderConfirmation(models.Model):
                 'context': ctx,
             }
 
-    def action_cancel(self):  
-        cancel_warning = self._show_cancel_wizard()
-        if cancel_warning:
-            return {
-                'name': _('Cancel Sales Order'),
-                'view_mode': 'form',
-                'res_model': 'sale.order.cancel',
-                'view_id': self.env.ref('sale.sale_order_cancel_view_form').id,
-                'type': 'ir.actions.act_window',
-                'context': {'default_order_id': self.id},
-                'target': 'new'
-            }
-        inv = self.invoice_ids.filtered(lambda inv: inv.state == 'draft')
-        inv.button_cancel()
-        self.write({'state': 'cancel'})
-        self.action_sale_send()  
-        mail_template_id = self.env.ref('oi_shs_mail.sale_order_cancel_view_form')
-        template = self.env['mail.template'].sudo().browse(mail_template_id.id)
-        self.env['mail.template'].browse(mail_template_id.id).send_mail(self.id, force_send=True) 
-        return True
+    # def action_cancel(self):  
+    #     cancel_warning = self._show_cancel_wizard()
+    #     if cancel_warning:
+    #         return {
+    #             'name': _('Cancel Sales Order'),
+    #             'view_mode': 'form',
+    #             'res_model': 'sale.order.cancel',
+    #             'view_id': self.env.ref('sale.sale_order_cancel_view_form').id,
+    #             'type': 'ir.actions.act_window',
+    #             'context': {'default_order_id': self.id},
+    #             'target': 'new'
+    #         }
+    #     inv = self.invoice_ids.filtered(lambda inv: inv.state == 'draft')
+    #     inv.button_cancel()
+    #     self.write({'state': 'cancel'})
+    #     self.action_sale_send()  
+    #     mail_template_id = self.env.ref('oi_shs_mail.sale_order_cancel_view_form')
+    #     template = self.env['mail.template'].sudo().browse(mail_template_id.id)
+    #     self.env['mail.template'].browse(mail_template_id.id).send_mail(self.id, force_send=True) 
+    #     return True
+    
+    
+
 
     def create(self, vals):
             res = super(SaleOrderConfirmation, self).create(vals)
