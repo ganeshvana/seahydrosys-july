@@ -140,7 +140,7 @@ class SaleOrderConfirmation(models.Model):
         self.with_context(context)._action_confirm()
         if self.env.user.has_group('sale.group_auto_done_setting'):
             self.action_done()
-        # self.action_sale_send()
+        self.action_sale_send()
         return True
 
 
