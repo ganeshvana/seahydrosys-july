@@ -88,6 +88,14 @@ class quality_inspection(models.Model):
     rejection_reference = fields.Char("Rejection Reference")
     debit_note_reference = fields.Char("Debit Note Reference")
 
+    @api.onchange('osn_qty','msn_qty','process_qty')
+    def compute_rejection_qty(self):
+        for rec in self:
+            if rec.osn_qty or rec.msn_qty or rec.process_qty:
+                rec.rejection_qty = rec.osn_qty+rec.msn_qty+rec.process_qty
+            else:
+                rec.rejection_qty = 0.00    
+                
 
     @api.model
     def create(self, vals):
