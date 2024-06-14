@@ -283,6 +283,18 @@ class stock_picking(models.Model):
         ('pending', 'Pending'),
         ('complete', 'Completed'),
     ], string='Inspection Status',copy=False,default="pending")
+    
+    
+    
+    @api.depends('origin')
+    def _compute_responsible(self):
+        for rec in self:
+            if rec.picking_type_code = "incoming" and rec.origin:
+               check_user = self.env['purchase.order'].search([('name','=',rec.origin)],limit=1)
+                if check_user:
+                   rec.user_id = check_user.user_id.id  
+                else:
+                     rec.user_id = None   
 
     
 

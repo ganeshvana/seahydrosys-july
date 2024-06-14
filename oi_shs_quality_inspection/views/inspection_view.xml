@@ -211,10 +211,6 @@
                 <xpath expr="/form/sheet/notebook/page/group/group/field[@name='group_id']" position="after">
                     <field name="inspection_status"/>
                 </xpath>
-                <xpath expr="//field[@name='user_id']" position="attributes">
-                    <attribute name="readonly">True</attribute>
-                </xpath>
-                
             </field>
         </record>
 
