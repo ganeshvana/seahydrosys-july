@@ -19,6 +19,9 @@
             <xpath expr="/form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
                 <field name="description"/>
             </xpath>
+            <field name="user_id" position="attributes">
+                <attribute name="readonly">False</attribute>
+            </field>
         </field>
     </record>
 
