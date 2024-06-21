@@ -13,7 +13,7 @@
                 <button name="view_action_split_delivery_orders" type="object"
                         class="oe_highlight" icon="fa-columns"
                         attrs="{'invisible': [('split_order_count', '=', '0')]}" groups="l4l_split_delivery_orders.group_allow_split_delivery_orders">
-                    <field name="split_order_count" widget="statinfo" string='Spited Transfer'/>
+                    <field name="split_order_count" widget="statinfo" string='Splited Transfer'/>
                 </button>
             </xpath>
         </field>
