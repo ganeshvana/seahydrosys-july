@@ -58,7 +58,7 @@ class stock_picking_inherit(models.Model):
 class stock_move(models.Model):
     _inherit = 'stock.move'
     
-    description = fields.Char('Description')
+    description = fields.Char('Customer Reference')
 
 
 # class CurrencyRate(models.Model):
