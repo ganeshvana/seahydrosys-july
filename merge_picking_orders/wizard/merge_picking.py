@@ -86,8 +86,8 @@ class MergePicking(models.TransientModel):
             source_document.append(record.name)
             record.action_cancel()
             origin += record.origin + ' - '
-        main_pick.write(
-            {'origin': origin})
         # main_pick.write(
-        #     {'origin': f"Merged ({(', '.join(source_document))})"})
+        #     {'origin': origin})
+        main_pick.write(
+            {'origin': f"Merged ({origin + (', '.join(source_document))})"})
         main_pick.action_confirm()
