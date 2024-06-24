@@ -70,6 +70,7 @@ class MergePicking(models.TransientModel):
                                 ' please add minimum Two'))
         # If there is no exception, continues with the merging process
         source_document = []
+        origin = ''
         if self.existing_pick_id:
             main_pick = self.existing_pick_id
             orders = self.merge_picking_ids - main_pick
@@ -84,6 +85,9 @@ class MergePicking(models.TransientModel):
                 moves += line.copy({'picking_id': main_pick.id})
             source_document.append(record.name)
             record.action_cancel()
+            origin += record.origin + ' - '
         main_pick.write(
-            {'origin': f"Merged ({(', '.join(source_document))})"})
+            {'origin': origin})
+        # main_pick.write(
+        #     {'origin': f"Merged ({(', '.join(source_document))})"})
         main_pick.action_confirm()
