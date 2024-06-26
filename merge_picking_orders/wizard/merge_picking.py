@@ -80,6 +80,7 @@ class MergePicking(models.TransientModel):
             orders = self.merge_picking_ids
             moves = self.env['stock.move']
             main_pick = orders[0].copy({'move_lines': None})
+        orders = self.merge_picking_ids
         for record in orders:
             for line in record.move_lines:
                 moves += line.copy({'picking_id': main_pick.id})
