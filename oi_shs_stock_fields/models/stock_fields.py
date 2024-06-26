@@ -60,6 +60,7 @@ class stock_move(models.Model):
     
     description = fields.Char('Customer Reference')
     weight = fields.Float(related='product_id.weight', store=True)
+    weight_uom_name = fields.Char(related='product_id.weight_uom_name', store=True)
 
 
 # class CurrencyRate(models.Model):
