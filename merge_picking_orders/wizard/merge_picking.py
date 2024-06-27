@@ -75,7 +75,7 @@ class MergePicking(models.TransientModel):
             main_pick = self.existing_pick_id
             orders = self.merge_picking_ids - main_pick
             moves = main_pick.move_lines
-            source_document.append(main_pick.name)
+            # source_document.append(main_pick.name)
         else:
             orders = self.merge_picking_ids
             moves = self.env['stock.move']
