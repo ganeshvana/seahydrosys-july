@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="documents_view_list_inherit" model="ir.ui.view">
+            <field name="name">documents list inherit</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.documents_view_list"/>
+            <field name="arch" type="xml">
+                <field name="owner_id" position="after">
+                    <field name="expiry_date"/>
+                    <field name="notify_before"/>
+
+
+                </field>
+            </field>
+        </record>
+
+
+        <record id="documents_view_form_inherit" model="ir.ui.view">
+            <field name="name">documents form inherit</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.document_view_form"/>
+            <field name="arch" type="xml">
+                <field name="owner_id" position="after">
+                    <field name="expiry_date"/>
+                    <field name="notify_before"/>
+
+
+                </field>
+            </field>
+        </record>
+
+
+        <record id="documents_view_kanban_inherit" model="ir.ui.view">
+            <field name="name">documents kanban inherit</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.document_view_kanban"/>
+            <field name="arch" type="xml">
+                <field name="owner_id" position="after">
+                    <field name="expiry_date"/>
+                    <field name="notify_before"/>
+
+
+                </field>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
