@@ -72,10 +72,10 @@ class MergePicking(models.TransientModel):
         # If there is no exception, continues with the merging process
         source_document = []
         reference = []
-        batch_names = []
+        batch = []
         origin = ''
         customer_reference = ''
-        batch_id = None
+        batch_id = ''
         if self.existing_pick_id:
             main_pick = self.existing_pick_id
             orders = self.merge_picking_ids - main_pick
@@ -90,29 +90,16 @@ class MergePicking(models.TransientModel):
             for line in record.move_lines:
                 moves += line.copy({'picking_id': main_pick.id})
             source_document.append(record.name + ' - ' + record.origin)
-            reference.append(record.customer_reference + ' - ' + record.customer_reference if record.customer_reference else '')
-            if record.batch_id:
-                batch_names.append(record.batch_id.name)
-            batch_name = ', '.join(batch_names)
-            if batch_name:
-                if not self.existing_pick_id:
-                    batch_id = self.env['stock.picking.batch'].create({
-                    'name': f"Merged Batch ({batch_name})" or '',
-                    })            
-                    main_pick.batch_id = batch_id
-                else:
-                    main_pick.batch_id.write({
-                         'name': f"Merged Batch ({batch_name})" or '',
-                    })
+            reference.append(record.customer_reference + ' - ' if record.customer_reference else '')
+            batch.append(record.batch_id.name + ' - ' if record.batch_id else '')
             record.action_cancel()
             origin += record.origin + ' - '
             customer_reference += record.customer_reference + ' - ' if record.customer_reference else ''
+            batch_id += record.batch_id.name + ' - ' if record.batch_id else ''
         main_pick.write({
             'origin': f"Merged ({(', '.join(source_document))})" or '',
-            'customer_reference': f"Merged ({(', '.join(reference))})" or '',
-            'batch_id': batch_id.id if batch_id else main_pick.batch_id.id,
+            'customer_reference': f"Merged ({(', '.join(reference))})" if reference else '',
+            'batch_id': f"Merged ({(', '.join(batch))})" if batch else '',
         })
         main_pick.action_confirm()
 
-
- 
