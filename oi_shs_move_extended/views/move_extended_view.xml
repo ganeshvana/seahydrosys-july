@@ -29,7 +29,10 @@
                     <field name="port_of_discharge"/>
                     <field name="vessel_no"/>
                     <field name="hs_code"/>
+                    <field name="ie_code"/>
+                    <field name="ad_code"/>
                     <field name="delivery_date"/>
+
                 </xpath>
             </field>
         </record>
