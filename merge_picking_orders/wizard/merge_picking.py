@@ -75,7 +75,7 @@ class MergePicking(models.TransientModel):
         batch_names = []
         origin = ''
         customer_reference = ''
-
+        batch_id = None
         if self.existing_pick_id:
             main_pick = self.existing_pick_id
             orders = self.merge_picking_ids - main_pick
