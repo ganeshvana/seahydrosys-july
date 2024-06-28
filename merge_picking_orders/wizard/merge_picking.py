@@ -106,11 +106,11 @@ class MergePicking(models.TransientModel):
                     })
                     record.action_cancel()
             origin += record.origin + ' - '
-            customer_reference += record.customer_reference + ' - '
+            customer_reference_list = list(customer_reference)
 
         main_pick.write({
             'origin': f"Merged ({(', '.join(source_document))})" or '',
-            'customer_reference': f"Merged ({(', '.join(reference))})" or '',
+            'customer_reference': f"Merged ({(', '.join(customer_reference_list))})" or '',
             'batch_id': batch_id.id if batch_id else '', 
         })
         main_pick.action_confirm()
