@@ -90,7 +90,7 @@ class MergePicking(models.TransientModel):
             for line in record.move_lines:
                 moves += line.copy({'picking_id': main_pick.id})
             source_document.append(record.name + ' - ' + record.origin)
-            reference.append(record.customer_reference + ' - ' + record.customer_reference)
+            reference.append(record.customer_reference)
             # reference.append(record.customer_reference + ' - ' + record.customer_reference if record.customer_reference else '')
             if record.batch_id:
                 batch_names.append(record.batch_id.name)
