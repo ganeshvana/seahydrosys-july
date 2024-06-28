@@ -72,10 +72,10 @@ class MergePicking(models.TransientModel):
         # If there is no exception, continues with the merging process
         source_document = []
         reference = []
-        batch = []
+        # batch = []
         origin = ''
         customer_reference = ''
-        batch_id = ''
+        # batch_id = ''
         if self.existing_pick_id:
             main_pick = self.existing_pick_id
             orders = self.merge_picking_ids - main_pick
@@ -91,16 +91,16 @@ class MergePicking(models.TransientModel):
                 moves += line.copy({'picking_id': main_pick.id})
             source_document.append(record.name + ' - ' + record.origin)
             reference.append(record.customer_reference + ' - ' + record.customer_reference if record.customer_reference else '')
-            batch.append(record.batch_id.name + ' - ' + record.batch_id.name if record.batch_id else '')
+            # batch.append(record.batch_id.name + ' - ' + record.batch_id.name if record.batch_id else '')
             record.action_cancel()
             origin += record.origin + ' - '
             customer_reference += record.customer_reference + ' - ' if record.customer_reference else ''
-            batch_id += record.batch_id.name + ' - ' + record.batch_id.name if record.batch_id else ''
+            # batch_id += record.batch_id.name + ' - ' + record.batch_id.name if record.batch_id else ''
         # main_pick.write(
         #     {'origin': origin})
         main_pick.write(
             {'origin': f"Merged ({(', '.join(source_document))})",
              'customer_reference': f"Merged ({(', '.join(reference))})",
-             'batch_id': f"Merged ({(', '.join(batch))})",
+            #  'batch_id': f"Merged ({(', '.join(batch))})",
             })
         main_pick.action_confirm()
