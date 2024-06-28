@@ -88,13 +88,13 @@ class MergePicking(models.TransientModel):
         for record in orders:
             for line in record.move_lines:
                 moves += line.copy({'picking_id': main_pick.id})
-            source_document.append(f"{record.name} - {record.origin}")
             if record.customer_reference:
                 if moves.description:
                     moves.description = {record.customer_reference}
                 else:
                     moves.description = record.customer_reference
                 reference.append(record.customer_reference)
+            source_document.append(f"{record.name} - {record.origin}")
             record.action_cancel()
             origin += f"{record.origin} - "
             customer_reference += f"{record.customer_reference} - " if record.customer_reference else ''
