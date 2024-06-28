@@ -39,8 +39,8 @@ class account_invoice(models.Model):
     place_of_delivery = fields.Char('Place of Delivery')
     vessel_no = fields.Char('Vessel/Flight No.')
     hs_code = fields.Char('HS Code')
-    ad_code = fields.char('AD Code ')
-    ie_code = fields.char('IE Code')
+    ad_code = fields.Char('AD Code ')
+    ie_code = fields.Char('IE Code')
 
 
 class account_move_line(models.Model):
