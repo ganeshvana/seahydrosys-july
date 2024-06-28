@@ -72,10 +72,9 @@ class MergePicking(models.TransientModel):
         # If there is no exception, continues with the merging process
         source_document = []
         reference = []
-        batch = []
+        batch_names = []
         origin = ''
         customer_reference = ''
-        batch_id = None
 
         if self.existing_pick_id:
             main_pick = self.existing_pick_id
@@ -93,10 +92,19 @@ class MergePicking(models.TransientModel):
             source_document.append(record.name + ' - ' + record.origin)
             reference.append(record.customer_reference + ' - ' + record.customer_reference)
             if record.batch_id:
-                batch.append(record.batch_id.name + ' - ' + record.batch_id.name)
-                if not batch_id:
-                    batch_id = record.batch_id.id
-            record.action_cancel()
+                batch_names.append(record.batch_id.name)
+            batch_name = ', '.join(batch_names)
+            if batch_name:
+                if not self.existing_pick_id:
+                    batch_id = self.env['stock.picking.batch'].create({
+                    'name': f"Merged Batch ({batch_name})" or '',
+                    })            
+                    main_pick.batch_id = batch_id
+                else:
+                    main_pick.batch_id.write({
+                         'name': f"Merged Batch ({batch_name})" or '',
+                    })
+                    record.action_cancel()
             origin += record.origin + ' - '
             customer_reference += record.customer_reference + ' - '
 
