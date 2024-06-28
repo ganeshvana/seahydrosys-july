@@ -69,12 +69,12 @@ class MergePicking(models.TransientModel):
             raise AccessError(_('Merging is not allowed on Single picking,'
                                 ' please add minimum Two'))
 
-        # If there is no exception, continues with the merging process
         source_document = []
         reference = []
         batch_names = []
         origin = ''
         customer_reference = ''
+
         if self.existing_pick_id:
             main_pick = self.existing_pick_id
             orders = self.merge_picking_ids - main_pick
@@ -84,34 +84,87 @@ class MergePicking(models.TransientModel):
             orders = self.merge_picking_ids
             moves = self.env['stock.move']
             main_pick = orders[0].copy({'move_lines': None})
-        orders = self.merge_picking_ids
+
         for record in orders:
             for line in record.move_lines:
                 moves += line.copy({'picking_id': main_pick.id})
-            source_document.append(record.name + ' - ' + record.origin)
-            reference.append(record.customer_reference + ' - ' + record.customer_reference if record.customer_reference else '')
+            source_document.append(f"{record.name} - {record.origin}")
+            if record.customer_reference:
+                if moves.description:
+                    moves.description = {record.customer_reference}
+                else:
+                    moves.description = record.customer_reference
+                reference.append(record.customer_reference)
             record.action_cancel()
-            origin += record.origin + ' - '
-            customer_reference += record.customer_reference + ' - ' if record.customer_reference else ''
+            origin += f"{record.origin} - "
+            customer_reference += f"{record.customer_reference} - " if record.customer_reference else ''
             if record.batch_id:
                 batch_names.append(record.batch_id.name)
 
-            batch_name = ', '.join(batch_names)
-            if batch_name:
-                if not self.existing_pick_id:
-                    batch_id = self.env['stock.picking.batch'].create({
-                    'name': f"Merged Batch ({batch_name})",
-                    })
-                    main_pick.batch_id = batch_id
-                else:
-                    main_pick.batch_id.write({
-                    'name': f"Merged Batch ({batch_name})",
-                    })
-        # main_pick.write(
-        #     {'origin': origin})
-        main_pick.write(
-            {
+        batch_name = ', '.join(batch_names)
+
+        if batch_name:
+            if not self.existing_pick_id:
+                batch_id = self.env['stock.picking.batch'].create({
+                    'name': f"Merged Batch ({batch_name})" or '',
+                })
+                main_pick.batch_id = batch_id
+            else:
+                main_pick.batch_id.write({
+                    'name': f"Merged Batch ({batch_name})" or '',
+                })
+
+        main_pick.write({
             'origin': f"Merged ({(', '.join(source_document))})",
             'customer_reference': f"Merged ({(', '.join(reference))})" if reference else '',
-            })
+        })
         main_pick.action_confirm()
+
+
+
+        # If there is no exception, continues with the merging process
+        # source_document = []
+        # reference = []
+        # batch_names = []
+        # origin = ''
+        # customer_reference = ''
+        # if self.existing_pick_id:
+        #     main_pick = self.existing_pick_id
+        #     orders = self.merge_picking_ids - main_pick
+        #     moves = main_pick.move_lines
+        #     # source_document.append(main_pick.name)
+        # else:
+        #     orders = self.merge_picking_ids
+        #     moves = self.env['stock.move']
+        #     main_pick = orders[0].copy({'move_lines': None})
+        # orders = self.merge_picking_ids
+        # for record in orders:
+        #     for line in record.move_lines:
+        #         moves += line.copy({'picking_id': main_pick.id})
+        #     source_document.append(record.name + ' - ' + record.origin)
+        #     reference.append(record.customer_reference + ' - ' + record.customer_reference if record.customer_reference else '')
+        #     record.action_cancel()
+        #     origin += record.origin + ' - '
+        #     customer_reference += record.customer_reference + ' - ' if record.customer_reference else ''
+        #     if record.batch_id:
+        #         batch_names.append(record.batch_id.name)
+
+        #     batch_name = ', '.join(batch_names)
+        #     if batch_name:
+        #         if not self.existing_pick_id:
+        #             batch_id = self.env['stock.picking.batch'].create({
+        #             'name': f"Merged Batch ({batch_name})" or '',
+        #             })
+        #             main_pick.batch_id = batch_id
+        #         else:
+        #             main_pick.batch_id.write({
+        #             'name': f"Merged Batch ({batch_name})" or '',
+        #             })
+        # # main_pick.write(
+        # #     {'origin': origin})
+        # main_pick.write(
+        #     {
+        #     'origin': f"Merged ({(', '.join(source_document))})",
+        #     'customer_reference': f"Merged ({(', '.join(reference))})" if reference else '',
+        #     })
+        # main_pick.action_confirm()
