@@ -112,7 +112,7 @@ class MergePicking(models.TransientModel):
         main_pick.write({
             'origin': f"Merged ({(', '.join(source_document))})" or '',
             'customer_reference': f"Merged ({(', '.join(reference))})" or '',
-            'batch_id': batch_id.id, 
+            'batch_id': batch_id, 
         })
         main_pick.action_confirm()
 
