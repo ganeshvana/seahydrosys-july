@@ -18,16 +18,17 @@ class stock_picking_inherit(models.Model):
     def _get_fcl_weight(self):
         for pick in self:
             weight = 0.00
-            for line in pick.move_ids_without_package:
-                weight += line.product_uom_qty * line.product_id.weight
-                self.fcl_weight = weight
-
-    # @api.depends('origin')
-    # def _get_mo(self):
-    #     for pick in self:
-    #         if self.origin:
-    #             mo = self.env['mrp.production'].search([('name', '=', self.origin)])
-    #             self.mrp_id = mo.id
+        for line in pick.move_ids_without_package:
+            weight += line.weight * line.quantity_done
+        pick.fcl_weight = weight
+        
+    @api.depends('move_ids_without_package')
+    def _get_done_total(self):  
+        for pick in self:
+            done = 0.00
+        for line in pick.move_ids_without_package:
+            done +=line.quantity_done
+        pick.done_total = done
                 
     @api.depends('origin')
     def _get_mo(self):
