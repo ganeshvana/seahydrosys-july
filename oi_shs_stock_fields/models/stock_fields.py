@@ -49,10 +49,11 @@ class stock_picking_inherit(models.Model):
     destination = fields.Char(string='Destination')
     despatched_through = fields.Char('Despatched Through')
     buyer_order_no = fields.Char(string="Buyer's Order No")
-    fcl_weight = fields.Float('FCL Weight',compute="_get_fcl_weight")
+    fcl_weight = fields.Float('Total Weight',compute="_get_fcl_weight")
     mrp_id =  fields.Many2one('mrp.production','Mo',compute="_get_mo")
     drawing_no = fields.Char("Drawing No")
     categ_id = fields.Many2one('product.category','Product Category',related='product_id.categ_id',store=True,)
+    done_total = fields.Float('Total Quantity',compute="_get_done_total")
 
 
 
