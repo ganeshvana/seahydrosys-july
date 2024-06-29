@@ -62,6 +62,8 @@ class stock_move(models.Model):
     
     description = fields.Char('Customer Reference')
     weight = fields.Float(related='product_id.weight',string="Weight in (kg)",store=True)
+    gross = fields.Float(string="Gross Weight",store=True)
+
 
 
 # class CurrencyRate(models.Model):
