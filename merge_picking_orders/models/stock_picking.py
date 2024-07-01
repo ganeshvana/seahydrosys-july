@@ -44,3 +44,10 @@ class StockPicking(models.Model):
             'res_id': merge_picking.id,
             'target': 'new'
         }
+
+class StockPickingBatch(models.Model):
+    _inherit = "stock.picking.batch"
+
+    def _sanity_check(self):
+        for batch in self:
+            pass
