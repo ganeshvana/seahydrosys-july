@@ -45,9 +45,9 @@ class StockPicking(models.Model):
             'target': 'new'
         }
 
-class StockPickingBatch(models.Model):
-    _inherit = "stock.picking.batch"
+# class StockPickingBatch(models.Model):
+#     _inherit = "stock.picking.batch"
 
-    def _sanity_check(self):
-        for batch in self:
-            pass
+#     def _sanity_check(self):
+#         for batch in self:
+#             pass

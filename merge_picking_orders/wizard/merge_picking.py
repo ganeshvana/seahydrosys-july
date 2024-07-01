@@ -93,7 +93,6 @@ class MergePicking(models.TransientModel):
             source_document.append(record.name + ' - ' + record.origin)
 
             reference.append(record.customer_reference + ' - ' if record.customer_reference else '')
-            
             if record.batch_id:
                 batch_names.append(record.batch_id.name)
 
