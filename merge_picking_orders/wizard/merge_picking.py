@@ -91,7 +91,9 @@ class MergePicking(models.TransientModel):
                 moves += line.copy({'picking_id': main_pick.id,
                                     'description': f"{line.description or ''} - {record.customer_reference or ''}"})
             source_document.append(record.name + ' - ' + record.origin)
+
             reference.append(record.customer_reference + ' - ' if record.customer_reference else '')
+            record.action_cancel()
             if record.batch_id:
                 batch_names.append(record.batch_id.name)
             batch_name = ', '.join(batch_names)
@@ -105,7 +107,7 @@ class MergePicking(models.TransientModel):
                     main_pick.batch_id.write({
                          'name': f"Merged Batch ({batch_name})" or '',
                     })
-                    record.action_cancel()
+                    # record.action_cancel()
             origin += record.origin + ' - '
             customer_reference += record.customer_reference + ' - ' if record.customer_reference else ''
         main_pick.write({
