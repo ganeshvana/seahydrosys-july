@@ -89,8 +89,7 @@ class MergePicking(models.TransientModel):
         for record in orders:
             for line in record.move_lines:
                 moves += line.copy({'picking_id': main_pick.id,
-                                    'description': f"{line.description or ''} {record.customer_reference or ''}",
-                                    # 'description':f"{record.customer_reference or ''}"
+                                    # 'description': f"{line.description or ''} {record.customer_reference or ''}",
                                     })
             source_document.append(record.name + ' - ' + record.origin)
             reference.append(record.customer_reference if record.customer_reference else '')
@@ -114,6 +113,3 @@ class MergePicking(models.TransientModel):
             'batch_id': batch_id if batch_id else main_pick.batch_id,
         })
         main_pick.action_confirm()
-
-
- 
