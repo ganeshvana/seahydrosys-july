@@ -91,16 +91,14 @@ class MergePicking(models.TransientModel):
                 moves += line.copy({'picking_id': main_pick.id,
                                     'description': f"{line.description or ''} - {record.customer_reference or ''}"})
             source_document.append(record.name + ' - ' + record.origin)
-
-            reference.append(record.customer_reference + ' - ' if record.customer_reference else '')
+            reference.append(record.customer_reference if record.customer_reference else '')
             if record.batch_id:
                 batch_names.append(record.batch_id.name)
-
             if record != main_pick:
                 record.action_cancel()
             batch_name = ', '.join(batch_names)
             if batch_name:
-                if not self.existing_pick_id:
+                if self.existing_pick_id:
                     batch_id = self.env['stock.picking.batch'].create({
                     'name': f"Merged Batch ({batch_name})" or '',
                     })            
@@ -110,10 +108,10 @@ class MergePicking(models.TransientModel):
                          'name': f"Merged Batch ({batch_name})" or '',
                     })
             origin += record.origin + ' - '
-            customer_reference += record.customer_reference + ' - ' if record.customer_reference else ''
+            customer_reference += record.customer_reference if record.customer_reference else ''
         main_pick.write({
             'origin': f"Merged ({(', '.join(source_document))})" or '',
-            'customer_reference': f"Merged ({(', '.join(reference))})" if reference else '',
+            'customer_reference': f"Merged ({(', '.join(reference))})" if reference else '' or '',
             'batch_id': batch_id if batch_id else main_pick.batch_id,
         })
         main_pick.action_confirm()
