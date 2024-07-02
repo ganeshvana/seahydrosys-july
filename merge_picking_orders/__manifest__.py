@@ -30,7 +30,7 @@
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
     'website': "https://www.cybrosys.com",
-    'depends': ['base', 'stock', 'stock_picking_batch'],
+    'depends': ['base', 'stock', 'stock_picking_batch','sale'],
     'data': [
         'security/ir.model.access.csv',
         'data/merge_picking_action_data.xml',

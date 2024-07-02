@@ -51,3 +51,45 @@ class StockPickingBatch(models.Model):
     def _sanity_check(self):
         for batch in self:
             pass
+
+
+
+    def create(self, vals):
+        res = super(StockPicking, self).create(vals)
+        if 'customer_reference' in vals:
+            for line in res.move_lines:
+                line.description = vals['customer_reference']
+        return res
+
+    def write(self, vals):
+        res = super(StockPicking, self).write(vals)
+        if 'customer_reference' in vals:
+            for order in self:
+                for line in order.move_lines:
+                    line.description = vals['customer_reference']
+        return res
+
+
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    customer_reference = fields.Char('Customer Reference')
+
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    def create(self, vals):
+        res = super(SaleOrder, self).create(vals)
+        if 'client_order_ref' in vals:
+            for line in res.order_line:
+                line.customer_reference = vals['client_order_ref']
+        return res
+
+    def write(self, vals):
+        res = super(SaleOrder, self).write(vals)
+        if 'client_order_ref' in vals:
+            for order in self:
+                for line in order.order_line:
+                    line.customer_reference = vals['client_order_ref']
+        return res
