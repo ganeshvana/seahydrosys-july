@@ -86,7 +86,7 @@ class MergePicking(models.TransientModel):
             orders = self.merge_picking_ids
             moves = self.env['stock.move']
             main_pick = orders[0].copy({'move_lines': None})
-        orders = self.merge_picking_ids
+        # orders = self.merge_picking_ids
         for record in orders:
             for line in record.move_lines:
                 description = line.description if line.description else ''
@@ -119,7 +119,7 @@ class MergePicking(models.TransientModel):
         main_pick.write({
             'origin': f"({(', '.join(source_document))})" or '',
             'customer_reference': customer_reference1 or '',
-            'customer_reference': f"({(', '.join(reference))})" if reference else '',
+            # 'customer_reference': f"({(', '.join(reference))})" if reference else '',
             'batch_id': batch_id if batch_id else main_pick.batch_id,
         })
         main_pick.action_confirm()
