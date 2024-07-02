@@ -63,7 +63,7 @@ class stock_move(models.Model):
     description = fields.Char('Customer Reference')
     weight = fields.Float(related='product_id.weight',string="Weight in (kg)",store=True)
     gross = fields.Float(string="Gross Weight",store=True)
-    customer_reference = fields.Char(related='sale_id.customer_reference', string='Customer Reference', store=True)
+    # customer_reference = fields.Char(related='sale_id.customer_reference', string='Customer Reference', store=True)
 
 # class CurrencyRate(models.Model):
 #     _inherit = 'res.currency.rate'
