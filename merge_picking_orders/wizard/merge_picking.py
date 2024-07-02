@@ -98,19 +98,22 @@ class MergePicking(models.TransientModel):
                 record.action_cancel()
             batch_name = ', '.join(batch_names)
             if batch_name:
-                if not self.existing_pick_id:
-                    batch_id = self.env['stock.picking.batch'].create({
-                    'name': f"Merged Batch ({batch_name})" or '',
-                    })            
-                    main_pick.batch_id = batch_id
-                else:
-                    batch_id = self.env['stock.picking.batch'].create({
-                    'name': f"Merged Batch ({batch_name})" or '',
-                    })            
-                    main_pick.batch_id = batch_id
-                    # main_pick.batch_id.write({
-                    #      'name': f"Merged Batch ({batch_name})" or '',
-                    # })
+                batch_id = self.env['stock.picking.batch'].create({
+                    'name': f"Merged Batch ({batch_name})"
+                })
+                main_pick.batch_id = batch_id
+
+            # if batch_name:
+            #     if not self.existing_pick_id:
+            #         batch_id = self.env['stock.picking.batch'].create({
+            #         'name': f"Merged Batch ({batch_name})" or '',
+            #         })            
+            #         main_pick.batch_id = batch_id
+            #     else:
+            #         batch_id = self.env['stock.picking.batch'].create({
+            #         'name': f"Merged Batch ({batch_name})" or '',
+            #         })            
+            #         main_pick.batch_id = batch_id
             origin += record.origin + ' - '
             customer_reference += record.customer_reference if record.customer_reference else ''
             customer_reference1 = f"Merged ({', '.join(reference)})" if reference else ''
