@@ -89,11 +89,10 @@ class MergePicking(models.TransientModel):
         for record in orders:
             for line in record.move_lines:
                 moves += line.copy({'picking_id': main_pick.id,
-                                    'description' : record.customer_reference
-                                    # 'description': f"{line.description or ''} {record.customer_reference or ''}"
+                                    'description':f"{record.customer_reference or ''}"
                                     })
             source_document.append(record.name + ' - ' + record.origin)
-            reference.append(record.customer_reference  + record.customer_reference if record.customer_reference else '')
+            reference.append(record.customer_reference if record.customer_reference else '')
             if record.batch_id:
                 batch_names.append(record.batch_id.name)
             if record != main_pick:
@@ -101,16 +100,16 @@ class MergePicking(models.TransientModel):
             batch_name = ', '.join(batch_names)
         if batch_name:
             batch_id = self.env['stock.picking.batch'].create({
-                'name': {batch_name}
+                'name': f"({batch_name})"
             })
             main_pick.batch_id = batch_id
             origin += record.origin + ' - '
-            customer_reference += record.customer_reference + record.customer_reference if record.customer_reference else ''
-            customer_reference1 = {', '.join(reference)} if reference else ''
+            customer_reference += record.customer_reference if record.customer_reference else ''
+            customer_reference1 = f"({', '.join(reference)})" if reference else ''
         main_pick.write({
             'origin': f"({(', '.join(source_document))})" or '',
             'customer_reference': customer_reference1 or '',
-            'customer_reference': ({(', '.join(reference))}) if reference else '',
+            'customer_reference': f"({(', '.join(reference))})" if reference else '',
             'batch_id': batch_id if batch_id else main_pick.batch_id,
         })
         main_pick.action_confirm()
