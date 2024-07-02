@@ -45,15 +45,6 @@ class StockPicking(models.Model):
             'target': 'new'
         }
 
-class StockPickingBatch(models.Model):
-    _inherit = "stock.picking.batch"
-
-    def _sanity_check(self):
-        for batch in self:
-            pass
-
-
-
     def create(self, vals):
         res = super(StockPicking, self).create(vals)
         if 'customer_reference' in vals:
@@ -68,6 +59,15 @@ class StockPickingBatch(models.Model):
                 for line in order.move_lines:
                     line.description = vals['customer_reference']
         return res
+
+
+class StockPickingBatch(models.Model):
+    _inherit = "stock.picking.batch"
+
+    def _sanity_check(self):
+        for batch in self:
+            pass
+
 
 
 class SaleOrderLine(models.Model):
