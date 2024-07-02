@@ -103,10 +103,6 @@ class MergePicking(models.TransientModel):
                     'name': f"Merged Batch ({batch_name})" or '',
                     })            
                     main_pick.batch_id = batch_id
-                elif self.existing_pick_id:
-                    main_pick.batch_id.write({
-                    'name': f"Merged Batch ({batch_name})" or '',
-                    })
                 else:
                     main_pick.batch_id.write({
                          'name': f"Merged Batch ({batch_name})" or '',
