@@ -98,7 +98,7 @@ class MergePicking(models.TransientModel):
                 record.action_cancel()
             batch_name = ', '.join(batch_names)
             if batch_name:
-                if self.existing_pick_id:
+                if not self.existing_pick_id:
                     batch_id = self.env['stock.picking.batch'].create({
                     'name': f"Merged Batch ({batch_name})" or '',
                     })            
