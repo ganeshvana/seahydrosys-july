@@ -47,14 +47,14 @@ class StockPicking(models.Model):
 
     def create(self, vals):
         res = super(StockPicking, self).create(vals)
-        if 'customer_reference' in vals:
+        if 'customer_reference' in vals and res.picking_type_id.code != 'outgoing':
             for line in res.move_lines:
                 line.description = vals['customer_reference']
         return res
 
     def write(self, vals):
         res = super(StockPicking, self).write(vals)
-        if 'customer_reference' in vals:
+        if 'customer_reference' in vals and res.picking_type_id.code != 'outgoing':
             for order in self:
                 for line in order.move_lines:
                     line.description = vals['customer_reference']
