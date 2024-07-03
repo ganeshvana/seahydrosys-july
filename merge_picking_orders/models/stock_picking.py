@@ -45,20 +45,20 @@ class StockPicking(models.Model):
             'target': 'new'
         }
 
-    def create(self, vals):
-        res = super(StockPicking, self).create(vals)
-        if 'customer_reference' in vals:
-            for line in res.move_lines:
-                line.description = vals['customer_reference']
-        return res
+    # def create(self, vals):
+    #     res = super(StockPicking, self).create(vals)
+    #     if 'customer_reference' in vals:
+    #         for line in res.move_lines:
+    #             line.description = vals['customer_reference']
+    #     return res
 
-    def write(self, vals):
-        res = super(StockPicking, self).write(vals)
-        if 'customer_reference' in vals:
-            for order in self:
-                for line in order.move_lines:
-                    line.description = vals['customer_reference']
-        return res
+    # def write(self, vals):
+    #     res = super(StockPicking, self).write(vals)
+    #     if 'customer_reference' in vals:
+    #         for order in self:
+    #             for line in order.move_lines:
+    #                 line.description = vals['customer_reference']
+    #     return res
 
 
 class StockPickingBatch(models.Model):
