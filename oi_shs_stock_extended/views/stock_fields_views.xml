@@ -7,10 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//form/sheet/notebook/page[@name='extra']/group/group[@name='other_infos']/field[@name='move_type']" position="after">
                 <field name="supplier_ref"/>
-               
                 <field name="drawing_no"/>
-                <field name="customer_reference"/>
-                
+                <field name="customer_reference" readonly = "1"/>
             </xpath>
 
             <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
