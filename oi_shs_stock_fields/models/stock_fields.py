@@ -55,8 +55,6 @@ class stock_picking_inherit(models.Model):
     categ_id = fields.Many2one('product.category','Product Category',related='product_id.categ_id',store=True,)
     done_total = fields.Float('Total Quantity',compute="_get_done_total")
 
-
-
 class stock_move(models.Model):
     _inherit = 'stock.move'
     

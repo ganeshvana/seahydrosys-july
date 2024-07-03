@@ -19,7 +19,7 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from odoo import fields, models, _
+from odoo import fields, models, _,api
 
 
 class StockPicking(models.Model):
@@ -45,6 +45,7 @@ class StockPicking(models.Model):
             'target': 'new'
         }
 
+    @api.model
     def create(self, vals):
         res = super(StockPicking, self).create(vals)
         if 'customer_reference' in vals and res.picking_type_id.code == 'outgoing':
@@ -52,14 +53,15 @@ class StockPicking(models.Model):
                 line.description = vals['customer_reference']
         return res
 
+
     def write(self, vals):
         res = super(StockPicking, self).write(vals)
-        if 'customer_reference' in vals and res.picking_type_id.code == 'outgoing':
+        if 'customer_reference' in vals:
             for order in self:
-                for line in order.move_lines:
-                    line.description = vals['customer_reference']
+                if order.picking_type_id.code == 'outgoing':
+                    for line in order.move_lines:
+                        line.description = vals['customer_reference']
         return res
-
 
 class StockPickingBatch(models.Model):
     _inherit = "stock.picking.batch"
