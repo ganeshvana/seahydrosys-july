@@ -22,6 +22,10 @@
                 <field name="gross"  optional="show"/>
                 <field name="description" readonly="1"/>
             </xpath>
+            
+            <xpath expr="/form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='quantity_done']" position="after">  
+                <field name="total" optional="show"/>
+            </xpath>
 
             <xpath expr="//form/sheet/group/group[2]/field[@name='origin']" position="after">
                 <field name="fcl_weight"/>
@@ -33,7 +37,6 @@
                 </field>
         </field>
     </record>
-
     <!-- <record id="view_picking_tree_inherit" model="ir.ui.view">
         <field name="name">stock.picking.tree.inherit</field>
         <field name="model">stock.picking</field>
