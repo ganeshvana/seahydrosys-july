@@ -123,9 +123,16 @@ class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
     categ_id = fields.Many2one(related='product_id.categ_id',store=True, string="Product Category")
-    weight = fields.Float(related='product_id.weight',string="weight in (kg)" ,store=True)
+    weight = fields.Float(related='product_id.weight',string="Weight in (kg)",store=True)
     total_weight = fields.Float("Total",compute='compute_total_weight', store=True)
     lot_qty = fields.Float(related='lot_id.product_qty')
+    net = fields.Float(string='Net Weight', compute='_compute_total_weight', store=True)
+    
+    @api.depends('weight', 'qty_done')
+    def _compute_total_weight(self):
+        for line in self:
+            line.net = line.weight * line.qty_done
+            
     
     @api.depends('qty_done', 'weight')
     def compute_total_weight(self):
