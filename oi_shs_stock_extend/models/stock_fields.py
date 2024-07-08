@@ -126,6 +126,11 @@ class StockMoveLine(models.Model):
     weight = fields.Float(related='product_id.weight',string="weight in (kg)" ,store=True)
     total_weight = fields.Float("Total",compute='compute_total_weight', store=True)
     lot_qty = fields.Float(related='lot_id.product_qty')
+    net = fields.Float(string='Net Weight', compute='_compute_total_weight', store=True)
+    @api.depends('weight', 'qty_done')
+    def _compute_total_weight(self):
+        for line in self:
+            line.net = line.weight * line.qty_done
     
     @api.depends('qty_done', 'weight')
     def compute_total_weight(self):
@@ -138,6 +143,37 @@ class StockMoveLine(models.Model):
             rec.weight = rec.product_id.weight
             rec.total_weight = rec.product_id.weight * rec.qty_done
             self.env.cr.commit()
+            
+class StockQuantPackage(models.Model):
+    _inherit = 'stock.quant.package'
+
+    package_weight = fields.Float(string='Package Weight')
+    total_net_weight = fields.Float(string='Total Net Weight', compute='_compute_total_net_weight')
+    gross_weight = fields.Float(string='Gross Weight', compute='_compute_gross_weight', store=True)
+    
+    def _compute_total_net_weight(self):
+        for package in self:
+            package.total_net_weight= 0.00
+            # if self.env.context.get('picking_id'):
+            print(package.id,"0000000000000000000000000000000000000000000000000000000000")
+            total_net_weight = self.env['stock.move.line'].search([('result_package_id.id','=',package.id)], order="id desc",limit=1)
+            print(total_net_weight,"total_net_weighttotal_net_weight=====================")
+            package.total_net_weight = total_net_weight.net
+            # package.total_net_weight = sum(line.net for line in package.move_line_ids)
+    
+    # move_line_ids = fields.One2many(
+    #     'stock.move.line', 'result_package_id', string='Stock Move Lines'
+    # )
+
+    # @api.depends('move_line_ids.net')
+    # def _compute_total_net_weight(self):
+    #     for package in self:
+    #         package.total_net_weight = sum(line.net for line in package.move_line_ids)
+
+    @api.depends('total_net_weight', 'package_weight')
+    def _compute_gross_weight(self):
+        for package in self:
+            package.gross_weight = package.total_net_weight + package.package_weight
         
 
             
