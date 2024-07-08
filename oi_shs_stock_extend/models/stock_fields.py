@@ -129,7 +129,6 @@ class StockMoveLine(models.Model):
     weight = fields.Float(related='product_id.weight',string="Weight in (kg)" ,store=True)
     total_weight = fields.Float("Total",compute='compute_total_weight', store=True)
     lot_qty = fields.Float(related='lot_id.product_qty')
-    product_weight = fields.Float(string='Total Weight')
 
     net = fields.Float(string='Net Weight', compute='_compute_total_weight', store=True)
     @api.depends('weight', 'qty_done')
@@ -178,29 +177,3 @@ class StockMoveLine(models.Model):
 #         return True
   
 
-class StockQuantPackage(models.Model):
-    _inherit = 'stock.quant.package'
-
-    total_net_weight = fields.Float(string='Total Net Weight', compute='_compute_total_net_weight')
-    package_weight = fields.Float(string='Package Weight')
-    gross_weight = fields.Float(string='Gross Weight', compute='_compute_gross_weight')
-
-    
-    def _compute_total_net_weight(self):
-        print("/////////////////////////////////////////////////////////")
-        for package in self:
-            package.total_net_weight= 0.00
-            # if self.env.context.get('picking_id'):
-            print("======================ddddddddddddddddddddddddddd",self.env.context.get('picking_id'))
-            total_net_weight = self.env['stock.move.line'].search([('result_package_id','=',package.id)],limit=1)
-            print("total_net_weight====================",total_net_weight,total_net_weight)
-            package.total_net_weight = total_net_weight.net
-            # package.total_net_weight = sum(line.net for line in package.move_line_ids)
-
-    @api.depends('total_net_weight', 'package_weight')
-    def _compute_gross_weight(self):
-        print("...................................................")
-        
-        for package in self:
-            package.gross_weight = 0.0
-            package.gross_weight = package.total_net_weight + package.package_weight
