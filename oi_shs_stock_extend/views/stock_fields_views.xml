@@ -37,7 +37,7 @@
                     <field name="weight"/>
                     <field name="net"/>
                     <field name="total_weight"/>
-                    <field name="product_weight"/>
+                    <!-- <field name="product_weight"/> -->
                 </xpath>
         </field>
     </record>
