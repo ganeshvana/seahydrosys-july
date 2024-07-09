@@ -22,13 +22,13 @@ class stock_picking_inherit(models.Model):
     #         weight += line.weight * line.quantity_done
     #     pick.fcl_weight = weight
         
-    # @api.depends('move_ids_without_package')
-    # def _get_done_total(self):  
-    #     for pick in self:
-    #         done = 0.00
-    #     for line in pick.move_ids_without_package:
-    #         done +=line.quantity_done
-    #     pick.done_total = done
+    @api.depends('move_ids_without_package')
+    def _get_done_total(self):  
+        for pick in self:
+            done = 0.00
+        for line in pick.move_ids_without_package:
+            done +=line.quantity_done
+        pick.done_total = done
                 
     @api.depends('origin')
     def _get_mo(self):
@@ -53,7 +53,7 @@ class stock_picking_inherit(models.Model):
     mrp_id =  fields.Many2one('mrp.production','Mo',compute="_get_mo")
     drawing_no = fields.Char("Drawing No")
     categ_id = fields.Many2one('product.category','Product Category',related='product_id.categ_id',store=True,)
-    # done_total = fields.Float('Total Quantity',compute="_get_done_total")
+    done_total = fields.Float('Total Quantity',compute="_get_done_total")
 
 class stock_move(models.Model):
     _inherit = 'stock.move'
