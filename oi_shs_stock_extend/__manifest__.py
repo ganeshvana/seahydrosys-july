@@ -9,7 +9,7 @@
     'category': 'Inventory',
     'summary': '',
     'description': """Qty Control based on MO""",
-    'depends': ['base', 'stock','mrp','purchase','delivery'],
+    'depends': ['base', 'stock','mrp','purchase','delivery','oi_shs_stock_fields'],
     'data': [
         # 'security/stock_security.xml',
         'wizard/purchase_resupply_report.xml',
