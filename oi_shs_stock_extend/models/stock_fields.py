@@ -17,6 +17,25 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
+    
+    gross_weight = fields.Float('Gross Weight',compute="_compute_gross_weight")
+    fcl_weight = fields.Float('Net Weight',compute="_get_fcl_weight")
+    
+
+    @api.depends('fcl_weight', 'shipping_weight')
+    def _compute_gross_weight(self):
+        for record in self:
+            record.gross_weight = record.fcl_weight + record.shipping_weight
+    
+    
+    @api.depends('move_ids_without_package')
+    def _get_fcl_weight(self):
+        for pick in self:
+            weight = 0.00
+        for line in pick.move_ids_without_package:
+            weight += line.weight * line.quantity_done
+        pick.fcl_weight = weight
+    
 
     # po_id = fields.Many2one('purchase.order','PO Number')
 
@@ -144,37 +163,6 @@ class StockMoveLine(models.Model):
             rec.total_weight = rec.product_id.weight * rec.qty_done
             self.env.cr.commit()
             
-class StockQuantPackage(models.Model):
-    _inherit = 'stock.quant.package'
-
-    package_weight = fields.Float(string='Package Weight')
-    total_net_weight = fields.Float(string='Total Net Weight', compute='_compute_total_net_weight')
-    gross_weight = fields.Float(string='Gross Weight', compute='_compute_gross_weight', store=True)
-    
-    def _compute_total_net_weight(self):
-        for package in self:
-            package.total_net_weight= 0.00
-            # if self.env.context.get('picking_id'):
-            print(package.id,"0000000000000000000000000000000000000000000000000000000000")
-            total_net_weight = self.env['stock.move.line'].search([('result_package_id.id','=',package.id)], order="id desc",limit=1)
-            print(total_net_weight,"total_net_weighttotal_net_weight=====================")
-            package.total_net_weight = total_net_weight.net
-            # package.total_net_weight = sum(line.net for line in package.move_line_ids)
-    
-    # move_line_ids = fields.One2many(
-    #     'stock.move.line', 'result_package_id', string='Stock Move Lines'
-    # )
-
-    # @api.depends('move_line_ids.net')
-    # def _compute_total_net_weight(self):
-    #     for package in self:
-    #         package.total_net_weight = sum(line.net for line in package.move_line_ids)
-
-    @api.depends('total_net_weight', 'package_weight')
-    def _compute_gross_weight(self):
-        for package in self:
-            package.gross_weight = package.total_net_weight + package.package_weight
-        
 
             
 # class purchase_order_extend(models.Model):
