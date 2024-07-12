@@ -58,7 +58,7 @@ class stock_picking_inherit(models.Model):
 class stock_move(models.Model):
     _inherit = 'stock.move'
     
-    description = fields.Char('Customer Reference')
+    description = fields.Char('Customer Reference',readonly='False')
     weight = fields.Float(related='product_id.weight',string="Weight in (kg)",store=True)
     gross = fields.Float(string="Gross Weight",store=True)
     total = fields.Float(string="Total Weight",store=True,compute='_compute_total')

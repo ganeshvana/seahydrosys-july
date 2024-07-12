@@ -18,14 +18,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
     
-    gross_weight = fields.Float('Gross Weight',compute="_compute_gross_weight")
+    gross_weight = fields.Float('Gross Weight')
     fcl_weight = fields.Float('Net Weight',compute="_get_fcl_weight")
-    
-
-    @api.depends('fcl_weight', 'shipping_weight')
-    def _compute_gross_weight(self):
-        for record in self:
-            record.gross_weight = record.fcl_weight + record.shipping_weight
     
     
     @api.depends('move_ids_without_package')
