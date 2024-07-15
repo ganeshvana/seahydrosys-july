@@ -11,6 +11,10 @@
 from odoo import models, fields, api, _
 from datetime import datetime
 from odoo.exceptions import UserError
+
+import logging
+
+_logger = logging.getLogger(__name__)
     
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
@@ -74,8 +78,8 @@ class stock_move(models.Model):
     
     @api.depends('product_id')
     def _compute_weight(self):
-        for record in self:  
-            raise UserError(_('Product %s' % record.product_id.weight))     
+        for record in self: 
+            _logger.info("record.product_id.weight---+++++++++++++++++++++---- : %s", record.product_id.weight) 
             record.weight =  record.product_id.weight
         
 
