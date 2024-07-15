@@ -65,7 +65,7 @@ class stock_move(models.Model):
     total = fields.Float(string="Total Weight",store=True,compute='_compute_total')
     
     
-    @api.onchange('product_id')
+    @api.onchange('product_id','picking_type_id')
     def _onchange_product_id(self):
         super(stock_move,self)._onchange_product_id(self)
         self.weight =  self.product_id.weight
