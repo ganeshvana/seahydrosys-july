@@ -19,7 +19,7 @@ class stock_picking_inherit(models.Model):
         for pick in self:
             weight = 0.00
         for line in pick.move_ids_without_package:
-            weight += line.weight * line.quantity_done
+            weight += line.weight 
         pick.fcl_weight = weight
                 
     @api.depends('move_ids_without_package')
