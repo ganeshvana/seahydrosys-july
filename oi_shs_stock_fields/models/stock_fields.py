@@ -67,7 +67,7 @@ class stock_move(models.Model):
     _inherit = 'stock.move'
     
     description = fields.Char('Customer Reference',readonly=False)
-    weight = fields.Float(related='product_id.weight',string="Weight in (kg)",store=True)
+    weight = fields.Float(related='product_tmpl_id.weight',string="weight in (kg)")
     gross = fields.Float(string="Gross Weight")
     total = fields.Float(string="Total Weight",compute='_compute_total')
 
@@ -81,11 +81,6 @@ class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
     weight = fields.Float(related='product_id.weight',string="Weight in (kg)" ,store=True)
-
-# class CurrencyRate(models.Model):
-#     _inherit = 'res.currency.rate'
-
-#     rate = fields.Float(digits=(12, 15), default=1.0, help='The rate of the currency to the currency of rate 1')
 
   
 
