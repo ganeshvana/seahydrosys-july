@@ -59,9 +59,16 @@ class stock_move(models.Model):
     _inherit = 'stock.move'
     
     description = fields.Char('Customer Reference',readonly=False)
-    weight = fields.Float(string="Weight in (kg)",compute='_compute_weight')
+    weight = fields.Float(string="Weight in (kg)")
+    # ,compute='_compute_weight'
     gross = fields.Float(string="Gross Weight",store=True)
     total = fields.Float(string="Total Weight",store=True,compute='_compute_total')
+    
+    
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        super(stock_move,self)._onchange_product_id(self)
+        self.weight =  self.product_id.weight
 
 
     @api.depends('quantity_done', 'weight')
