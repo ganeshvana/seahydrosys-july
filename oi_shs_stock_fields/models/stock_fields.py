@@ -18,9 +18,9 @@ class stock_picking_inherit(models.Model):
     def _get_fcl_weight(self):
         for pick in self:
             weight = 0.00
-            for line in pick.move_ids_without_package:
-                weight += line.product_uom_qty * line.product_id.weight
-                self.fcl_weight = weight
+        for line in pick.move_ids_without_package:
+            weight += line.weight * line.quantity_done
+        pick.fcl_weight = weight
                 
     @api.depends('move_ids_without_package')
     def _get_done_total(self):  
@@ -67,7 +67,7 @@ class stock_move(models.Model):
     _inherit = 'stock.move'
     
     description = fields.Char('Customer Reference',readonly=False)
-    weight = fields.Float(related='product_id.weight',string="Weight in (kg)")
+    weight = fields.Float(related='product_id.weight',string="Weight in (kg)",store=True)
     gross = fields.Float(string="Gross Weight")
     total = fields.Float(string="Total Weight",compute='_compute_total')
 
