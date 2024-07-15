@@ -55,7 +55,7 @@ class stock_picking_inherit(models.Model):
     destination = fields.Char(string='Destination')
     despatched_through = fields.Char('Despatched Through')
     buyer_order_no = fields.Char(string="Buyer's Order No")
-    fcl_weight = fields.Float('FCL Weight',compute="_get_fcl_weight")
+    fcl_weight = fields.Float('Net Weight', compute="_get_fcl_weight")
     gross_weight = fields.Float('Gross Weight')
     done_total = fields.Float('Total Quantity',compute="_get_done_total")
     mrp_id =  fields.Many2one('mrp.production','Mo',compute="_get_mo")
