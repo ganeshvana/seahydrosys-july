@@ -78,7 +78,7 @@ class stock_move(models.Model):
             record.product_weight =  record.product_id.weight
         
 
-    @api.depends('quantity_done', 'weight')
+    @api.depends('quantity_done', 'product_weight')
     def _compute_total(self):
         for record in self:
             record.total = record.quantity_done * record.product_id.weight  
