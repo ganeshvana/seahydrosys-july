@@ -75,7 +75,7 @@ class stock_move(models.Model):
     @api.depends('quantity_done', 'weight')
     def _compute_total(self):
         for record in self:
-            record.total = record.quantity_done * record.weight  
+            record.total = record.quantity_done * record.product_id.weight  
             
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
