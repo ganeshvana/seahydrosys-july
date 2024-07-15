@@ -21,6 +21,14 @@ class stock_picking_inherit(models.Model):
             for line in pick.move_ids_without_package:
                 weight += line.product_uom_qty * line.product_id.weight
                 self.fcl_weight = weight
+                
+    @api.depends('move_ids_without_package')
+    def _get_done_total(self):  
+        for pick in self:
+            done = 0.00
+        for line in pick.move_ids_without_package:
+            done +=line.quantity_done
+        pick.done_total = done
 
     # @api.depends('origin')
     # def _get_mo(self):
@@ -48,6 +56,8 @@ class stock_picking_inherit(models.Model):
     despatched_through = fields.Char('Despatched Through')
     buyer_order_no = fields.Char(string="Buyer's Order No")
     fcl_weight = fields.Float('FCL Weight',compute="_get_fcl_weight")
+    gross_weight = fields.Float('Gross Weight')
+    done_total = fields.Float('Total Quantity',compute="_get_done_total")
     mrp_id =  fields.Many2one('mrp.production','Mo',compute="_get_mo")
     drawing_no = fields.Char("Drawing No")
     categ_id = fields.Many2one('product.category','Product Category',related='product_id.categ_id',store=True,)
@@ -57,9 +67,9 @@ class stock_move(models.Model):
     _inherit = 'stock.move'
     
     description = fields.Char('Customer Reference',readonly=False)
-    weight = fields.Float(related='product_id.weight',string="Weight in (kg)",store=True)
-    gross = fields.Float(string="Gross Weight",store=True)
-    total = fields.Float(string="Total Weight",store=True,compute='_compute_total')
+    weight = fields.Float(related='product_id.weight',string="Weight in (kg)")
+    gross = fields.Float(string="Gross Weight")
+    total = fields.Float(string="Total Weight",compute='_compute_total')
 
 
     @api.depends('quantity_done', 'weight')

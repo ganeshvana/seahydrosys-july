@@ -41,6 +41,19 @@
                 <field name="package_id" position="attributes"><attribute name="optional">hide</attribute></field>
             </field>
         </record>
+         <record id="view_picking_form_inherited_stock" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherited.stock</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group/field[@name='origin']" position="after">
+                    <field name="fcl_weight"/>
+                    <field name="gross_weight"/>
+                    <field name="done_total"/>
+                </xpath>
+                
+            </field>
+    </record>
 
     <!-- <record id="view_picking_tree_inherit" model="ir.ui.view">
         <field name="name">stock.picking.tree.inherit</field>
