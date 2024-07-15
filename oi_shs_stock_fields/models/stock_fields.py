@@ -80,7 +80,7 @@ class stock_move(models.Model):
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
-    weight = fields.Float(related='product_id.weight',string="weight in (kg)" ,store=True)
+    weight = fields.Float(related='product_id.weight',string="Weight in (kg)" ,store=True)
 
 # class CurrencyRate(models.Model):
 #     _inherit = 'res.currency.rate'
