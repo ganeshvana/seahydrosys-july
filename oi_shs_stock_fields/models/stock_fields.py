@@ -59,7 +59,7 @@ class stock_move(models.Model):
     _inherit = 'stock.move'
     
     description = fields.Char('Customer Reference',readonly=False)
-    weight = fields.Float(related='product_id.weight',string="Weight in (kg)",store=True)
+    weight = fields.Float(string="Weight in (kg)",compute='_compute_weight')
     gross = fields.Float(string="Gross Weight",store=True)
     total = fields.Float(string="Total Weight",store=True,compute='_compute_total')
 
@@ -67,7 +67,12 @@ class stock_move(models.Model):
     @api.depends('quantity_done', 'weight')
     def _compute_total(self):
         for record in self:
-            record.total = record.quantity_done * record.weight  
+            record.total = record.quantity_done * record.weight 
+            
+    @api.depends('product_id')
+    def _compute_weight(self):
+        for record in self:
+            record.weight =  record.product_id.weight  
 
 
 # class CurrencyRate(models.Model):
