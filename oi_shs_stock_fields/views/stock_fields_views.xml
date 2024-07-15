@@ -14,6 +14,7 @@
                 <field name="motor_vehicle_no"/>
                 <field name="duration_of_process"/>                
                 <field name="destination"/>
+                  <field name="batch_id" readonly="1"/>
             </xpath>
 
             
