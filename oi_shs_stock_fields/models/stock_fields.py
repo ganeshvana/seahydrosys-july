@@ -10,6 +10,7 @@
 #
 from odoo import models, fields, api, _
 from datetime import datetime
+from odoo.exceptions import UserError
     
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
@@ -67,13 +68,14 @@ class stock_move(models.Model):
     _inherit = 'stock.move'
     
     description = fields.Char('Customer Reference',readonly=False)
-    weight = fields.Float(string="weight in (kg)",compute='_compute_weight')
+    weight = fields.Float(string="Weight (kg)",compute='_compute_weight')
     gross = fields.Float(string="Gross Weight")
     total = fields.Float(string="Total Weight",compute='_compute_total')
     
     @api.depends('product_id')
     def _compute_weight(self):
-        for record in self:
+        for record in self:  
+            raise UserError(_('Product %s' % record.product_id.weight))     
             record.weight =  record.product_id.weight
         
 
@@ -85,7 +87,7 @@ class stock_move(models.Model):
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
-    weight = fields.Float(related='product_id.weight',string="Weight in (kg)" ,store=True)
+    weight = fields.Float(related='product_id.weight',string="Weight (kg)" ,store=True)
 
   
 
