@@ -76,6 +76,11 @@ class stock_move(models.Model):
     def _compute_total(self):
         for record in self:
             record.total = record.quantity_done * record.weight  
+            
+class StockMoveLine(models.Model):
+    _inherit = "stock.move.line"
+
+    weight = fields.Float(related='product_id.weight',string="weight in (kg)" ,store=True)
 
 # class CurrencyRate(models.Model):
 #     _inherit = 'res.currency.rate'
