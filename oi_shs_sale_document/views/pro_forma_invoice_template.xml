@@ -10,8 +10,8 @@
                 name="oi_shs_sale_document.report_proforma_invoices"
         />
 
-        
-        <record id="action_report_pro_forma_invoice" model="ir.actions.report">
+
+        <!-- <record id="action_report_pro_forma_invoice" model="ir.actions.report">
             <field name="name">PRO-FORMA Invoice</field>
             <field name="model">sale.order</field>
             <field name="report_type">qweb-pdf</field>
@@ -21,6 +21,6 @@
             <field name="binding_model_id" ref="model_sale_order"/>
             <field name="binding_type">report</field>
             <field name="groups_id" eval="[(4, ref('sale.group_proforma_sales'))]"/>
-        </record>
+        </record> -->
     </data>
 </odoo>
