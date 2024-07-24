@@ -178,21 +178,4 @@
 </template>
 
 
-<template id="report_saleorder">
-    <t t-call="web.html_container">
-        <t t-foreach="docs" t-as="doc">
-            <t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>
-        </t>
-    </t>
-</template>
-
-<template id="report_saleorder_pro_forma">
-    <t t-call="web.html_container">
-        <t t-set="is_pro_forma" t-value="True"/>
-        <t t-foreach="docs" t-as="doc">
-            <t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>
-        </t>
-    </t>
-</template>
-
 </odoo>
