@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="group_allow_split_delivery_orders" model="res.groups">
+        <field name="name">Allow Split Transfer</field>
+        <field name="category_id" ref="base.module_category_usability"/>
+    </record>
+</odoo>

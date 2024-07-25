@@ -89,6 +89,14 @@ class quality_inspection(models.Model):
     debit_note_reference = fields.Char("Debit Note Reference")
 
 
+    @api.onchange('osn_qty','msn_qty','process_qty')
+    def compute_rejection_qty(self):
+        for rec in self:
+            if rec.osn_qty or rec.msn_qty or rec.process_qty:
+                rec.rejection_qty = rec.osn_qty+rec.msn_qty+rec.process_qty
+            else:
+                rec.rejection_qty = 0.00 
+                
     @api.model
     def create(self, vals):
         if vals.get('name', _(' ')) == _(' '):
@@ -275,6 +283,18 @@ class stock_picking(models.Model):
         ('pending', 'Pending'),
         ('complete', 'Completed'),
     ], string='Inspection Status',copy=False,default="pending")
+    
+    user_id =fields.Many2one('res.users',compute='_compute_responsible',store=True)
+    
+    @api.depends('origin')
+    def _compute_responsible(self):
+        for rec in self:
+            if rec.picking_type_code == "incoming" and rec.origin:
+                check_user = self.env['purchase.order'].search([('name','=',rec.origin)],limit=1)
+                if check_user:
+                   rec.user_id = check_user.user_id.id  
+                else:
+                     rec.user_id = None
 
     
 

@@ -7,24 +7,54 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
            
-         <xpath expr="//field[@name='standard_price']" position="attributes">
-        <attribute name="required">True</attribute>
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                <attribute name="required">True</attribute>
 
-        </xpath>
-
-
-        <xpath expr="//field[@name='sale_delay']" position="attributes">
-        <attribute name="required">True</attribute>
-
-        </xpath>
-    <xpath expr="//field[@name='produce_delay']" position="attributes">
-        <attribute name="required">True</attribute>
-
-        </xpath>
+                </xpath>
 
 
- </field>
-</record>
+                <xpath expr="//field[@name='sale_delay']" position="attributes">
+                <attribute name="required">True</attribute>
+
+                </xpath>
+                <xpath expr="//field[@name='produce_delay']" position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+
+
+            </field>
+        </record>
+
+
+        <!--  new custome fields added on general information page-->
+
+    <record id="product_form_custome_field_inherited" model="ir.ui.view">
+            <field name="name">product.template.common.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+           
+            <xpath expr="//form/sheet/notebook/page[@name='general_information']/group/group/field[@name='uom_po_id']" position="after">
+                   <field name="shs_bore"/>
+                   <field name="shs_stroke"/>
+                    <field name="shs_rod"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_template_field_custom_form" model="ir.ui.view">
+        <field name="name">stock_no_negative.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.view_template_property_form" />
+        <field name="arch" type="xml">
+            <field name="categ_id" position="after">
+                <field name="shs_class"/>
+                <field name="shs_heavy_light"/>
+            </field>
+        </field>
+    </record>
+
 
 
     </data>

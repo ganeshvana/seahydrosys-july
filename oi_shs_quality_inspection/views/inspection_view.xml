@@ -36,6 +36,7 @@
                                 <field name="osn_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="msn_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="process_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="rejection_qty" readonly="1" force_save="1"/>
                                 <field name="rm_supplier_id"/>
                                 <field name="template_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="debit_note_reference"/>
@@ -48,7 +49,6 @@
                                 <field name="inspected_by" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="shift" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="inspection_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="rejection_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="rejection_reference" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="defect_type_id"/>
                                 <field name="corrective_test" attrs="{'readonly': [('state', '!=', 'draft')]}"/>

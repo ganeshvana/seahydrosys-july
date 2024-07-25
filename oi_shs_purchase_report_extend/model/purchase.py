@@ -22,6 +22,8 @@ class purchase_order(models.Model):
     due_date = fields.Date("Due Date")
     sail_date = fields.Date("Sail Date")
     tax_country_id = fields.Many2one("res.country",'Country')
+    date_planned = fields.Datetime(string='Final Receipt Date')
+
     # pick_id = fields.Many2one('stock.picking','DO')
     
 

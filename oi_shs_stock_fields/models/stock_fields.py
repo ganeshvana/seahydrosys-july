@@ -10,6 +10,7 @@
 #
 from odoo import models, fields, api, _
 from datetime import datetime
+
     
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
@@ -18,9 +19,17 @@ class stock_picking_inherit(models.Model):
     def _get_fcl_weight(self):
         for pick in self:
             weight = 0.00
-            for line in pick.move_ids_without_package:
-                weight += line.product_uom_qty * line.product_id.weight
-                self.fcl_weight = weight
+        for line in pick.move_ids_without_package:
+            weight += line.total 
+        pick.fcl_weight = weight
+                
+    @api.depends('move_ids_without_package')
+    def _get_done_total(self):  
+        for pick in self:
+            done = 0.00
+        for line in pick.move_ids_without_package:
+            done +=line.quantity_done
+        pick.done_total = done
 
     # @api.depends('origin')
     # def _get_mo(self):
@@ -47,21 +56,37 @@ class stock_picking_inherit(models.Model):
     destination = fields.Char(string='Destination')
     despatched_through = fields.Char('Despatched Through')
     buyer_order_no = fields.Char(string="Buyer's Order No")
-    fcl_weight = fields.Float('FCL Weight',compute="_get_fcl_weight")
+    fcl_weight = fields.Float('Net Weight', compute="_get_fcl_weight")
+    gross_weight = fields.Float('Gross Weight')
+    done_total = fields.Float('Total Quantity',compute="_get_done_total")
     mrp_id =  fields.Many2one('mrp.production','Mo',compute="_get_mo")
     drawing_no = fields.Char("Drawing No")
+    categ_id = fields.Many2one('product.category','Product Category',related='product_id.categ_id',store=True,)
 
 
 class stock_move(models.Model):
     _inherit = 'stock.move'
     
-    description = fields.Char('Description')
+    description = fields.Char('Customer Reference',readonly=False)
+    product_weight = fields.Float(string="Weight (kg)",compute='_compute_weight')
+    gross = fields.Float(string="Gross Weight")
+    total = fields.Float(string="Total Weight",compute='_compute_total')
+    
+    @api.depends('product_id')
+    def _compute_weight(self):
+        for record in self: 
+            record.product_weight =  record.product_id.weight
+        
 
+    @api.depends('quantity_done', 'product_weight')
+    def _compute_total(self):
+        for record in self:
+            record.total = record.quantity_done * record.product_id.weight  
+            
+class StockMoveLine(models.Model):
+    _inherit = "stock.move.line"
 
-# class CurrencyRate(models.Model):
-#     _inherit = 'res.currency.rate'
-
-#     rate = fields.Float(digits=(12, 15), default=1.0, help='The rate of the currency to the currency of rate 1')
+    weight = fields.Float(related='product_id.weight',string="Weight (kg)" ,store=True)
 
   
 
