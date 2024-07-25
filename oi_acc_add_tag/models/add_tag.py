@@ -15,7 +15,7 @@ class AddTag(models.Model):
         else:
             self.tag = None
 
-    l10n_in_state_id = fields.Many2one('Location of supply')
+    # l10n_in_state_id = fields.Many2one('Location of supply')
 
 
 
