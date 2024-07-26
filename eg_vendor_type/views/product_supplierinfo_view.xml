@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_product_supplierinfo_vendor_type_inherit" model="ir.ui.view">
+        <field name="name">view.product.supplierinfo.vendor.type.inherit</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='name']" position="after">
+                <field name="vendor_type_id" options="{'no_create_edit': True, 'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
