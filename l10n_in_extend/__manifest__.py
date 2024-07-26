@@ -21,6 +21,7 @@ This module create base requirement for E-invoice and E-waybill
         "data/res_country_state_data.xml",
         "views/account_invoice_views.xml",
         "views/report_invoice.xml",
+        "views/invoice_gstin_views.xml"
     ],
     "installable": True,
     "application": False,
