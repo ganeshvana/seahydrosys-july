@@ -60,6 +60,20 @@
     </record>
    
 
+    <!-- Stock quant package -->
+    <record id="view_stock_quant_package_inherit" model="ir.ui.view">
+        <field name="name">stock.quant.package.inherit</field>
+        <field name="model">stock.quant.package</field>
+        <field name="inherit_id" ref="stock.view_quant_package_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="responsible_person"/>             
+            </xpath>           
+        </field>
+    </record>
+
+
+
     <!-- <record id="view_picking_tree_inherit" model="ir.ui.view">
         <field name="name">stock.picking.tree.inherit</field>
         <field name="model">stock.picking</field>
