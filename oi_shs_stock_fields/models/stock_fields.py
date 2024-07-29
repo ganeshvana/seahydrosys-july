@@ -89,8 +89,10 @@ class StockMoveLine(models.Model):
     weight = fields.Float(related='product_id.weight',string="Weight (kg)" ,store=True)
 
   
+class StockMoveLine(models.Model):
+    _inherit = "stock.quant.package"
 
-
+    responsible_person = fields.Char('Responsible Person')
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

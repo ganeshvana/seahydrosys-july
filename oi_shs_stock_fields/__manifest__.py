@@ -13,4 +13,5 @@
     'data': ['views/stock_fields_views.xml'],
     'installable': True,
     'auto_install': False
+    
 }
