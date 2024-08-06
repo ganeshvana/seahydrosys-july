@@ -38,7 +38,9 @@
             <xpath expr="//field[@name='user_id']" position="after">
             <field name="sea_batch_no" optional="hide"></field>
             <field name="sea_delivery_date" optional="hide"></field>
-            
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="tag_ids" optional="hide" widget='many2many_tags'/>
             </xpath>
         </field>
     </record>
