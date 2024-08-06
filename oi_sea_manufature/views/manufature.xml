@@ -41,7 +41,7 @@
             </xpath>
 
             <xpath expr="//field[@name='origin']" position="after">
-                <field name="tag_ids"/>
+                <field name="tag_ids" optional="hide"/>
             </xpath>
         </field>
     </record>
