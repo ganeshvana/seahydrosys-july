@@ -41,7 +41,7 @@
             </xpath>
 
             <xpath expr="//field[@name='origin']" position="after">
-                <field name="tag_ids" optional="hide"/>
+                <field name="tag_ids" optional="hide" widget='many2many_tags'/>
             </xpath>
         </field>
     </record>
