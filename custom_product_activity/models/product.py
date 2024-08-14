@@ -12,7 +12,7 @@ class ProductTemplate(models.Model):
             # activities = product.activity_ids.filtered(lambda a: a.active)
             activities = product.activity_ids.filtered(lambda a: a.state != 'done')
             if activities:
-                product.activity_state = ', '.join([a.activity_type_id.name for a in activities])
+                product.activity_state = ', '.join([a.summary for a in activities])
             # if activities:
             #     latest_activity = max(activities, key=lambda a: a.date_deadline or a.create_date)
             #     product.activity_state = latest_activity.activity_type_id.name
