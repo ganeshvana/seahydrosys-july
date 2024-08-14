@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		 <record id="product_template_hide_costprice" model="ir.ui.view">
+			 <field name="name">product.template.hide.costprice</field>
+			 <field name="model">product.template</field>
+			 <field name="inherit_id" ref="product.product_template_only_form_view"/>
+			 <field name="arch" type="xml">
+			 
+					<xpath expr="//field[@name='standard_price']" position="replace" >
+					    <field name="standard_price" widget='monetary' options="{'currency_field': 'cost_currency_id', 'field_digits': True}" groups="wl_product_advance_features.hide_cost_price"/>
+                    </xpath>
+                    <xpath expr="//label[@for='standard_price']" position="replace" >
+					     <label for="standard_price" groups="wl_product_advance_features.hide_cost_price" /> 
+                    </xpath>
+                    
+                    <xpath expr="//label[@for='list_price']" position="replace" >
+					     <label for="list_price" class="mt-1" groups="wl_product_advance_features.show_sale_price" />
+                    </xpath>
+                    <xpath expr="//field[@name='list_price']" position="replace" >
+                    	
+                    	<field name="list_price" class="oe_inline" widget='monetary'
+                                        options="{'currency_field': 'currency_id', 'field_digits': True}" groups="wl_product_advance_features.show_sale_price"/>
+                    </xpath>
+                    
+     		</field>
+		 </record>
+		 
+		 <record id="product_template_hide_tree_view" model="ir.ui.view">
+			 <field name="name">product.template.tree.view</field>
+			 <field name="model">product.template</field>
+			 <field name="inherit_id" ref="product.product_template_tree_view"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='standard_price']" position="replace" >
+					    <field name="standard_price" widget="monetary" options="{'currency_field': 'cost_currency_id'}" optional="show" readonly="1" groups="wl_product_advance_features.hide_cost_price"/>
+					    
+                    </xpath>
+                    <xpath expr="//field[@name='list_price']" position="replace" >
+					     <field name="list_price" string="Sales Price" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show" decoration-muted="not sale_ok" groups="wl_product_advance_features.show_sale_price"/>
+                
+                    </xpath>
+<!--                    <xpath expr="//field[@name='list_price']" position="replace" >-->
+<!--					     <field name="list_price" string="Sales Price" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show" decoration-muted="not sale_ok" groups="wl_product_advance_features.show_sale_price"/>-->
+<!--                -->
+<!--                    </xpath>-->
+     		</field>
+		 </record>
+		 <record id="product_template_hide_cost_kanban" model="ir.ui.view">
+			 <field name="name">product.template.hide.cost.kanban</field>
+			 <field name="model">product.template</field>
+			 <field name="inherit_id" ref="product.product_template_kanban_view"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//div[@name='product_lst_price']" position="after" >
+					    
+					    <div name="product_cost_price" class="mt-1" groups="wl_product_advance_features.hide_cost_price">
+                                   Cost: <field name="standard_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                        </div>
+                    </xpath>
+                    
+                    <xpath expr="//div[@name='product_lst_price']" position="replace" >
+		                	<div name="product_lst_price" class="mt-1" groups="wl_product_advance_features.show_sale_price">
+		                                Price: <field name="list_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+		                           
+		                    </div>
+                    </xpath>
+                    
+     		</field>
+		 </record>
+		 
+		 <record id="product_product_hide_form_view" model="ir.ui.view">
+			 <field name="name">product.product.hide.form.view</field>
+			 <field name="model">product.product</field>
+			 <field name="inherit_id" ref="product.product_normal_form_view"/>
+			 <field name="arch" type="xml">
+			 
+			 		<xpath expr="//label[@for='standard_price']" position="replace" >
+					     <label for="standard_price" groups="wl_product_advance_features.hide_cost_price" /> 
+                    </xpath>
+                    
+                    <xpath expr="//field[@name='standard_price']" position="replace" >
+					    <field name="standard_price" widget="monetary"  groups="wl_product_advance_features.hide_cost_price"/>
+<!--					    options="{'currency_field': 'currency_id', 'field_digits': True}"-->
+                    </xpath>
+                    
+<!--                    <xpath expr="//label[@for='lst_price']" position="replace" >-->
+<!--					     <label for="lst_price"  groups="wl_product_advance_features.show_sale_price" /> -->
+<!--                    </xpath>-->
+                    
+                    <xpath expr="//field[@name='lst_price']" position="replace" >
+                    	<field name="lst_price" options="{'currency_field': 'currency_id'}"  string="Sales Price" groups="wl_product_advance_features.show_sale_price"/>
+                    </xpath>
+                    
+     		</field>
+		 </record>
+		 
+		  <record id="product_product_hide_tree_view" model="ir.ui.view">
+			 <field name="name">product.product.tree.view</field>
+			 <field name="model">product.product</field>
+			 <field name="inherit_id" ref="product.product_product_tree_view"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='standard_price']" position="replace" >
+						<field name="standard_price" widget="monetary" options="{'currency_field': 'cost_currency_id'}" optional="show" readonly="1" groups="wl_product_advance_features.hide_cost_price"/>
+					
+<!--					    <field name="standard_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" groups="wl_product_advance_features.hide_cost_price"/>-->
+                    </xpath>
+                    <xpath expr="//field[@name='lst_price']" position="replace" >
+                    	<field name="lst_price" optional="show" string="Sales Price" groups="wl_product_advance_features.show_sale_price"/>
+                    </xpath>
+     		</field>
+		 </record>
+		  <record id="product_product_hide_cost_kanban" model="ir.ui.view">
+			 <field name="name">product.product.hide.cost.kanban</field>
+			 <field name="model">product.product</field>
+			 <field name="inherit_id" ref="product.product_kanban_view"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='lst_price']" position="after" >
+					    <field name="standard_price"/>
+                    </xpath>
+                    <xpath expr="//ul/li" position="replace" >
+                        <li groups="wl_product_advance_features.show_sale_price"><strong>Price: <field name="lst_price"/></strong></li>
+                     </xpath>
+                    
+                    <xpath expr="//ul" position="inside" >
+                                <li groups="wl_product_advance_features.hide_cost_price"><b>Cost Price:</b> <field name="standard_price"  widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                </li>
+                     </xpath>
+                     
+                    
+     		</field>
+		 </record>
+</odoo>
