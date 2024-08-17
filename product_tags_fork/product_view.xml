@@ -133,7 +133,7 @@
         <record id="mrp_product_tag_search_inherit" model="ir.ui.view">
             <field name="name">mrp.production.product.tag.select</field>
             <field name="model">mrp.production</field>
-            <field name="inherit_id" ref="mrp.mrp_production_search_view"/>
+            <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
             <field name="arch" type="xml">
                 <xpath expr="//search" position="inside">
                     <!-- Existing fields -->
