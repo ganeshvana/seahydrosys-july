@@ -82,3 +82,8 @@ class UserRestriction(models.Model):
     _inherit = "mrp.production"
     
     tag_ids = fields.Many2many(related='product_id.tag_ids', string="Product Tags")
+    product_categ_id = fields.Many2one(
+        related='product_id.categ_id',
+        string='Product Category',
+        store=True
+    )
