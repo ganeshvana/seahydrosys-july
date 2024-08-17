@@ -142,7 +142,7 @@
                     <field name="product_id"/>
 
                     <!-- Use product_uom for filtering -->
-                    <field name="product_uom_category_id" string="UOM Category"/>
+                    <field name="product_uom_category_id" string="Category"/>
                     <!-- Add filter for product_uom -->
                     <filter name="filter_product_uom_category" string="Product UOM Category"
                             domain="[('product_uom_category_id', '=', self)]"/>
