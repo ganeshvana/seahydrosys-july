@@ -142,11 +142,10 @@
                     <field name="product_id"/>
 
                     <!-- Use product_uom for filtering -->
-                    <field name="product_uom" string="Unit of Measure" filter_domain="[('category_id', '=', self)]"/>
-
+                    <field name="product_uom_category_id" string="UOM Category"/>
                     <!-- Add filter for product_uom -->
-                    <filter name="filter_product_uom" string="Unit of Measure"
-                            domain="[('product_uom.category_id', '=', self)]"/>
+                    <filter name="filter_product_uom_category" string="Product UOM Category"
+                            domain="[('product_uom_category_id', '=', self)]"/>
                     <filter name="filter_all" string="All" domain="[]"/>
                 </xpath>
             </field>
