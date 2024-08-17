@@ -137,7 +137,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//search" position="inside">
                     <!-- Add the product_uom_category_id field for filtering by category -->
-                    <field name="product_uom_category_id" string="Category"/>
+                    <field name="product_uom_category_id" string="Category" context="{'group_by':'categ_id'}"/>
                 </xpath>
             </field>
         </record>
