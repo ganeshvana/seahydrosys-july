@@ -129,8 +129,11 @@
                 </xpath>
 
                 <xpath expr="//search" position="inside">
+                    <field name="name" string="Manufacturing Order" filter_domain="['|', ('name', 'ilike', self), ('origin', 'ilike', self)]"/>
+                    <field name="product_id"/>
+                    <field name="product_uom_category_id" string="Category"/>
                     <filter name="filter_product_uom_category" string="Product UOM Category"
-                            domain="[('product_uom_category_id', '=', product_uom_category_id)]"/>
+                            domain="[('product_uom_category_id', '=', self)]"/>
                     <filter name="filter_all" string="All" domain="[]"/>
                 </xpath>
             </field>
