@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <!-- Inherited view to modify product display -->
+        <template id="report_invoice_document_inherit" inherit_id="stock_account.stock_account_report_invoice_document">
+            <xpath expr="//t[@groups='stock_account.group_lot_on_invoice']//table[@name='invoice_snln_table']//tbody//td[1]" position="replace">
+                <!-- Print only the product name without internal reference -->
+                <td>
+                    <t t-esc="snln_line['product_name'].split('] ')[-1] if ']' in snln_line['product_name'] else snln_line['product_name']"/>
+                </td>
+            </xpath>
+        </template>
+    </data>
+</odoo>
