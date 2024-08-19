@@ -10,7 +10,8 @@
     'depends': ['base', 'account', 'oi_shs_exchange_rate'],
     'data': [
             'views/export_invoice_report_view.xml',
-            'views/export_invoice_template_view.xml'
+            'views/export_invoice_template_view.xml',
+            'views/invoice_report.xml'
             ],
     'installable': True,
     'application': True,
