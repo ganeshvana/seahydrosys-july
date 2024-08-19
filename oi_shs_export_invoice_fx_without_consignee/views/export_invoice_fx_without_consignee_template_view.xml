@@ -348,7 +348,7 @@
                                         </td>
                                       
                                         <td style="width:440px; text-align:left;">
-                                            <span t-field="l.product_id"/> 
+                                            <span t-field="l.product_id.name"/> 
                                         </td>
                                         <td style="width:150px; text-align:left;">
                                             <span t-field="l.po_no"/>
