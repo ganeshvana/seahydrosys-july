@@ -127,7 +127,7 @@ class MailThread(models.AbstractModel):
             author_id, email_from = False, False
         else:
             author_guest_id = False
-            author_id, email_from = self._message_compute_author(author_id, email_from, raise_on_email=True)
+            author_id, email_from = self._message_compute_author(author_id, email_from)
 
         if subtype_xmlid:
             subtype_id = self.env['ir.model.data']._xmlid_to_res_id(subtype_xmlid)
