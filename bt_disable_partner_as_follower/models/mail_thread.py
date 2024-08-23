@@ -168,9 +168,6 @@ class MailThread(models.AbstractModel):
         })
         # add default-like values afterwards, to avoid useless queries
         
-            
-        if 'record_company_id' not in msg_values:
-            msg_values['record_company_id'] = self._mail_get_companies(default=self.env.company)[self.id].id
         if 'reply_to' not in msg_values:
             msg_values['reply_to'] = self._notify_get_reply_to(default=email_from)[self.id]
 
