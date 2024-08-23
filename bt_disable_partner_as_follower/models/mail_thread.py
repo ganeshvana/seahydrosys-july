@@ -79,10 +79,7 @@ class MailThread(models.AbstractModel):
         self.ensure_one()  # should always be posted on a record, use message_notify if no record
 
         # preliminary value safety check
-        self._raise_for_invalid_parameters(
-            set(kwargs.keys()),
-            forbidden_names={'model', 'res_id', 'subtype'}
-        )
+        
         if self._name == 'mail.thread' or not self.id:
             raise ValueError(
                 _("Posting a message should be done on a business document. Use message_notify to send a notification to an user."))
