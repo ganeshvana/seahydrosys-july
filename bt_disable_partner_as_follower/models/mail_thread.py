@@ -167,8 +167,7 @@ class MailThread(models.AbstractModel):
             # 'partner_ids': partner_ids,
         })
         # add default-like values afterwards, to avoid useless queries
-        if 'record_alias_domain_id' not in msg_values:
-            msg_values['record_alias_domain_id'] = \
+        
             
         if 'record_company_id' not in msg_values:
             msg_values['record_company_id'] = self._mail_get_companies(default=self.env.company)[self.id].id
