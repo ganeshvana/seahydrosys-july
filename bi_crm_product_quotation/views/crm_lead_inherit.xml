@@ -41,7 +41,7 @@
 
                 <!-- Add the 'Segment' and 'Machine Type' fields after the 'tag_ids' field -->
                 <xpath expr="//field[@name='tag_ids']" position="after">
-                    <field widget="many2many_tags"  string="Segment"/>
+                    <field widget="many2many_tags" name="segment" string="Segment"/>
                     <field name="machine_type" string="Machine Type"/>
                 </xpath>
 
