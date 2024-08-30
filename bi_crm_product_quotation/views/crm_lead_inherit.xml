@@ -32,6 +32,9 @@
                     </field>
                 </page>
             </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="string">Segment</attribute>
+            </xpath>
         </field>
     </record>
 
