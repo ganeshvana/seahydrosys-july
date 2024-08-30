@@ -63,7 +63,7 @@ class ResupplyReport(models.TransientModel):
             "Receipt Status",
             "Receipt Qty",
             "Supply No",
-            # "Supply Date",
+            "Supply Date",
             "Supply Status",
             "Supply Product",
             "Supply Qty",
@@ -151,6 +151,10 @@ class ResupplyReport(models.TransientModel):
                                         supply.append(sl.picking_id.name)
                                         col = 9
                                         worksheet.write(row, col, str(sl.picking_id.name),style_normal)
+                                        col += 1
+
+                                        # Write Effective Date in the Resupply (column 10)
+                                        worksheet.write(row, col, str(sl.picking_id.date_done or ''), style_normal)  # Effective Date
                                         col += 1
                                         if sl.picking_id.state == 'draft':
                                             state = 'Draft'
