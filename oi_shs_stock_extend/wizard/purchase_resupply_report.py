@@ -59,7 +59,7 @@ class ResupplyReport(models.TransientModel):
             "Product",
             "Order Qty",
             "Receipt No",
-            # "Receipt Date",
+            "Receipt Date",
             "Receipt Status",
             "Receipt Qty",
             "Supply No",
@@ -107,7 +107,14 @@ class ResupplyReport(models.TransientModel):
                         for val in pick:               
                             col = 5
                             worksheet.write(row, col, str(val.picking_id.name),style_normal)
-                            col += 1
+                            # col += 1
+                            # Write the 'Receipt No' and other details
+                        pickings = po.order_line.move_ids
+                        for move in pol.move_ids:
+                            if move.picking_id:  
+                                col = 6
+                                worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)
+
                             if val.picking_id.state == 'draft':
                                 state = 'Draft'
                             if val.picking_id.state == 'waiting':
@@ -139,7 +146,7 @@ class ResupplyReport(models.TransientModel):
                                     for sl in at_line:
                                         if sl.picking_id.name not in supply:
                                             supply.append(sl.picking_id.name)
-                                            col = 8
+                                            col = 9
                                             worksheet.write(row, col, str(sl.picking_id.name),style_normal)
                                             col += 1
                                             if sl.picking_id.state == 'draft':
