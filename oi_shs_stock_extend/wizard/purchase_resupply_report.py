@@ -104,7 +104,7 @@ class ResupplyReport(models.TransientModel):
                     pickings = po.order_line.move_ids
                     for move in pol.move_ids:
                         if move.picking_id:
-                           col = 5
+                           col += 1
 
                             # Write 'Receipt No' (picking name)
                             worksheet.write(row, col, str(move.picking_id.name), style_normal)
