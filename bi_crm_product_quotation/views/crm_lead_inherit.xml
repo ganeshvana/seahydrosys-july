@@ -32,15 +32,30 @@
                     </field>
                 </page>
             </xpath>
-                <!-- Rename 'Tags' to 'Segment' -->
-            <xpath expr="//field[@name='tag_ids']" position="attributes">
+              <!-- Modify the 'tag_ids' field's attributes and make it invisible -->
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="options">{"color_field": "color", "no_create_edit": true, "no_create": true}</attribute>
+                </xpath>
+
+                <!-- Add the 'Segment' and 'Machine Type' fields after the 'tag_ids' field -->
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field widget="many2many_tags"  string="Segment"/>
+                    <field name="machine_type" string="Machine Type"/>
+                </xpath>
+
+                <!-- Add the 'Machine Type' field after the 'tag_ids' inside the 'lead_priority' group -->
+                <xpath expr="//group[@name='lead_priority']/field[@name='tag_ids']" position="after">
+                    <field name="machine_type" string="Machine Type"/>
+                </xpath>
+            <!-- <xpath expr="//field[@name='tag_ids']" position="attributes">
                 <attribute name="string">Segment</attribute>
             </xpath>
             
-            <!-- Add new field 'Machine Type' after 'Segment' -->
             <xpath expr="//field[@name='tag_ids']" position="after">
                 <field name="machine_type" />
-            </xpath>
+            </xpath> -->
         </field>
     </record>
 
