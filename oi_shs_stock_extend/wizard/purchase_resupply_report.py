@@ -1,30 +1,9 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import base64
-from datetime import datetime,timedelta,timezone
-from dateutil.relativedelta import relativedelta
-import base64
+from datetime import datetime, timedelta
 import io
-import os
-from collections import defaultdict
-from dateutil.relativedelta import relativedelta
-from lxml import etree
-
-from odoo.modules.module import get_resource_path
-from odoo.tools.misc import xlsxwriter
-from odoo.tools.mimetypes import guess_mimetype
-import os.path
-from os import path
-from pathlib import Path
-import collections, functools, operator
-from collections import Counter
-from reportlab.rl_settings import rtlSupport
-from datetime import  date
-# from datetimerange import DateTimeRange
-from datetime import timedelta
-import sys
-import pytz
-
+import xlsxwriter
 
 class ResupplyReport(models.TransientModel):
     _name = 'resupply.report'
@@ -33,25 +12,14 @@ class ResupplyReport(models.TransientModel):
     to_date = fields.Date("To Date", required=True)
     xls_file = fields.Binary(string="XLS file")
     xls_filename = fields.Char()
-    
+
     def fuel_report(self):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('Resupply')
-        style_highlight_right = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'right'})
         style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'center'})
         style_normal = workbook.add_format({'align': 'left'})
-        style_right = workbook.add_format({'align': 'right'})
-        style_left = workbook.add_format({'align': 'left'})
-        merge_formatb = workbook.add_format({
-                'bold': 1,
-                'border': 1,
-                'align': 'center',
-                'valign': 'vcenter',
-                'bg_color': '#FFFFFF',
-                'text_wrap': True
-                })
-        merge_formatb.set_font_size(9)
+        
         headers = [
             "PO No:",
             "Vendor",
@@ -67,65 +35,59 @@ class ResupplyReport(models.TransientModel):
             "Supply Status",
             "Supply Product",
             "Supply Qty",
-            
         ]
-        vehicle_list = []
+        
         row = 1
-        col = 0
-        res_done = receipt_done = 0.0
-        total_fuel = total_cost = 0.0
         col = 0
         for header in headers:
             worksheet.write(row, col, header, style_highlight)
             worksheet.set_column(col, col, 16)
-            col += 1       
+            col += 1
         row += 1
-        purchases = self.env['purchase.order'].search([('state', 'in', ['purchase','done'] )])
+
+        purchases = self.env['purchase.order'].search([('state', 'in', ['purchase', 'done'])])
         for po in purchases:
-            col = 0
-            if self.from_date <= po.date_approve.date() <= self.to_date :
+            if self.from_date <= po.date_approve.date() <= self.to_date:
                 moves_subcontracted = po.order_line.move_ids.filtered(lambda m: m.is_subcontract)
                 subcontracted_productions = moves_subcontracted.move_orig_ids.production_id
                 subcontracts = subcontracted_productions.picking_ids
                 pickings = po.order_line.move_ids
+                
                 if subcontracts:
-                    worksheet.write(row, col, str(po.name),style_normal)
-                    col += 1
-                    worksheet.write(row, col, str(po.partner_id.name),style_normal)
-                    col += 1
-                    worksheet.write(row, col, str(po.date_order.strftime('%d/%m/%Y')),style_normal)
-                    col += 1
-                    for pol in po.order_line: 
+                    worksheet.write(row, 0, str(po.name), style_normal)
+                    worksheet.write(row, 1, str(po.partner_id.name), style_normal)
+                    worksheet.write(row, 2, str(po.date_order.strftime('%d/%m/%Y')), style_normal)
+                    row += 1
+                    
+                    for pol in po.order_line:
                         col = 3
-                        worksheet.write(row, col, str(pol.product_id.name),style_normal)
+                        worksheet.write(row, col, str(pol.product_id.name), style_normal)
                         col += 1
-                        worksheet.write(row, col, str(pol.product_qty),style_normal)
+                        worksheet.write(row, col, str(pol.product_qty), style_normal)
                         col += 1
-                        worksheet.write(row, col, str(pol.date_done),style_normal)
-                        col += 1                       
-                        pick = pickings.filtered(lambda m: m.product_id == pol.product_id)   
-                        for val in pick:               
+                        worksheet.write(row, col, str(pol.date_done), style_normal)
+                        col += 1
+                        
+                        pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
+                        for val in pick:
                             col = 5
-                            worksheet.write(row, col, str(val.picking_id.name),style_normal)
+                            worksheet.write(row, col, str(val.picking_id.name), style_normal)
                             col += 1
-                            if val.picking_id.state == 'draft':
-                                state = 'Draft'
-                            if val.picking_id.state == 'waiting':
-                                state = 'Waiting for another Operation'
-                            if val.picking_id.state == 'confirmed':
-                                state = 'Waiting'
-                            if val.picking_id.state == 'assigned':
-                                state = 'Ready'
-                            if val.picking_id.state == 'done':
-                                state = 'Done'
-                            if val.picking_id.state == 'cancel':
-                                state = 'Cancel'
                             
-                            worksheet.write(row, col, str(state),style_normal)
+                            state = {
+                                'draft': 'Draft',
+                                'waiting': 'Waiting for another Operation',
+                                'confirmed': 'Waiting',
+                                'assigned': 'Ready',
+                                'done': 'Done',
+                                'cancel': 'Cancel'
+                            }.get(val.picking_id.state, 'Unknown')
+                            worksheet.write(row, col, state, style_normal)
                             col += 1
-                            pick_sum = sum(p.quantity_done for p in pick)
-                            worksheet.write(row, col, str(val.quantity_done),style_normal)
+                            
+                            worksheet.write(row, col, str(val.quantity_done), style_normal)
                             col += 1
+                            
                             link = pick._get_subcontract_production().move_raw_ids
                             supply = []
                             for sub in subcontracts:
@@ -140,40 +102,36 @@ class ResupplyReport(models.TransientModel):
                                         if sl.picking_id.name not in supply:
                                             supply.append(sl.picking_id.name)
                                             col = 8
-                                            worksheet.write(row, col, str(sl.picking_id.name),style_normal)
+                                            worksheet.write(row, col, str(sl.picking_id.name), style_normal)
                                             col += 1
-                                            if sl.picking_id.state == 'draft':
-                                                state = 'Draft'
-                                            if sl.picking_id.state == 'waiting':
-                                                state = 'Waiting for another Operation'
-                                            if sl.picking_id.state == 'confirmed':
-                                                state = 'Waiting'
-                                            if sl.picking_id.state == 'assigned':
-                                                state = 'Ready'
-                                            if sl.picking_id.state == 'done':
-                                                state = 'Done'
-                                            if sl.picking_id.state == 'cancel':
-                                                state = 'Cancel'
-                                            worksheet.write(row, col, str(state),style_normal)
+                                            
+                                            state = {
+                                                'draft': 'Draft',
+                                                'waiting': 'Waiting for another Operation',
+                                                'confirmed': 'Waiting',
+                                                'assigned': 'Ready',
+                                                'done': 'Done',
+                                                'cancel': 'Cancel'
+                                            }.get(sl.picking_id.state, 'Unknown')
+                                            worksheet.write(row, col, state, style_normal)
                                             col += 1
-                                            worksheet.write(row, col, str(sl.product_id.name),style_normal)
+                                            
+                                            worksheet.write(row, col, str(sl.product_id.name), style_normal)
                                             col += 1
-                                            res_done = sl.quantity_done
-                                            worksheet.write(row, col, str(sl.quantity_done),style_normal)
+                                            
+                                            receipt_date = sl.picking_id.date_done
+                                            worksheet.write(row, col, str(receipt_date.strftime('%d/%m/%Y') if receipt_date else 'N/A'), style_normal)
                                             col += 1
-                                            row+= 1
-                    # col = 11
-                    # worksheet.write(row, col, receipt_done - res_done,style_normal)
-                    # col += 1
-                    
-                row += 1
-                col = 0
-        
+                                            
+                                            worksheet.write(row, col, str(sl.quantity_done), style_normal)
+                                            col += 1
+                                            row += 1
+
         workbook.close()
         xlsx_data = output.getvalue()
         self.xls_file = base64.encodebytes(xlsx_data)
         self.xls_filename = "Resupply.xlsx"
- 
+
         return {
             'type': 'ir.actions.act_window',
             'res_model': self._name,
@@ -181,4 +139,4 @@ class ResupplyReport(models.TransientModel):
             'res_id': self.id,
             'views': [(False, 'form')],
             'target': 'new',
-        } 
+        }
