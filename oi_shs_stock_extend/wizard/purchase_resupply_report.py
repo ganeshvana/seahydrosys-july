@@ -100,9 +100,9 @@ class ResupplyReport(models.TransientModel):
                         worksheet.write(row, col, str(pol.product_id.name),style_normal)
                         col += 1
                         worksheet.write(row, col, str(pol.product_qty),style_normal)
-                    pickings = po.order_line.move_ids.mapped('picking_ids')
-                    for picking in pickings:
-                        worksheet.write(row, col, str(picking.date_done or ''), style_normal)
+                    for move in pol.move_ids:
+                        if move.picking_id:
+                            worksheet.write(row, col, str(move.picking_id.date_done or ''), style_normal)
                         col += 1                       
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)   
                         for val in pick:               
