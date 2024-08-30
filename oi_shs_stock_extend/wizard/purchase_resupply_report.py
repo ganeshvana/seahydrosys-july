@@ -100,15 +100,21 @@ class ResupplyReport(models.TransientModel):
                         worksheet.write(row, col, str(pol.product_id.name),style_normal)
                         col += 1
                         worksheet.write(row, col, str(pol.product_qty),style_normal)
-                        col = 6
-                        for move in pol.move_ids:
-                           if move.picking_id:
-                            worksheet.write(row, col, str(move.picking_id.date_done or ''), style_normal)
-                        col += 1                       
-                        pick = pickings.filtered(lambda m: m.product_id == pol.product_id)   
-                        for val in pick:               
-                            col = 5
-                            worksheet.write(row, col, str(val.picking_id.name),style_normal)
+                        col += 1
+                    pickings = po.order_line.move_ids
+                    for move in pol.move_ids:
+                        if move.picking_id:
+                            # Write 'Receipt No' (picking name)
+                            worksheet.write(row, col, str(move.picking_id.name), style_normal)
+                            col += 1
+                            
+                            # Write 'Supply No' and 'Supply Date'
+                            pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
+                            for val in pick:
+                                worksheet.write(row, col, str(val.picking_id.name), style_normal)
+                                col += 1
+                                
+                                worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)
                             col += 1
                             if val.picking_id.state == 'draft':
                                 state = 'Draft'
