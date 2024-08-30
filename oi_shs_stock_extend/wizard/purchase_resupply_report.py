@@ -107,7 +107,7 @@ class ResupplyReport(models.TransientModel):
                         col += 1                       
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)   
                         for val in pick:               
-                            col = 7
+                            col = 5
                             worksheet.write(row, col, str(val.picking_id.name),style_normal)
                             col += 1
                             if val.picking_id.state == 'draft':
