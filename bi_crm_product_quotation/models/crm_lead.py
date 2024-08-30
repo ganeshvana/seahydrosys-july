@@ -11,6 +11,8 @@ class crm_lead(models.Model):
     crm_count = fields.Integer(string="Quotation",compute="get_quotation_count")
     is_crm_quotation = fields.Boolean('Is CRM Quotation')
     is_lost = fields.Boolean(related='stage_id.is_lost',string="Lost")
+    machine_type = fields.Char(string="Machine Type")
+
     
     def action_set_lost(self, **additional_values):
         """ Lost semantic: probability = 0 or active = False """

@@ -32,8 +32,14 @@
                     </field>
                 </page>
             </xpath>
+                <!-- Rename 'Tags' to 'Segment' -->
             <xpath expr="//field[@name='tag_ids']" position="attributes">
                 <attribute name="string">Segment</attribute>
+            </xpath>
+            
+            <!-- Add new field 'Machine Type' after 'Segment' -->
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="machine_type" />
             </xpath>
         </field>
     </record>
