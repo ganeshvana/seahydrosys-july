@@ -110,7 +110,9 @@ class ResupplyReport(models.TransientModel):
                         col += 1
 
                     # Write the 'Receipt Date'
-                        worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)  # "Receipt Date"
+                        worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y'), style_normal)  # "Receipt Date"
+
+                        # worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)  # "Receipt Date"
                         # pickings = po.order_line.move_ids
                         # for  in pol.move_ids:
                         #     if movmovee.picking_id:  
