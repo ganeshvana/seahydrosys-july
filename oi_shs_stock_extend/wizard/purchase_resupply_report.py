@@ -132,46 +132,46 @@ class ResupplyReport(models.TransientModel):
                             state = 'Cancel'
                             
                         worksheet.write(row, col, str(state),style_normal)
-                            col += 1
-                            pick_sum = sum(p.quantity_done for p in pick)
-                            worksheet.write(row, col, str(val.quantity_done),style_normal)
-                            col += 1
-                            link = pick._get_subcontract_production().move_raw_ids
-                            supply = []
-                            for sub in subcontracts:
-                                if sub.origin == val.picking_id.name:
-                                    at_line = []
-                                    sub_lines = sub.move_ids_without_package.filtered(lambda m: m.move_dest_ids.ids)
-                                    for a in sub.move_ids_without_package:
-                                        for b in a.move_dest_ids:
-                                            if b.id in link.ids:
-                                                at_line.append(a)
-                                    for sl in at_line:
-                                        if sl.picking_id.name not in supply:
-                                            supply.append(sl.picking_id.name)
-                                            col = 9
-                                            worksheet.write(row, col, str(sl.picking_id.name),style_normal)
-                                            col += 1
-                                            if sl.picking_id.state == 'draft':
-                                                state = 'Draft'
-                                            if sl.picking_id.state == 'waiting':
-                                                state = 'Waiting for another Operation'
-                                            if sl.picking_id.state == 'confirmed':
-                                                state = 'Waiting'
-                                            if sl.picking_id.state == 'assigned':
-                                                state = 'Ready'
-                                            if sl.picking_id.state == 'done':
-                                                state = 'Done'
-                                            if sl.picking_id.state == 'cancel':
-                                                state = 'Cancel'
-                                            worksheet.write(row, col, str(state),style_normal)
-                                            col += 1
-                                            worksheet.write(row, col, str(sl.product_id.name),style_normal)
-                                            col += 1
-                                            res_done = sl.quantity_done
-                                            worksheet.write(row, col, str(sl.quantity_done),style_normal)
-                                            col += 1
-                                            row+= 1
+                        col += 1
+                        pick_sum = sum(p.quantity_done for p in pick)
+                        worksheet.write(row, col, str(val.quantity_done),style_normal)
+                        col += 1
+                        link = pick._get_subcontract_production().move_raw_ids
+                        supply = []
+                        for sub in subcontracts:
+                            if sub.origin == val.picking_id.name:
+                                at_line = []
+                                sub_lines = sub.move_ids_without_package.filtered(lambda m: m.move_dest_ids.ids)
+                                for a in sub.move_ids_without_package:
+                                    for b in a.move_dest_ids:
+                                        if b.id in link.ids:
+                                            at_line.append(a)
+                                for sl in at_line:
+                                    if sl.picking_id.name not in supply:
+                                        supply.append(sl.picking_id.name)
+                                        col = 9
+                                        worksheet.write(row, col, str(sl.picking_id.name),style_normal)
+                                        col += 1
+                                        if sl.picking_id.state == 'draft':
+                                            state = 'Draft'
+                                        if sl.picking_id.state == 'waiting':
+                                            state = 'Waiting for another Operation'
+                                        if sl.picking_id.state == 'confirmed':
+                                            state = 'Waiting'
+                                        if sl.picking_id.state == 'assigned':
+                                            state = 'Ready'
+                                        if sl.picking_id.state == 'done':
+                                            state = 'Done'
+                                        if sl.picking_id.state == 'cancel':
+                                            state = 'Cancel'
+                                        worksheet.write(row, col, str(state),style_normal)
+                                        col += 1
+                                        worksheet.write(row, col, str(sl.product_id.name),style_normal)
+                                        col += 1
+                                        res_done = sl.quantity_done
+                                        worksheet.write(row, col, str(sl.quantity_done),style_normal)
+                                        col += 1
+                                        row+= 1
                     # col = 11
                     # worksheet.write(row, col, receipt_done - res_done,style_normal)
                     # col += 1
