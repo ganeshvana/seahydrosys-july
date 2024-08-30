@@ -100,22 +100,25 @@ class ResupplyReport(models.TransientModel):
                         worksheet.write(row, col, str(pol.product_id.name),style_normal)
                         col += 1
                         worksheet.write(row, col, str(pol.product_qty),style_normal)
-                        col += 1
+                        
                     pickings = po.order_line.move_ids
                     for move in pol.move_ids:
                         if move.picking_id:
+                           col = 5
+
                             # Write 'Receipt No' (picking name)
                             worksheet.write(row, col, str(move.picking_id.name), style_normal)
-                            col += 1
+                            # col += 1
                             
                             # Write 'Supply No' and 'Supply Date'
                             pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
                             for val in pick:
+                                col = 6
                                 worksheet.write(row, col, str(val.picking_id.name), style_normal)
                                 col += 1
                                 
                                 worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)
-                            col += 1
+                            # col += 1
                             if val.picking_id.state == 'draft':
                                 state = 'Draft'
                             if val.picking_id.state == 'waiting':
@@ -128,7 +131,7 @@ class ResupplyReport(models.TransientModel):
                                 state = 'Done'
                             if val.picking_id.state == 'cancel':
                                 state = 'Cancel'
-                            
+                            col=
                             worksheet.write(row, col, str(state),style_normal)
                             col += 1
                             pick_sum = sum(p.quantity_done for p in pick)
