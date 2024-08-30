@@ -110,7 +110,7 @@ class ResupplyReport(models.TransientModel):
                         col += 1
 
                     # Write the 'Receipt Date'
-                            worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)  # "Receipt Date"
+                        worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)  # "Receipt Date"
                         # pickings = po.order_line.move_ids
                         # for  in pol.move_ids:
                         #     if movmovee.picking_id:  
@@ -118,18 +118,18 @@ class ResupplyReport(models.TransientModel):
                         #         worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)
                         col += 1
 
-                            if val.picking_id.state == 'draft':
-                                state = 'Draft'
-                            if val.picking_id.state == 'waiting':
-                                state = 'Waiting for another Operation'
-                            if val.picking_id.state == 'confirmed':
-                                state = 'Waiting'
-                            if val.picking_id.state == 'assigned':
-                                state = 'Ready'
-                            if val.picking_id.state == 'done':
-                                state = 'Done'
-                            if val.picking_id.state == 'cancel':
-                                state = 'Cancel'
+                        if val.picking_id.state == 'draft':
+                            state = 'Draft'
+                        if val.picking_id.state == 'waiting':
+                            state = 'Waiting for another Operation'
+                        if val.picking_id.state == 'confirmed':
+                            state = 'Waiting'
+                        if val.picking_id.state == 'assigned':
+                            state = 'Ready'
+                        if val.picking_id.state == 'done':
+                            state = 'Done'
+                        if val.picking_id.state == 'cancel':
+                            state = 'Cancel'
                             
                             worksheet.write(row, col, str(state),style_normal)
                             col += 1
