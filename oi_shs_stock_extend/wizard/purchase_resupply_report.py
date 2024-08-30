@@ -131,7 +131,7 @@ class ResupplyReport(models.TransientModel):
                         if val.picking_id.state == 'cancel':
                             state = 'Cancel'
                             
-                            worksheet.write(row, col, str(state),style_normal)
+                        worksheet.write(row, col, str(state),style_normal)
                             col += 1
                             pick_sum = sum(p.quantity_done for p in pick)
                             worksheet.write(row, col, str(val.quantity_done),style_normal)
