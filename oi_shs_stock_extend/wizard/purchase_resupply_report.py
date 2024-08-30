@@ -100,6 +100,7 @@ class ResupplyReport(models.TransientModel):
                         worksheet.write(row, col, str(pol.product_id.name),style_normal)
                         col += 1
                         worksheet.write(row, col, str(pol.product_qty),style_normal)
+                         col += 1
                     for move in pol.move_ids:
                         if move.picking_id:
                             worksheet.write(row, col, str(move.picking_id.date_done or ''), style_normal)
