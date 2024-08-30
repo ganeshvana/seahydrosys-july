@@ -102,8 +102,8 @@ class ResupplyReport(models.TransientModel):
                         worksheet.write(row, col, str(pol.product_qty),style_normal)
                         # col += 1
                         # worksheet.write(row, col, str(pol.date_done),style_normal)
-                        col += 1                       
-                        pick = pickings.filtered(lambda m: m.product_id == pol.product_id)   
+                    col += 1                       
+                    pick = pickings.filtered(lambda m: m.product_id == pol.product_id)   
                     for val in pick:               
                         col = 5
                         worksheet.write(row, col, str(val.picking_id.name),style_normal)
@@ -117,21 +117,20 @@ class ResupplyReport(models.TransientModel):
                         #         col = 6
                         #         worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)
                         col += 1
-
                         if val.picking_id.state == 'draft':
                             state = 'Draft'
-                        if val.picking_id.state == 'waiting':
+                        elif val.picking_id.state == 'waiting':
                             state = 'Waiting for another Operation'
-                        if val.picking_id.state == 'confirmed':
+                        elif val.picking_id.state == 'confirmed':
                             state = 'Waiting'
-                        if val.picking_id.state == 'assigned':
+                        elif val.picking_id.state == 'assigned':
                             state = 'Ready'
-                        if val.picking_id.state == 'done':
+                        elif val.picking_id.state == 'done':
                             state = 'Done'
-                        if val.picking_id.state == 'cancel':
+                        elif val.picking_id.state == 'cancel':
                             state = 'Cancel'
                             
-                            worksheet.write(row, col, str(state),style_normal)
+                        worksheet.write(row, col, str(state),style_normal)
                             col += 1
                             pick_sum = sum(p.quantity_done for p in pick)
                             worksheet.write(row, col, str(val.quantity_done),style_normal)
