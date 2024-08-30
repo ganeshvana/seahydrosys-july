@@ -117,17 +117,18 @@ class ResupplyReport(models.TransientModel):
                         #         col = 6
                         #         worksheet.write(row, col, str(val.picking_id.date_done or ''), style_normal)
                         col += 1
+
                         if val.picking_id.state == 'draft':
                             state = 'Draft'
-                        elif val.picking_id.state == 'waiting':
+                        if val.picking_id.state == 'waiting':
                             state = 'Waiting for another Operation'
-                        elif val.picking_id.state == 'confirmed':
+                        if val.picking_id.state == 'confirmed':
                             state = 'Waiting'
-                        elif val.picking_id.state == 'assigned':
+                        if val.picking_id.state == 'assigned':
                             state = 'Ready'
-                        elif val.picking_id.state == 'done':
+                        if val.picking_id.state == 'done':
                             state = 'Done'
-                        elif val.picking_id.state == 'cancel':
+                        if val.picking_id.state == 'cancel':
                             state = 'Cancel'
                             
                         worksheet.write(row, col, str(state),style_normal)
