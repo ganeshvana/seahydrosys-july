@@ -100,6 +100,8 @@ class ResupplyReport(models.TransientModel):
                         worksheet.write(row, col, str(pol.product_id.name),style_normal)
                         col += 1
                         worksheet.write(row, col, str(pol.product_qty),style_normal)
+                        col += 1
+                        worksheet.write(row, col, str(pol.date_done),style_normal)
                         col += 1                       
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)   
                         for val in pick:               
