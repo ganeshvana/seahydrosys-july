@@ -86,6 +86,7 @@ class ResupplyReport(models.TransientModel):
                            
                             col += 1
 
+                            # Receipt Quantity
                             pick_sum = sum(p.quantity_done for p in pick)
                             worksheet.write(row, col, str(pick_sum), style_normal)
                             col += 1
@@ -135,6 +136,7 @@ class ResupplyReport(models.TransientModel):
                                             col += 1
 
                                             # Supply Quantity
+
                                             worksheet.write(row, col, str(sl.quantity_done), style_normal)
                                             col += 1
                                             row += 1
