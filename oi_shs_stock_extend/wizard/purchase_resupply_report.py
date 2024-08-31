@@ -87,7 +87,8 @@ class ResupplyReport(models.TransientModel):
                             col += 1
 
                             # Receipt Quantity
-                            worksheet.write(row, col, str(val.quantity_done), style_normal)
+                            pick_sum = sum(p.quantity_done for p in pick)
+                            worksheet.write(row, col, str(pick_sum), style_normal)
                             col += 1
 
                             link = pick._get_subcontract_production().move_raw_ids
@@ -103,7 +104,7 @@ class ResupplyReport(models.TransientModel):
                                     for sl in at_line:
                                         if sl.picking_id.name not in supply:
                                             supply.append(sl.picking_id.name)
-                                            col = 8
+                                            col = 9
                                             worksheet.write(row, col, str(sl.picking_id.name), style_normal)
                                             col += 1
 
@@ -135,6 +136,7 @@ class ResupplyReport(models.TransientModel):
                                             col += 1
 
                                             # Supply Quantity
+
                                             worksheet.write(row, col, str(sl.quantity_done), style_normal)
                                             col += 1
                                             row += 1
