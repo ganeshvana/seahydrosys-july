@@ -104,7 +104,7 @@ class ResupplyReport(models.TransientModel):
                                     for sl in at_line:
                                         if sl.picking_id.name not in supply:
                                             supply.append(sl.picking_id.name)
-                                            col = 9
+                                            col = 8
                                             worksheet.write(row, col, str(sl.picking_id.name), style_normal)
                                             col += 1
 
