@@ -86,8 +86,8 @@ class ResupplyReport(models.TransientModel):
                            
                             col += 1
 
-                            # Receipt Quantity
-                            worksheet.write(row, col, str(val.quantity_done), style_normal)
+                            pick_sum = sum(p.quantity_done for p in pick)
+                            worksheet.write(row, col, str(pick_sum), style_normal)
                             col += 1
 
                             link = pick._get_subcontract_production().move_raw_ids
