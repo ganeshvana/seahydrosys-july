@@ -63,6 +63,10 @@ class ResupplyReport(models.TransientModel):
                             worksheet.write(row, col, str(val.picking_id.name), style_normal)
                             col += 1
 
+                            # For "Receipt Date" - Format to show only the date
+                            worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
+                            col += 1
+
                             # Handle different states
                             state = ''
                             if val.picking_id.state == 'draft':
@@ -79,10 +83,7 @@ class ResupplyReport(models.TransientModel):
                                 state = 'Cancel'
                             
                             worksheet.write(row, col, state, style_normal)
-                            col += 1
-
-                            # For "Receipt Date" - Format to show only the date
-                            worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
+                           
                             col += 1
 
                             # Receipt Quantity
