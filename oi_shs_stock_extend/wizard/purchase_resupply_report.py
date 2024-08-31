@@ -1,8 +1,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import base64
-from datetime import datetime, timedelta, timezone
-from dateutil.relativedelta import relativedelta
+from datetime import datetime
 import io
 from odoo.tools.misc import xlsxwriter
 
@@ -36,7 +35,6 @@ class ResupplyReport(models.TransientModel):
         
         purchases = self.env['purchase.order'].search([('state', 'in', ['purchase', 'done'])])
         for po in purchases:
-            col = 0
             if self.from_date <= po.date_approve.date() <= self.to_date:
                 pickings = po.order_line.move_ids
                 moves_subcontracted = po.order_line.move_ids.filtered(lambda m: m.is_subcontract)
@@ -44,6 +42,7 @@ class ResupplyReport(models.TransientModel):
                 subcontracts = subcontracted_productions.picking_ids
                 
                 if subcontracts:
+                    col = 0
                     worksheet.write(row, col, str(po.name), style_normal)
                     col += 1
                     worksheet.write(row, col, str(po.partner_id.name), style_normal)
@@ -58,88 +57,87 @@ class ResupplyReport(models.TransientModel):
                         col += 1
                         
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
-                        for val in pick:
-                            col = 5
-                            worksheet.write(row, col, str(val.picking_id.name), style_normal)
-                            col += 1
+                        if pick:
+                            total_receipt_qty = sum(p.quantity_done for p in pick)
+                            for val in pick:
+                                col = 5
+                                worksheet.write(row, col, str(val.picking_id.name), style_normal)
+                                col += 1
 
-                            # For "Receipt Date" - Format to show only the date
-                            worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
-                            col += 1
+                                # For "Receipt Date" - Format to show only the date
+                                worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
+                                col += 1
 
-                            # Handle different states
-                            state = ''
-                            if val.picking_id.state == 'draft':
-                                state = 'Draft'
-                            elif val.picking_id.state == 'waiting':
-                                state = 'Waiting for another Operation'
-                            elif val.picking_id.state == 'confirmed':
-                                state = 'Waiting'
-                            elif val.picking_id.state == 'assigned':
-                                state = 'Ready'
-                            elif val.picking_id.state == 'done':
-                                state = 'Done'
-                            elif val.picking_id.state == 'cancel':
-                                state = 'Cancel'
-                            
-                            worksheet.write(row, col, state, style_normal)
-                           
-                            col += 1
+                                # Handle different states
+                                state = ''
+                                if val.picking_id.state == 'draft':
+                                    state = 'Draft'
+                                elif val.picking_id.state == 'waiting':
+                                    state = 'Waiting for another Operation'
+                                elif val.picking_id.state == 'confirmed':
+                                    state = 'Waiting'
+                                elif val.picking_id.state == 'assigned':
+                                    state = 'Ready'
+                                elif val.picking_id.state == 'done':
+                                    state = 'Done'
+                                elif val.picking_id.state == 'cancel':
+                                    state = 'Cancel'
+                                
+                                worksheet.write(row, col, state, style_normal)
+                                col += 1
 
-                            # Receipt Quantity
-                            pick_sum = sum(p.quantity_done for p in pick)
-                            worksheet.write(row, col, str(pick_sum), style_normal)
-                            col += 1
+                                # Receipt Quantity
+                                worksheet.write(row, col, str(total_receipt_qty), style_normal)
+                                col += 1
 
-                            link = pick._get_subcontract_production().move_raw_ids
-                            supply = []
-                            for sub in subcontracts:
-                                if sub.origin == val.picking_id.name:
-                                    at_line = []
-                                    sub_lines = sub.move_ids_without_package.filtered(lambda m: m.move_dest_ids.ids)
-                                    for a in sub.move_ids_without_package:
-                                        for b in a.move_dest_ids:
-                                            if b.id in link.ids:
-                                                at_line.append(a)
-                                    for sl in at_line:
-                                        if sl.picking_id.name not in supply:
-                                            supply.append(sl.picking_id.name)
-                                            col = 8
-                                            worksheet.write(row, col, str(sl.picking_id.name), style_normal)
-                                            col += 1
+                                link = pick._get_subcontract_production().move_raw_ids
+                                supply = []
+                                for sub in subcontracts:
+                                    if sub.origin == val.picking_id.name:
+                                        at_line = []
+                                        sub_lines = sub.move_ids_without_package.filtered(lambda m: m.move_dest_ids.ids)
+                                        for a in sub.move_ids_without_package:
+                                            for b in a.move_dest_ids:
+                                                if b.id in link.ids:
+                                                    at_line.append(a)
+                                        for sl in at_line:
+                                            if sl.picking_id.name not in supply:
+                                                supply.append(sl.picking_id.name)
+                                                col = 9
+                                                worksheet.write(row, col, str(sl.picking_id.name), style_normal)
+                                                col += 1
 
-                                            # For "Supply Date" - Format to show only the date
-                                            worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
-                                            col += 1
+                                                # For "Supply Date" - Format to show only the date
+                                                worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
+                                                col += 1
 
-                                            # Handle different states for supply
-                                            state = ''
-                                            if sl.picking_id.state == 'draft':
-                                                state = 'Draft'
-                                            elif sl.picking_id.state == 'waiting':
-                                                state = 'Waiting for another Operation'
-                                            elif sl.picking_id.state == 'confirmed':
-                                                state = 'Waiting'
-                                            elif sl.picking_id.state == 'assigned':
-                                                state = 'Ready'
-                                            elif sl.picking_id.state == 'done':
-                                                state = 'Done'
-                                            elif sl.picking_id.state == 'cancel':
-                                                state = 'Cancel'
-                                            
-                                            worksheet.write(row, col, state, style_normal)
-                                            
-                                            col += 1
+                                                # Handle different states for supply
+                                                state = ''
+                                                if sl.picking_id.state == 'draft':
+                                                    state = 'Draft'
+                                                elif sl.picking_id.state == 'waiting':
+                                                    state = 'Waiting for another Operation'
+                                                elif sl.picking_id.state == 'confirmed':
+                                                    state = 'Waiting'
+                                                elif sl.picking_id.state == 'assigned':
+                                                    state = 'Ready'
+                                                elif sl.picking_id.state == 'done':
+                                                    state = 'Done'
+                                                elif sl.picking_id.state == 'cancel':
+                                                    state = 'Cancel'
+                                                
+                                                worksheet.write(row, col, state, style_normal)
+                                                
+                                                col += 1
 
-                                            # Supply Product
-                                            worksheet.write(row, col, str(sl.product_id.name), style_normal)
-                                            col += 1
+                                                # Supply Product
+                                                worksheet.write(row, col, str(sl.product_id.name), style_normal)
+                                                col += 1
 
-                                            # Supply Quantity
-
-                                            worksheet.write(row, col, str(sl.quantity_done), style_normal)
-                                            col += 1
-                                            row += 1
+                                                # Supply Quantity
+                                                worksheet.write(row, col, str(sl.quantity_done), style_normal)
+                                                col += 1
+                                                row += 1
                 row += 1
                 col = 0
         
