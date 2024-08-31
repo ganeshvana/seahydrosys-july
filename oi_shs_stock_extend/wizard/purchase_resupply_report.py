@@ -156,7 +156,7 @@ class ResupplyReport(models.TransientModel):
                                         col += 1
 
                                         # Write Effective Date in the Resupply (column 10)
-                                        worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y'), style_normal)
+                                        worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
                                         col += 1
                                         if sl.picking_id.state == 'draft':
                                             state = 'Draft'
