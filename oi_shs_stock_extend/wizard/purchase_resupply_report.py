@@ -107,6 +107,10 @@ class ResupplyReport(models.TransientModel):
                                             worksheet.write(row, col, str(sl.picking_id.name), style_normal)
                                             col += 1
 
+                                            # For "Supply Date" - Format to show only the date
+                                            worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
+                                            col += 1
+
                                             # Handle different states for supply
                                             state = ''
                                             if sl.picking_id.state == 'draft':
@@ -123,10 +127,7 @@ class ResupplyReport(models.TransientModel):
                                                 state = 'Cancel'
                                             
                                             worksheet.write(row, col, state, style_normal)
-                                            col += 1
-
-                                            # For "Supply Date" - Format to show only the date
-                                            worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
+                                            
                                             col += 1
 
                                             # Supply Product
