@@ -3,7 +3,7 @@
 
 {
     'name': 'Qty Control based on MO',
-    'version': '12.0.1.0',
+    'version': '16.0',
     'author': 'Oodu Implementers Private Limited',
     'website': 'https://www.odooimplementers.com',
     'category': 'Inventory',

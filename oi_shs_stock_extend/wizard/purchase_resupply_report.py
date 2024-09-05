@@ -40,7 +40,7 @@ class ResupplyReport(models.TransientModel):
                 moves_subcontracted = po.order_line.move_ids.filtered(lambda m: m.is_subcontract)
                 subcontracted_productions = moves_subcontracted.move_orig_ids.production_id
                 subcontracts = subcontracted_productions.picking_ids
-                customer_ref = po.picking_ids.customer_reference
+                # customer_ref = po.picking_ids.customer_reference
                 
                 
                 
@@ -71,7 +71,7 @@ class ResupplyReport(models.TransientModel):
                                 worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
                                 col += 1
                                 # .........
-                                worksheet.write(row, col,customer_ref, style_normal)
+                                worksheet.write(row,  col, val.picking_id.customer_ref, style_normal)
                                 col += 1
                                 # .........
 
