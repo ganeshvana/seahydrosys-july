@@ -71,7 +71,7 @@ class ResupplyReport(models.TransientModel):
                                 worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
                                 col += 1
                                 # .........
-                                worksheet.write(row,  col, val.picking_id.customer_reference, style_normal)
+                                worksheet.write(row,  col,  str(val.picking_id.customer_reference), style_normal)
                                 col += 1
                                 # .........
 
