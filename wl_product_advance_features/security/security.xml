@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="product_advance_features_category" model="ir.module.category"  >
+			<field name="name">Product Advance Features</field>
+            <field name="description">Product Advance Features</field>
+            <field name="sequence">0</field>
+        </record>
+
+    <record id="hide_cost_price" model="res.groups">
+        <field name="name">Show Cost Price</field>
+        <field name="category_id" ref="wl_product_advance_features.product_advance_features_category"/>
+    </record>
+    <record id="show_sale_price" model="res.groups">
+        <field name="name">Show Sale Price</field>
+        <field name="category_id" ref="wl_product_advance_features.product_advance_features_category"/>
+    </record>
+    
+    <record id="sale_unit_price_readonly" model="res.groups">
+        <field name="name">Readonly Sale Unit Price  </field>
+        <field name="category_id" ref="wl_product_advance_features.product_advance_features_category"/>
+    </record>
+    
+    <record id="purchase_unit_price_readonly" model="res.groups">
+        <field name="name">Readonly Purchase Unit Price</field>
+        <field name="category_id" ref="wl_product_advance_features.product_advance_features_category"/>
+    </record>
+    
+     <record id="invoice_unit_price_readonly" model="res.groups">
+        <field name="name">Readonly Invoice Unit Price</field>
+        <field name="category_id" ref="wl_product_advance_features.product_advance_features_category"/>
+    </record>
+    
+     <record id="readonly_sale_taxes" model="res.groups">
+        <field name="name">Readonly Sale Order Taxes</field>
+        <field name="category_id" ref="wl_product_advance_features.product_advance_features_category"/>
+    </record>
+    
+    <record id="readonly_purchase_taxes" model="res.groups">
+        <field name="name">Readonly Purchase order Taxes</field>
+        <field name="category_id" ref="wl_product_advance_features.product_advance_features_category"/>
+    </record>
+    
+    <record id="readonly_invoice_taxes" model="res.groups">
+        <field name="name">Readonly Invoice Taxes</field>
+        <field name="category_id" ref="wl_product_advance_features.product_advance_features_category"/>
+    </record>
+    
+    
+</odoo>
+

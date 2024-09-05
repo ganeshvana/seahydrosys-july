@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		 <record id="wl_sale_order_unit_price_read_only" model="ir.ui.view">
+			 <field name="name">sale.order.unit.price.read.only</field>
+			 <field name="model">sale.order</field>
+			 <field name="inherit_id" ref="sale.view_order_form"/>
+			 <field name="groups_id"
+                   eval="[(6, 0, [ref('wl_product_advance_features.sale_unit_price_readonly') ])]"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes" >
+						 <attribute name="readonly">1</attribute>
+						 <attribute name="force_save">1</attribute>
+					</xpath>
+     		</field>
+		 </record>
+		 
+		 
+		 <record id="wl_sale_order_tax_read_only" model="ir.ui.view">
+			 <field name="name">sale.order.unit.tax.read.only</field>
+			 <field name="model">sale.order</field>
+			 <field name="inherit_id" ref="sale.view_order_form"/>
+			 <field name="groups_id"
+                   eval="[(6, 0, [ref('wl_product_advance_features.readonly_sale_taxes') ])]"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='order_line']/tree/field[@name='tax_id']" position="attributes" >
+						 <attribute name="readonly">1</attribute>
+						 <attribute name="force_save">1</attribute>
+					</xpath>
+     		</field>
+		 </record>
+		 
+		 <record id="wl_purchase_order_unit_price_read_only" model="ir.ui.view">
+			 <field name="name">purchase.order.unit.price.read.only</field>
+			 <field name="model">purchase.order</field>
+			 <field name="inherit_id" ref="purchase.purchase_order_form"/>
+			 <field name="groups_id"
+                   eval="[(6, 0, [ref('wl_product_advance_features.purchase_unit_price_readonly')])]"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes" >
+						 <attribute name="readonly">1</attribute>
+						 <attribute name="force_save">1</attribute>
+					</xpath>
+     		</field>
+		 </record>
+		 
+		 <record id="wl_purchase_order_tax_read_only" model="ir.ui.view">
+			 <field name="name">purchase.order.tax.read.only</field>
+			 <field name="model">purchase.order</field>
+			 <field name="inherit_id" ref="purchase.purchase_order_form"/>
+			 <field name="groups_id"
+                   eval="[(6, 0, [ref('wl_product_advance_features.readonly_purchase_taxes')])]"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='order_line']/tree/field[@name='taxes_id']" position="attributes" >
+						 <attribute name="readonly">1</attribute>
+						 <attribute name="force_save">1</attribute>
+					</xpath>
+     		</field>
+		 </record>
+		 
+		 
+		  <record id="wl_invoice_unit_price_read_only" model="ir.ui.view">
+			 <field name="name">invoice.unit.price.read.only</field>
+			 <field name="model">account.move</field>
+			 <field name="inherit_id" ref="account.view_move_form"/>
+			 <field name="groups_id"
+                   eval="[(6, 0, [ref('wl_product_advance_features.invoice_unit_price_readonly')])]"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="attributes" >
+						 <attribute name="readonly">1</attribute>
+						 <attribute name="force_save">1</attribute>
+					</xpath>
+     		</field>
+		 </record>
+		 
+		 <record id="wl_invoice_tax_read_only" model="ir.ui.view">
+			 <field name="name">invoice.tax.read.only</field>
+			 <field name="model">account.move</field>
+			 <field name="inherit_id" ref="account.view_move_form"/>
+			 <field name="groups_id"
+                   eval="[(6, 0, [ref('wl_product_advance_features.readonly_invoice_taxes')])]"/>
+			 <field name="arch" type="xml">
+					<xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='tax_ids']" position="attributes" >
+						 <attribute name="readonly">1</attribute>
+						 <attribute name="force_save">1</attribute>
+					</xpath>
+     		</field>
+		 </record>
+		 
+</odoo>
