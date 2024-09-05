@@ -90,8 +90,11 @@ class ResupplyReport(models.TransientModel):
                                 elif val.picking_id.state == 'cancel':
                                     state = 'Cancel'
                                 
-                                worksheet.write(row, col, state, style_normal)
+                                # worksheet.write(row, col, state, style_normal)
+                                # col += 1
+                                worksheet.write(row, col, str(val.picking_id.customer_reference), style_normal)
                                 col += 1
+
 
                                 # Receipt Quantity
                                 worksheet.write(row, col, str(total_receipt_qty), style_normal)
