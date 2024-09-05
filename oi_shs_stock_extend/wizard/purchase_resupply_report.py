@@ -23,7 +23,7 @@ class ResupplyReport(models.TransientModel):
         headers = [
             "PO No:", "Vendor", "Date", "Product", "Order Qty", "Receipt No", 
             "Receipt Date","Customer Reference(e-way bill)","Receipt Status", "Receipt Qty", "Supply No", 
-            "Supply Date","Customer Reference(e-way bill)","Supply Status", "Supply Product", "Supply Qty"
+            "Supply Date","Customer Reference(e-way bill)" ,"Supply Status", "Supply Product", "Supply Qty"
         ]
         
         row, col = 1, 0
@@ -40,6 +40,9 @@ class ResupplyReport(models.TransientModel):
                 moves_subcontracted = po.order_line.move_ids.filtered(lambda m: m.is_subcontract)
                 subcontracted_productions = moves_subcontracted.move_orig_ids.production_id
                 subcontracts = subcontracted_productions.picking_ids
+                customer_ref = po.picking_ids.customer_reference
+                
+                
                 
                 if subcontracts:
                     col = 0
@@ -67,6 +70,10 @@ class ResupplyReport(models.TransientModel):
                                 # For "Receipt Date" - Format to show only the date
                                 worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
                                 col += 1
+                                # .........
+                                worksheet.write(row, col,customer_ref, style_normal)
+                                col += 1
+                                # .........
 
                                 # Handle different states
                                 state = ''
