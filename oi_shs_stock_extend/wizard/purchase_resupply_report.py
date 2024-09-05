@@ -63,10 +63,10 @@ class ResupplyReport(models.TransientModel):
                                 col = 5
                                 worksheet.write(row, col, str(val.picking_id.name), style_normal)
                                 col += 1
-
                                 # For "Receipt Date" - Format to show only the date
                                 worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
                                 col += 1
+                                
 
                                 # Handle different states
                                 state = ''
@@ -89,6 +89,11 @@ class ResupplyReport(models.TransientModel):
                                 # Receipt Quantity
                                 worksheet.write(row, col, str(total_receipt_qty), style_normal)
                                 col += 1
+                                # Write Customer Reference (e-way bill)
+                                worksheet.write(row, col, str(val.picking_id.customer_reference), style_normal)
+                                col += 1
+                                
+                                
 
                                 link = pick._get_subcontract_production().move_raw_ids
                                 supply = []
