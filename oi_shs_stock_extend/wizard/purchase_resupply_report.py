@@ -118,8 +118,7 @@ class ResupplyReport(models.TransientModel):
                                                 worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
                                                 col += 1
                                                 
-                                                worksheet.write(row, col, sl.picking_id.done_total, style_normal)
-                                                col += 1
+                                               
 
                                                 # Handle different states for supply
                                                 state = ''
@@ -136,9 +135,8 @@ class ResupplyReport(models.TransientModel):
                                                 elif sl.picking_id.state == 'cancel':
                                                     state = 'Cancel'
                                                 
-                                                # worksheet.write(row, col, state, style_normal)
-                                                
-                                                # col += 1
+                                                worksheet.write(row, col, sl.picking_id.customer_reference, style_normal)
+                                                col += 1
 
                                                 # Supply Product
                                                 worksheet.write(row, col, str(sl.product_id.name), style_normal)
