@@ -40,9 +40,6 @@ class ResupplyReport(models.TransientModel):
                 moves_subcontracted = po.order_line.move_ids.filtered(lambda m: m.is_subcontract)
                 subcontracted_productions = moves_subcontracted.move_orig_ids.production_id
                 subcontracts = subcontracted_productions.picking_ids
-                # customer_ref = po.picking_ids.customer_reference
-                
-                
                 
                 if subcontracts:
                     col = 0
@@ -70,10 +67,6 @@ class ResupplyReport(models.TransientModel):
                                 # For "Receipt Date" - Format to show only the date
                                 worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
                                 col += 1
-                                # .........
-                                # worksheet.write(row,  col,  str(val.picking_id.customer_reference), style_normal)
-                                # col += 1
-                                # .........
 
                                 # Handle different states
                                 state = ''
@@ -90,11 +83,8 @@ class ResupplyReport(models.TransientModel):
                                 elif val.picking_id.state == 'cancel':
                                     state = 'Cancel'
                                 
-                                # worksheet.write(row, col, state, style_normal)
-                                # col += 1
-                                worksheet.write(row, col, str(val.picking_id.customer_reference), style_normal)
+                                worksheet.write(row, col, state, style_normal)
                                 col += 1
-
 
                                 # Receipt Quantity
                                 worksheet.write(row, col, str(total_receipt_qty), style_normal)
@@ -120,8 +110,6 @@ class ResupplyReport(models.TransientModel):
                                                 # For "Supply Date" - Format to show only the date
                                                 worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
                                                 col += 1
-                                                
-                                               
 
                                                 # Handle different states for supply
                                                 state = ''
@@ -138,16 +126,17 @@ class ResupplyReport(models.TransientModel):
                                                 elif sl.picking_id.state == 'cancel':
                                                     state = 'Cancel'
                                                 
-                                                worksheet.write(row, col, sl.picking_id.customer_reference, style_normal)
+                                                worksheet.write(row, col, state, style_normal)
+                                                
                                                 col += 1
 
                                                 # Supply Product
                                                 worksheet.write(row, col, str(sl.product_id.name), style_normal)
                                                 col += 1
 
-                                                # # Supply Quantity
-                                                # worksheet.write(row, col, str(sl.products_availability), style_normal)
-                                                # col += 1
+                                                # Supply Quantity
+                                                worksheet.write(row, col, str(sl.quantity_done), style_normal)
+                                                col += 1
                                                 row += 1
                 row += 1
                 col = 0
