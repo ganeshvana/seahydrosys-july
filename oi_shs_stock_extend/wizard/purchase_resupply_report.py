@@ -142,9 +142,9 @@ class ResupplyReport(models.TransientModel):
                                                 worksheet.write(row, col, str(sl.product_id.name), style_normal)
                                                 col += 1
 
-                                                # Supply Quantity
-                                                worksheet.write(row, col, str(sl.products_availability), style_normal)
-                                                col += 1
+                                                # # Supply Quantity
+                                                # worksheet.write(row, col, str(sl.products_availability), style_normal)
+                                                # col += 1
                                                 row += 1
                 row += 1
                 col = 0
