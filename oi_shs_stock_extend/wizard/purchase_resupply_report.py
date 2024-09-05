@@ -71,7 +71,7 @@ class ResupplyReport(models.TransientModel):
                                 worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
                                 col += 1
                                 # .........
-                                worksheet.write(row,  col, val.picking_id.customer_ref, style_normal)
+                                worksheet.write(row,  col, val.picking_id.customer_reference, style_normal)
                                 col += 1
                                 # .........
 
@@ -117,6 +117,9 @@ class ResupplyReport(models.TransientModel):
                                                 # For "Supply Date" - Format to show only the date
                                                 worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
                                                 col += 1
+                                                
+                                                # worksheet.write(row, col, sl.picking_id.customer_reference, style_normal)
+                                                # col += 1
 
                                                 # Handle different states for supply
                                                 state = ''
