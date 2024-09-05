@@ -59,6 +59,8 @@ class ResupplyReport(models.TransientModel):
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
                         if pick:
                             total_receipt_qty = sum(p.quantity_done for p in pick)
+                            customer_reference = val.picking_id.customer_reference
+
                             for val in pick:
                                 col = 5
                                 worksheet.write(row, col, str(val.picking_id.name), style_normal)
@@ -83,18 +85,16 @@ class ResupplyReport(models.TransientModel):
                                 elif val.picking_id.state == 'cancel':
                                     state = 'Cancel'
                                 
-                                worksheet.write(row, col, state, style_normal)
-                                col += 1
+                                # worksheet.write(row, col, state, style_normal)
+                                # col += 1
 
                                 # Receipt Quantity
                                 worksheet.write(row, col, str(total_receipt_qty), style_normal)
                                 col += 1
                                 # Write Customer Reference (e-way bill)
-                                worksheet.write(row, col, str(val.picking_id.customer_reference), style_normal)
+                                worksheet.write(row, col, str(customer_reference), style_normal)
                                 col += 1
                                 
-                                
-
                                 link = pick._get_subcontract_production().move_raw_ids
                                 supply = []
                                 for sub in subcontracts:
