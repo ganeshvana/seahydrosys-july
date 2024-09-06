@@ -23,7 +23,7 @@ class ResupplyReport(models.TransientModel):
         headers = [
             "PO No:", "Vendor", "Date", "Product", "Order Qty", "Receipt No", 
             "Receipt Date","Customer Reference(e-way bill)","Receipt Status", "Receipt Qty", "Supply No", 
-            "Supply Date","Customer Reference(e-way bill)" "Supply Status", "Supply Product", "Supply Qty"
+            "Supply Date","Customer Reference(e-way bill)","Supply Status", "Supply Product", "Supply Qty"
         ]
         
         row, col = 1, 0
