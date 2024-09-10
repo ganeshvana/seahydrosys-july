@@ -17,6 +17,19 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
+    
+    gross_weight = fields.Float('Gross Weight')
+    fcl_weight = fields.Float('Net Weight',compute="_get_fcl_weight")
+    
+    
+    @api.depends('move_ids_without_package')
+    def _get_fcl_weight(self):
+        for pick in self:
+            weight = 0.00
+        for line in pick.move_ids_without_package:
+            weight += line.weight * line.quantity_done
+        pick.fcl_weight = weight
+    
 
     # po_id = fields.Many2one('purchase.order','PO Number')
 
@@ -123,9 +136,14 @@ class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
     categ_id = fields.Many2one(related='product_id.categ_id',store=True, string="Product Category")
-    weight = fields.Float(related='product_id.weight', store=True)
+    weight = fields.Float(related='product_id.weight',string="weight in (kg)" ,store=True)
     total_weight = fields.Float("Total",compute='compute_total_weight', store=True)
     lot_qty = fields.Float(related='lot_id.product_qty')
+    net = fields.Float(string='Net Weight', compute='_compute_total_weight', store=True)
+    @api.depends('weight', 'qty_done')
+    def _compute_total_weight(self):
+        for line in self:
+            line.net = line.weight * line.qty_done
     
     @api.depends('qty_done', 'weight')
     def compute_total_weight(self):
@@ -138,7 +156,7 @@ class StockMoveLine(models.Model):
             rec.weight = rec.product_id.weight
             rec.total_weight = rec.product_id.weight * rec.qty_done
             self.env.cr.commit()
-        
+            
 
             
 # class purchase_order_extend(models.Model):
