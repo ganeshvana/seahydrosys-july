@@ -145,9 +145,7 @@ class ResupplyReport(models.TransientModel):
                                                 worksheet.write(row, col, str(sl.quantity_done), style_normal)
                                                 col += 1
                                                 row += 1
-                row += 1
-                col = 0
-        
+            
         workbook.close()
         xlsx_data = output.getvalue()
         self.xls_file = base64.encodebytes(xlsx_data)
