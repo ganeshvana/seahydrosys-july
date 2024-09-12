@@ -42,9 +42,6 @@
         action="action_resupply_report"
         name="Resupply Report"
         sequence="33" parent="purchase.menu_purchase_config"/>
-        
-        
-    
-          
+              
     </data>     
 </odoo>

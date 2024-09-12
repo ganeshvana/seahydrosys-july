@@ -91,7 +91,7 @@ class ResupplyReport(models.TransientModel):
                                 # Write respective picking quantity
                                 worksheet.write(row, col, str(val.quantity_done), style_normal)
                                 col += 1
-                                row += 1
+                              
 
                                 link = pick._get_subcontract_production().move_raw_ids
                                 supply = []
