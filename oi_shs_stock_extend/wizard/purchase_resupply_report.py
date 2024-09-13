@@ -75,21 +75,39 @@ class ResupplyReport(models.TransientModel):
                     # Process Subcontract Pickings
                     if subcontracts:
                         for sub in subcontracts:
-                            if sub.origin == pick.picking_id.name:
-                                worksheet.write(row, col, sub.name, style_normal)
-                                col += 1
-                                worksheet.write(row, col, sub.date_done.strftime('%d/%m/%Y') if sub.date_done else '', style_normal)
-                                col += 1
-                                worksheet.write(row, col, sub.customer_reference or '', style_normal)
-                                col += 1
-                                supply_state = sub.state.capitalize()
-                                worksheet.write(row, col, supply_state, style_normal)
-                                col += 1
-                                worksheet.write(row, col, sub.move_ids_without_package.mapped('product_id.name'), style_normal)
-                                col += 1
-                                worksheet.write(row, col, sum(sub.move_ids_without_package.mapped('quantity_done')), style_normal)
-                                col += 1
-                    row += 1
+                            # Ensure pick and sub are valid
+                            if pick and pick.picking_id and sub.origin:
+                                # Compare only if both origin and picking_id.name exist
+                                if sub.origin == pick.picking_id.name:
+                                    col = 10
+                                    worksheet.write(row, col, str(sub.name), style_normal)
+                                    col += 1
+
+                                    # For "Supply Date" - Format to show only the date
+                                    worksheet.write(row, col, sub.date_done.strftime('%d/%m/%Y') if sub.date_done else '', style_normal)
+                                    col += 1
+
+                                    worksheet.write(row, col, sub.customer_reference or '', style_normal)  # Customer Reference (e-way bill)
+
+                                    col += 1
+
+                                    # Handle different states for supply
+                                    state = sub.state.capitalize() if sub.state else ''
+                                    worksheet.write(row, col, state, style_normal)
+
+                                    col += 1
+
+                                    # Write each product and quantity in a new row
+                                    for move in sub.move_ids_without_package:
+                                        worksheet.write(row, col, str(move.product_id.name), style_normal)  # Write product name
+                                        col += 1
+                                        worksheet.write(row, col, str(move.quantity_done), style_normal)  # Write quantity done
+                                        row += 1  # Move to the next row for the next product
+                                        col -= 1  # Reset column to the product column for the next product
+
+                                    row += 1  # Move to the next row after the last product entry
+
+                    
 
         workbook.close()
         xlsx_data = output.getvalue()
