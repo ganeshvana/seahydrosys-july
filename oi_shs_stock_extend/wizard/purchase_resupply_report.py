@@ -140,13 +140,13 @@ class ResupplyReport(models.TransientModel):
                                                 worksheet.write(row, col, str(sl.product_id.name), style_normal)
                                                 col += 1
 
-                                                # Supply Quantity
+                                                # **Supply Quantity**
                                                 worksheet.write(row, col, str(sl.quantity_done), style_normal)
                                                 col += 1
                                                 row += 1
                 row += 1
                 col = 0
-        
+
         workbook.close()
         xlsx_data = output.getvalue()
         self.xls_file = base64.encodebytes(xlsx_data)
@@ -160,3 +160,4 @@ class ResupplyReport(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
