@@ -27,6 +27,7 @@ class ResupplyReport(models.TransientModel):
         ]
         
         row, col = 1, 0
+        res_done = receipt_done = 0.0
         for header in headers:
             worksheet.write(row, col, header, style_highlight)
             worksheet.set_column(col, col, 16)
@@ -142,8 +143,8 @@ class ResupplyReport(models.TransientModel):
                                                 col += 1
 
                                                 # Supply Quantity
-                                                worksheet.write(row, col, str(sl.quantity_done), style_normal)
-                                                col += 1
+                                                res_done = sl.quantity_done
+                                                worksheet.write(row, col, str(sl.quantity_done),style_normal)                                                col += 1
                                                 row += 1
                 row += 1
                 col = 0
