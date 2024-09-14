@@ -58,7 +58,8 @@ class ResupplyReport(models.TransientModel):
                         
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
                         if pick:
-                            total_receipt_qty = sum(p.quantity_done for p in pick)
+                            # Add the pick_sum calculation for the receipt quantity
+                            pick_sum = sum(p.quantity_done for p in pick)
                             for val in pick:
                                 col = 5
                                 worksheet.write(row, col, str(val.picking_id.name), style_normal)
@@ -88,8 +89,8 @@ class ResupplyReport(models.TransientModel):
                                 worksheet.write(row, col, state, style_normal)
                                 col += 1
 
-                                # Receipt Quantity
-                                worksheet.write(row, col, str(total_receipt_qty), style_normal)
+                                # Receipt Quantity (updated to use pick_sum)
+                                worksheet.write(row, col, str(pick_sum), style_normal)
                                 col += 1
 
                                 link = pick._get_subcontract_production().move_raw_ids
