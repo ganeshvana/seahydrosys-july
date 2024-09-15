@@ -32,40 +32,37 @@ class ResupplyReport(models.TransientModel):
             worksheet.set_column(col, col, 16)
             col += 1
         row += 1
-        
-        # Fetching all purchase orders in 'purchase' and 'done' state
         purchases = self.env['purchase.order'].search([('state', 'in', ['purchase', 'done'])])
         for po in purchases:
             if self.from_date <= po.date_approve.date() <= self.to_date:
-                pickings = po.picking_ids.filtered(lambda p: p.state == 'done')  # Filter pickings for 'done' state only
+                pickings = po.picking_ids.filtered(lambda p: p.state == 'done') 
                 subcontracted_productions = po.order_line.mapped('move_ids').mapped('move_orig_ids.production_id.picking_ids')
 
-                col = 0
-                worksheet.write(row, col, str(po.name), style_normal)
-                col += 1
-                worksheet.write(row, col, str(po.partner_id.name), style_normal)
-                col += 1
-                worksheet.write(row, col, str(po.date_order.strftime('%d/%m/%Y')), style_normal)
-                col += 1
-                
                 for pol in po.order_line:
                     # Write Product and Order Qty
+                    col = 0
+                    worksheet.write(row, col, str(po.name), style_normal)
+                    col += 1
+                    worksheet.write(row, col, str(po.partner_id.name), style_normal)
+                    col += 1
+                    worksheet.write(row, col, str(po.date_order.strftime('%d/%m/%Y')), style_normal)
+                    col += 1
                     worksheet.write(row, col, str(pol.product_id.name), style_normal)
                     col += 1
                     worksheet.write(row, col, str(pol.product_qty), style_normal)
                     col += 1
-                    
+
                     pick = pickings.filtered(lambda p: pol.product_id in p.move_lines.mapped('product_id'))
                     if pick:
-                        # Get picking quantities directly
-                        total_receipt_qty = sum(pick.move_lines.filtered(lambda m: m.product_id == pol.product_id).mapped('quantity_done'))
                         for p in pick:
-                            col = 5
-                            worksheet.write(row, col, str(p.name), style_normal)  # Receipt No
+                           
+                            receipt_qty = sum(p.move_lines.filtered(lambda m: m.product_id == pol.product_id).mapped('quantity_done'))
+                            
+                            worksheet.write(row, col, str(p.name), style_normal)  
                             col += 1
-                            worksheet.write(row, col, p.date_done.strftime('%d/%m/%Y') if p.date_done else '', style_normal)  # Receipt Date
+                            worksheet.write(row, col, p.date_done.strftime('%d/%m/%Y') if p.date_done else '', style_normal)  
                             col += 1
-                            worksheet.write(row, col, p.customer_reference or '', style_normal)  # Customer Reference (e-way bill)
+                            worksheet.write(row, col, p.customer_reference or '', style_normal)  
                             col += 1
 
                             state_mapping = {
@@ -76,33 +73,34 @@ class ResupplyReport(models.TransientModel):
                                 'done': 'Done',
                                 'cancel': 'Cancel'
                             }
-                            worksheet.write(row, col, state_mapping.get(p.state, ''), style_normal)  # Receipt Status
+                            worksheet.write(row, col, state_mapping.get(p.state, ''), style_normal)  
                             col += 1
-                            worksheet.write(row, col, str(total_receipt_qty), style_normal)  # Receipt Quantity
+                            worksheet.write(row, col, str(receipt_qty), style_normal) 
                             col += 1
-
-                            # Handle subcontracted productions
                             subcontract_moves = subcontracted_productions.filtered(lambda sub: sub.origin == p.name).mapped('move_lines')
                             for sub_move in subcontract_moves:
-                                worksheet.write(row, col, str(sub_move.picking_id.name), style_normal)  # Supply No
+                                worksheet.write(row, col, str(sub_move.picking_id.name), style_normal)  
                                 col += 1
-                                worksheet.write(row, col, sub_move.picking_id.date_done.strftime('%d/%m/%Y') if sub_move.picking_id.date_done else '', style_normal)  # Supply Date
+                                worksheet.write(row, col, sub_move.picking_id.date_done.strftime('%d/%m/%Y') if sub_move.picking_id.date_done else '', style_normal)  
                                 col += 1
-                                worksheet.write(row, col, sub_move.picking_id.customer_reference or '', style_normal)  # Customer Reference (e-way bill) for subcontracts
+                                worksheet.write(row, col, sub_move.picking_id.customer_reference or '', style_normal)  # 
                                 col += 1
 
                                 state = state_mapping.get(sub_move.picking_id.state, '')
-                                worksheet.write(row, col, state, style_normal)  # Supply Status
+                                worksheet.write(row, col, state, style_normal) 
                                 col += 1
 
-                                worksheet.write(row, col, str(sub_move.product_id.name), style_normal)  # Supply Product
+                                worksheet.write(row, col, str(sub_move.product_id.name), style_normal)
                                 col += 1
-                                worksheet.write(row, col, str(sub_move.quantity_done), style_normal)  # Supply Quantity
+                                worksheet.write(row, col, str(sub_move.quantity_done), style_normal)  
                                 col += 1
-                                row += 1  # Move to the next row after each subcontract move
-                    row += 1  # Move to the next row after each PO line
-                col = 0  # Reset the column counter for the next PO
-        
+                                row += 1  
+                        row += 1  
+                    else:
+                        
+                        row += 1
+                    col = 0  
+            
         workbook.close()
         xlsx_data = output.getvalue()
         self.xls_file = base64.encodebytes(xlsx_data)
@@ -116,3 +114,4 @@ class ResupplyReport(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
