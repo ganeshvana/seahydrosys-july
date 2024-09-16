@@ -115,3 +115,4 @@ class ResupplyReport(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
