@@ -58,14 +58,14 @@ class ResupplyReport(models.TransientModel):
                         
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
                         if pick:
-                            # Add the pick_sum calculation for the receipt quantity
+                            # Calculate receipt quantity (pick_sum)
                             pick_sum = sum(p.quantity_done for p in pick)
                             for val in pick:
                                 col = 5
                                 worksheet.write(row, col, str(val.picking_id.name), style_normal)
                                 col += 1
 
-                                # For "Receipt Date" - Format to show only the date
+                                # "Receipt Date" - Format to show only the date
                                 worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
                                 col += 1
                                 worksheet.write(row, col, val.picking_id.customer_reference or '', style_normal)  # Customer Reference (e-way bill)
@@ -73,6 +73,7 @@ class ResupplyReport(models.TransientModel):
 
                                 # Handle different states
                                 state = ''
+                                receipt_qty = pick_sum  # Default to actual receipt quantity
                                 if val.picking_id.state == 'draft':
                                     state = 'Draft'
                                 elif val.picking_id.state == 'waiting':
@@ -85,12 +86,13 @@ class ResupplyReport(models.TransientModel):
                                     state = 'Done'
                                 elif val.picking_id.state == 'cancel':
                                     state = 'Cancel'
+                                    receipt_qty = 0.0  # Set receipt quantity to 0.0 if canceled
                                 
                                 worksheet.write(row, col, state, style_normal)
                                 col += 1
 
-                                # Receipt Quantity (updated to use pick_sum)
-                                worksheet.write(row, col, str(pick_sum), style_normal)
+                                # Update Receipt Quantity: Set to 0.0 if canceled
+                                worksheet.write(row, col, str(receipt_qty), style_normal)
                                 col += 1
 
                                 link = pick._get_subcontract_production().move_raw_ids
@@ -110,12 +112,11 @@ class ResupplyReport(models.TransientModel):
                                                 worksheet.write(row, col, str(sl.picking_id.name), style_normal)
                                                 col += 1
 
-                                                # For "Supply Date" - Format to show only the date
+                                                # "Supply Date" - Format to show only the date
                                                 worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
                                                 col += 1
 
-                                                worksheet.write(row, col, sl.picking_id.customer_reference or '', style_normal)  # Customer Reference (e-way bill) for subcontracts
-
+                                                worksheet.write(row, col, sl.picking_id.customer_reference or '', style_normal)  # Customer Reference (e-way bill)
                                                 col += 1
 
                                                 # Handle different states for supply
