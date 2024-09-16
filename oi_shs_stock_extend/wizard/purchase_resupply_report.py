@@ -22,12 +22,10 @@ class ResupplyReport(models.TransientModel):
         
         headers = [
             "PO No:", "Vendor", "Date", "Product", "Order Qty", "Receipt No", 
-            "Receipt Date", "Customer Reference (e-way bill)", "Receipt Status", "Receipt Qty", 
-            "Supply No", "Supply Date", "Customer Reference (e-way bill)", "Supply Status", 
-            "Supply Product", "Supply Qty"
+            "Receipt Date","Customer Reference(e-way bill)","Receipt Status", "Receipt Qty", "Supply No", 
+            "Supply Date","Customer Reference(e-way bill)","Supply Status", "Supply Product", "Supply Qty"
         ]
         
-        # Write header
         row, col = 1, 0
         for header in headers:
             worksheet.write(row, col, header, style_highlight)
@@ -35,7 +33,6 @@ class ResupplyReport(models.TransientModel):
             col += 1
         row += 1
         
-        # Fetching the purchase orders in 'purchase' or 'done' state
         purchases = self.env['purchase.order'].search([('state', 'in', ['purchase', 'done'])])
         for po in purchases:
             if self.from_date <= po.date_approve.date() <= self.to_date:
@@ -74,7 +71,7 @@ class ResupplyReport(models.TransientModel):
                                 worksheet.write(row, col, val.picking_id.customer_reference or '', style_normal)  # Customer Reference (e-way bill)
                                 col += 1
 
-                                # Handle different states and set pick_sum to 0.0 for 'cancel' state
+                                # Handle different states
                                 state = ''
                                 if val.picking_id.state == 'draft':
                                     state = 'Draft'
@@ -88,12 +85,11 @@ class ResupplyReport(models.TransientModel):
                                     state = 'Done'
                                 elif val.picking_id.state == 'cancel':
                                     state = 'Cancel'
-                                    pick_sum = 0.0  # Set receipt quantity to 0.0 for 'cancel' status
-
+                                
                                 worksheet.write(row, col, state, style_normal)
                                 col += 1
 
-                                # Write the receipt quantity (0.0 if the state is 'cancel')
+                                # Receipt Quantity (updated to use pick_sum)
                                 worksheet.write(row, col, str(pick_sum), style_normal)
                                 col += 1
 
