@@ -13,7 +13,6 @@ class ResupplyReport(models.TransientModel):
     xls_file = fields.Binary(string="XLS file")
     xls_filename = fields.Char()
 
-    @api.multi   
     def fuel_report(self):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -62,6 +61,8 @@ class ResupplyReport(models.TransientModel):
                         
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
                         if pick:
+                            # Add the pick_sum calculation for the receipt quantity
+                            pick_sum = (p.quantity_done for p in pick)
                             for val in pick:
                                 col = 5
                                 worksheet.write(row, col, str(val.picking_id.name), style_normal)
@@ -87,15 +88,15 @@ class ResupplyReport(models.TransientModel):
                                     state = 'Done'
                                 elif val.picking_id.state == 'cancel':
                                     state = 'Cancel'
+                                    pick_sum = 0.0  # Set receipt quantity to 0.0 for 'cancel' status
 
                                 worksheet.write(row, col, state, style_normal)
                                 col += 1
 
-                                # Write the individual quantity_done for each picking
-                                worksheet.write(row, col, str(val.quantity_done), style_normal)
+                                # Write the receipt quantity (0.0 if the state is 'cancel')
+                                worksheet.write(row, col, f"{pick_sum}", style_normal)
                                 col += 1
 
-                                # Subcontract handling (for supply information)
                                 link = pick._get_subcontract_production().move_raw_ids
                                 supply = []
                                 for sub in subcontracts:
@@ -118,6 +119,7 @@ class ResupplyReport(models.TransientModel):
                                                 col += 1
 
                                                 worksheet.write(row, col, sl.picking_id.customer_reference or '', style_normal)  # Customer Reference (e-way bill) for subcontracts
+
                                                 col += 1
 
                                                 # Handle different states for supply
@@ -134,8 +136,9 @@ class ResupplyReport(models.TransientModel):
                                                     state = 'Done'
                                                 elif sl.picking_id.state == 'cancel':
                                                     state = 'Cancel'
-
+                                                
                                                 worksheet.write(row, col, state, style_normal)
+                                                
                                                 col += 1
 
                                                 # Supply Product
@@ -148,7 +151,7 @@ class ResupplyReport(models.TransientModel):
                                                 row += 1
                 row += 1
                 col = 0
-
+        
         workbook.close()
         xlsx_data = output.getvalue()
         self.xls_file = base64.encodebytes(xlsx_data)
