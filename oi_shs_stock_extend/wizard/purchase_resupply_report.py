@@ -12,6 +12,8 @@ class ResupplyReport(models.TransientModel):
     to_date = fields.Date("To Date", required=True)
     xls_file = fields.Binary(string="XLS file")
     xls_filename = fields.Char()
+
+    
 def fuel_report(self):
     output = io.BytesIO()
     workbook = xlsxwriter.Workbook(output, {'in_memory': True})
