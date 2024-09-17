@@ -94,7 +94,7 @@ class ResupplyReport(models.TransientModel):
                                 col += 1
 
                                 # Write the receipt quantity (0.0 if the state is 'cancel')
-                                worksheet.write(row, col, str(pick_sum), style_normal)
+                                worksheet.write(row, col, f"{pick_sum}", style_normal)
                                 col += 1
 
                                 link = pick._get_subcontract_production().move_raw_ids
