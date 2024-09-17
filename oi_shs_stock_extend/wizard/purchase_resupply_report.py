@@ -59,7 +59,7 @@ class ResupplyReport(models.TransientModel):
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
                         if pick:
                             # Calculate receipt quantity (pick_sum)
-                            pick_sum = sum(p.quantity_done for p in pick)
+                            # pick_sum = sum(p.quantity_done for p in pick)
                             for val in pick:
                                 col = 5
                                 worksheet.write(row, col, str(val.picking_id.name), style_normal)
@@ -73,7 +73,7 @@ class ResupplyReport(models.TransientModel):
 
                                 # Handle different states
                                 state = ''
-                                receipt_qty = pick_sum  # Default to actual receipt quantity
+                                receipt_qty = val.quantity_done   # Default to actual receipt quantity
                                 if val.picking_id.state == 'draft':
                                     state = 'Draft'
                                 elif val.picking_id.state == 'waiting':
