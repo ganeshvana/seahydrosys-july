@@ -62,7 +62,7 @@ class ResupplyReport(models.TransientModel):
                         pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
                         if pick:
                             # Add the pick_sum calculation for the receipt quantity
-                            pick_sum = sum(p.quantity_done for p in pick)
+                            pick_sum = (p.quantity_done for p in pick)
                             for val in pick:
                                 col = 5
                                 worksheet.write(row, col, str(val.picking_id.name), style_normal)
