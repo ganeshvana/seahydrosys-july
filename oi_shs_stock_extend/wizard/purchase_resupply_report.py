@@ -82,6 +82,8 @@ class ResupplyReport(models.TransientModel):
                                     state = 'Waiting'
                                 elif val.picking_id.state == 'assigned':
                                     state = 'Ready'
+                                    receipt_qty = 0.0  # Set receipt quantity to 0.0 if assigned
+
                                 elif val.picking_id.state == 'done':
                                     state = 'Done'
                                 elif val.picking_id.state == 'cancel':
