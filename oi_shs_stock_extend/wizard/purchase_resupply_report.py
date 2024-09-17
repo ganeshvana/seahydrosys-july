@@ -1,3 +1,17 @@
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+import base64
+from datetime import datetime
+import io
+from odoo.tools.misc import xlsxwriter
+
+class ResupplyReport(models.TransientModel):
+    _name = 'resupply.report'
+
+    from_date = fields.Date("From Date", required=True)
+    to_date = fields.Date("To Date", required=True)
+    xls_file = fields.Binary(string="XLS file")
+    xls_filename = fields.Char()
 def fuel_report(self):
     output = io.BytesIO()
     workbook = xlsxwriter.Workbook(output, {'in_memory': True})
