@@ -36,71 +36,118 @@ class ResupplyReport(models.TransientModel):
         purchases = self.env['purchase.order'].search([('state', 'in', ['purchase', 'done'])])
         for po in purchases:
             if self.from_date <= po.date_approve.date() <= self.to_date:
-                pickings = po.picking_ids.filtered(lambda p: p.state == 'done')  
-                subcontracted_productions = po.order_line.mapped('move_ids').mapped('move_orig_ids.production_id.picking_ids')
-
-                col = 0
-                worksheet.write(row, col, str(po.name), style_normal)
-                col += 1
-                worksheet.write(row, col, str(po.partner_id.name), style_normal)
-                col += 1
-                worksheet.write(row, col, str(po.date_order.strftime('%d/%m/%Y')), style_normal)
-                col += 1
+                pickings = po.order_line.move_ids
+                moves_subcontracted = po.order_line.move_ids.filtered(lambda m: m.is_subcontract)
+                subcontracted_productions = moves_subcontracted.move_orig_ids.production_id
+                subcontracts = subcontracted_productions.picking_ids
                 
-                for pol in po.order_line:
-                 
-                    worksheet.write(row, col, str(pol.product_id.name), style_normal)
+                if subcontracts:
+                    col = 0
+                    worksheet.write(row, col, str(po.name), style_normal)
                     col += 1
-                    worksheet.write(row, col, str(pol.product_qty), style_normal)
+                    worksheet.write(row, col, str(po.partner_id.name), style_normal)
                     col += 1
-                    
-                    pick = pickings.filtered(lambda p: pol.product_id in p.move_lines.mapped('product_id'))
-                    if pick:
-                      
-                        total_receipt_qty = sum(pick.move_lines.filtered(lambda m: m.product_id == pol.product_id).mapped('quantity_done'))
-                        for p in pick:
-                            col = 5
-                            worksheet.write(row, col, str(p.name), style_normal)  
-                            col += 1
-                            worksheet.write(row, col, p.date_done.strftime('%d/%m/%Y') if p.date_done else '', style_normal)  
-                            col += 1
-                            worksheet.write(row, col, p.customer_reference or '', style_normal)  
-                            col += 1
-
-                            state_mapping = {
-                                'draft': 'Draft',
-                                'waiting': 'Waiting for another Operation',
-                                'confirmed': 'Waiting',
-                                'assigned': 'Ready',
-                                'done': 'Done',
-                                'cancel': 'Cancel'
-                            }
-                            worksheet.write(row, col, state_mapping.get(p.state, ''), style_normal)  
-                            col += 1
-                            worksheet.write(row, col, str(total_receipt_qty), style_normal) 
-                            col += 1
-
-                          
-                            subcontract_moves = subcontracted_productions.filtered(lambda sub: sub.origin == p.name).mapped('move_lines')
-                            for sub_move in subcontract_moves:
-                                worksheet.write(row, col, str(sub_move.picking_id.name), style_normal) 
-                                col += 1
-                                worksheet.write(row, col, sub_move.picking_id.date_done.strftime('%d/%m/%Y') if sub_move.picking_id.date_done else '', style_normal)  
-                                col += 1
-                                worksheet.write(row, col, sub_move.picking_id.customer_reference or '', style_normal)  
+                    worksheet.write(row, col, str(po.date_order.strftime('%d/%m/%Y')), style_normal)
+                    col += 1
+                    for pol in po.order_line:
+                        col = 3
+                        worksheet.write(row, col, str(pol.product_id.name), style_normal)
+                        col += 1
+                        worksheet.write(row, col, str(pol.product_qty), style_normal)
+                        col += 1
+                        
+                        pick = pickings.filtered(lambda m: m.product_id == pol.product_id)
+                        if pick:
+                            # Calculate receipt quantity (pick_sum)
+                            pick_sum = sum(p.quantity_done for p in pick)
+                            for val in pick:
+                                col = 5
+                                worksheet.write(row, col, str(val.picking_id.name), style_normal)
                                 col += 1
 
-                                state = state_mapping.get(sub_move.picking_id.state, '')
-                                worksheet.write(row, col, state, style_normal)  
+                                # "Receipt Date" - Format to show only the date
+                                worksheet.write(row, col, val.picking_id.date_done.strftime('%d/%m/%Y') if val.picking_id.date_done else '', style_normal)
+                                col += 1
+                                worksheet.write(row, col, val.picking_id.customer_reference or '', style_normal)  # Customer Reference (e-way bill)
                                 col += 1
 
-                                worksheet.write(row, col, str(sub_move.product_id.name), style_normal) 
+                                # Handle different states
+                                state = ''
+                                receipt_qty = pick_sum  # Default to actual receipt quantity
+                                if val.picking_id.state == 'draft':
+                                    state = 'Draft'
+                                elif val.picking_id.state == 'waiting':
+                                    state = 'Waiting for another Operation'
+                                elif val.picking_id.state == 'confirmed':
+                                    state = 'Waiting'
+                                elif val.picking_id.state == 'assigned':
+                                    state = 'Ready'
+                                elif val.picking_id.state == 'done':
+                                    state = 'Done'
+                                elif val.picking_id.state == 'cancel':
+                                    state = 'Cancel'
+                                    receipt_qty = 0.0  # Set receipt quantity to 0.0 if canceled
+                                
+                                worksheet.write(row, col, state, style_normal)
                                 col += 1
-                                worksheet.write(row, col, str(sub_move.quantity_done), style_normal)  
+
+                                # Update Receipt Quantity: Set to 0.0 if canceled
+                                worksheet.write(row, col, str(receipt_qty), style_normal)
                                 col += 1
-                                row += 1  
-                    row += 1  
-                col = 0  
+
+                                link = pick._get_subcontract_production().move_raw_ids
+                                supply = []
+                                for sub in subcontracts:
+                                    if sub.origin == val.picking_id.name:
+                                        at_line = []
+                                        sub_lines = sub.move_ids_without_package.filtered(lambda m: m.move_dest_ids.ids)
+                                        for a in sub.move_ids_without_package:
+                                            for b in a.move_dest_ids:
+                                                if b.id in link.ids:
+                                                    at_line.append(a)
+                                        for sl in at_line:
+                                            if sl.picking_id.name not in supply:
+                                                supply.append(sl.picking_id.name)
+                                                col = 10
+                                                worksheet.write(row, col, str(sl.picking_id.name), style_normal)
+                                                col += 1
+
+                                                # "Supply Date" - Format to show only the date
+                                                worksheet.write(row, col, sl.picking_id.date_done.strftime('%d/%m/%Y') if sl.picking_id.date_done else '', style_normal)
+                                                col += 1
+
+                                                worksheet.write(row, col, sl.picking_id.customer_reference or '', style_normal)  # Customer Reference (e-way bill)
+                                                col += 1
+
+                                                # Handle different states for supply
+                                                state = ''
+                                                if sl.picking_id.state == 'draft':
+                                                    state = 'Draft'
+                                                elif sl.picking_id.state == 'waiting':
+                                                    state = 'Waiting for another Operation'
+                                                elif sl.picking_id.state == 'confirmed':
+                                                    state = 'Waiting'
+                                                elif sl.picking_id.state == 'assigned':
+                                                    state = 'Ready'
+                                                elif sl.picking_id.state == 'done':
+                                                    state = 'Done'
+                                                elif sl.picking_id.state == 'cancel':
+                                                    state = 'Cancel'
+                                                
+                                                worksheet.write(row, col, state, style_normal)
+                                                
+                                                col += 1
+
+                                                # Supply Product
+                                                worksheet.write(row, col, str(sl.product_id.name), style_normal)
+                                                col += 1
+
+                                                # Supply Quantity
+                                                worksheet.write(row, col, str(sl.quantity_done), style_normal)
+                                                col += 1
+                                                row += 1
+                row += 1
+                col = 0
         
         workbook.close()
         xlsx_data = output.getvalue()
@@ -115,4 +162,3 @@ class ResupplyReport(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
-
