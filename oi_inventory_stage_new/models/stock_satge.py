@@ -31,11 +31,15 @@ class StockPickingStage(models.Model):
 
     def action_to_approve(self):
         print("%%%%%%%%%%%%%%%%%%%%%%%%%%% action button %%%%%%%%%%%%%")
-        self.write({'state': 'approved_for_done'}) 
+        self.write({'state': 'approved_for_done'})
         
     def action_cancel(self):
-        res = super(StockPicking, self).action_cancel()
-        self.write({"state": "cancel"})
+        res = super(StockPicking, self).action_cancel()    
+        if res:
+            self.write({"state": "cancel"})
+        
+        return res
+ 
 
 
     def button_validate_new(self):
@@ -127,7 +131,4 @@ class StockPickingStage(models.Model):
                     action['context'] = {'default_picking_ids': self.ids}
                     return action
         return True
-    
-    
-    
 
