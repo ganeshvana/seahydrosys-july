@@ -34,7 +34,7 @@ class StockPickingStage(models.Model):
         self.write({'state': 'approved_for_done'})
         
     def action_cancel(self):
-        res = super(StockPicking, self).action_cancel()    
+        res = super(StockPickingStage, self).action_cancel()    
         if res:
             self.write({"state": "cancel"})
         
