@@ -32,6 +32,13 @@ class StockPickingStage(models.Model):
     def action_to_approve(self):
         print("%%%%%%%%%%%%%%%%%%%%%%%%%%% action button %%%%%%%%%%%%%")
         self.write({'state': 'approved_for_done'}) 
+        
+    def action_cancel(self):
+        res = super(StockPickingStage, self).action_cancel()    
+        if res:
+            self.write({"state": "cancel"})
+        
+        return res
 
 
     def button_validate_new(self):
