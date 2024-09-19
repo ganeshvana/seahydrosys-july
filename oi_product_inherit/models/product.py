@@ -8,8 +8,15 @@ from datetime import datetime, time
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-
-
+    
+    product_reference  = fields.Char("Product Reference")
+    
+    @api.model
+    def create(self, vals):
+        res = super(ProductTemplate, self).create(vals)
+        sequence = self.env['ir.sequence'].next_by_code('product.seq')
+        res.product_reference = sequence
+        return res 
 
     @api.constrains('purchase_ok', 'seller_ids')
     def _check_seller_ids(self):
@@ -55,6 +62,9 @@ class ProductTemplate(models.Model):
     shs_rod = fields.Char(string="Rod",store=True)
     shs_class = fields.Char(string="Class",store=True)
     shs_heavy_light = fields.Char(string="Heavy / Light",store=True)
+    
+    
+    
     
 
 

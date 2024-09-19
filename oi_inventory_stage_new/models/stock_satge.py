@@ -41,7 +41,6 @@ class StockPickingStage(models.Model):
         return res
  
 
-
     def button_validate_new(self):
         # Clean-up the context key at validation to avoid forcing the creation of immediate
         # transfers.

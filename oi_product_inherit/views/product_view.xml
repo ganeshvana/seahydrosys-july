@@ -7,20 +7,23 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
            
-         <xpath expr="//field[@name='standard_price']" position="attributes">
-        <attribute name="required">True</attribute>
+            <xpath expr="//field[@name='standard_price']" position="attributes">
+            <attribute name="required">True</attribute>
 
-        </xpath>
+            </xpath>
 
 
-        <xpath expr="//field[@name='sale_delay']" position="attributes">
-        <attribute name="required">True</attribute>
+            <xpath expr="//field[@name='sale_delay']" position="attributes">
+            <attribute name="required">True</attribute>
 
-        </xpath>
-    <xpath expr="//field[@name='produce_delay']" position="attributes">
-        <attribute name="required">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='produce_delay']" position="attributes">
+            <attribute name="required">True</attribute>
 
-        </xpath>
+            </xpath>
+             <xpath expr="//field[@name='default_code']" position="after">           
+                <field name="product_reference"/>
+             </xpath> 
 
 
         </field>
