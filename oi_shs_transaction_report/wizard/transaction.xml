@@ -12,8 +12,7 @@
                             <field name="xls_filename" readonly="1"/>
                     </group>
                     <group>
-                            <field name ="start_date" placeholder="Select Date"/>
-                            <field name ="end_date" placeholder="Select Date"/>
+                           
                             <field name="transaction_type" required="1"/>
                             
                     </group>
@@ -29,7 +28,7 @@
         </record>
 
         <record id="action_gst_report" model="ir.actions.act_window">
-        <field name="name">Transaction Details</field>
+        <field name="name">Payment Details</field>
         <field name="res_model">transaction.details</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="view_transaction_details_wizard_form"/>

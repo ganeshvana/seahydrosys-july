@@ -10,101 +10,114 @@ class TransactioneDetails(models.TransientModel):
     
     xls_file = fields.Binary(string="XLS file")
     xls_filename = fields.Char()
-    start_date = fields.Date("Start Date")
-    end_date = fields.Date("End Date")
     transaction_type = fields.Selection([
         ('rtgs', "R-RTGS"),
         ('neft', "N-NEFT"),
         ('fund_tranfer', "I-Funds Transfer"),
         ('imps', "M-IMPS"),
     ], required=True)
-
+    
+    
     def transaction_details_report(self):
-        def setup_workbook():
-            output = io.BytesIO()
-            workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-            worksheet = workbook.add_worksheet('Transaction Details Report')
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('Payment Report')
+        style_highlight_right = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'right'})
+        style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'center'})
+        style_normal = workbook.add_format({'align': 'center'})
+        style_right = workbook.add_format({'align': 'right'})
+        style_left = workbook.add_format({'align': 'left'})
+        merge_formatb = workbook.add_format({
+            'bold': 1,
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color': '#FFFFFF',
+            'text_wrap': True
+        })
+        merge_formatb.set_font_size(15)
 
-            bold_style = workbook.add_format({'bold': True, 'align': 'center'})
-            center_style = workbook.add_format({'align': 'center'})
-            title_style = workbook.add_format({
-                'bold': True,
-                'align': 'center',
-                'font_size': 14,
-                'bg_color': '#FFD39B',
-            })
+        headers = [
+            'S/N', 'Transaction Type', 'Beneficiary Code', 'Beneficiary Account Number', 'Transaction Amount', 
+            'Beneficiary Name', 'Drawee Location in case of Demand Draft', 'DD Printing Location', 'Beneficiary Address 1',
+            'Beneficiary Address 2', 'Beneficiary Address 3', 'Beneficiary Address 4', 'Beneficiary Address 5',
+            'Instruction Reference Number', 'Customer Reference Number', 'Payment details 1', 'Payment details 2',
+            'Payment details 3', 'Payment details 4', 'Payment details 5', 'Payment details 6', 'Payment details 7',
+            'Cheque Number', 'Chq / Trn Date', 'MICR Number', 'IFC Code', 'Beneficiary Bank Name', 'Beneficiary Bank Branch Name', 
+            'Beneficiary email id'
+        ]
 
-            title = f"Transaction Details"
-            worksheet.merge_range('A1:AC1', title, title_style)
+        row = 1
+        worksheet.merge_range(f'A{row}:T{row}', 'Payment Report', merge_formatb)
+        row += 1
 
-            headers = [
-                'S/N', 'Transaction Type', 'Beneficiary Code', 'Beneficiary Account Number', 'Transaction Amount', 'Beneficiary Name',
-                'Drawee Location in case of Demand Draft', 'DD Printing Location', 'Beneficiary Address 1',
-                'Beneficiary Address 2', 'Beneficiary Address 3', 'Beneficiary Address 4', 'Beneficiary Address 5',
-                'Instruction Reference Number', 'Customer Reference Number', 'Payment details 1', 'Payment details 2',
-                'Payment details 3', 'Payment details 4', 'Payment details 5', 'Payment details 6', 'Payment details 7',
-                'Cheque Number', 'Chq / Trn Date', 'MICR Number', 'IFC Code', 'Beneficiary Bank Name', 
-                'Beneficiary Bank Branch Name', 'Beneficiary email id',
-            ]
+        for col, header in enumerate(headers):
+            worksheet.write(row, col, header, style_highlight)
+            worksheet.set_column(col, col, 14)
+        
+        row += 1
 
-            for col, header in enumerate(headers):
-                worksheet.write(1, col, header, bold_style)
+        context = self._context
+        active_ids = context.get('active_ids', [])
+        active_model = context.get('active_model')
 
-            return workbook, worksheet, output, center_style
+        if active_model == 'account.move':
+            for index, val in enumerate(active_ids, start=1):
+                move = self.env['account.move'].browse(val)
 
-        def write_transaction_details(move_records, worksheet, center_style):
-            row = 2
-            for idx, move in enumerate(move_records, start=1):
-                worksheet.write(row, 0, idx, center_style)  
-                worksheet.write(row, 1, dict(self._fields['transaction_type'].selection).get(self.transaction_type), center_style)  
-                worksheet.write(row, 2, move.partner_id.ref or '', center_style)  
-                worksheet.write(row, 3, move.partner_id.bank_ids and move.partner_id.bank_ids[0].acc_number or '', center_style)  
-                worksheet.write(row, 5, move.partner_id.name or '', center_style)  
+            
+                values = [
+                    index,  
+                    dict(self._fields['transaction_type'].selection).get(self.transaction_type, ''),  # 
+                    '', 
+                    move.partner_id.bank_ids and move.partner_id.bank_ids[0].acc_number or '',  
+                    '',  
+                    move.partner_id.name or '',  
+                    '', '', '', '', '', '', '', '', 
+                    move.partner_id.ref or '', 
+                    '', '', '', '', '', '', '', '', '', '', '', '',  
+                ]
 
+              
+                for col, value in enumerate(values):
+                    worksheet.write(row, col, value, style_normal)
+
+             
                 payments_vals = move._get_reconciled_info_JSON_values()
-                payment_dates = [payment.get('date') for payment in payments_vals]
-                payment_amounts = [payment.get('amount') for payment in payments_vals]
+                payment_dates = []
+                payment_amounts = []
+                for payment in payments_vals:
+                    payment_dates.append(payment.get('date'))
+                    payment_amounts.append(payment.get('amount'))
 
-                bank_name = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.name or ''
-                worksheet.write(row, 26, bank_name, center_style) 
-
+                
                 if payment_dates and payment_amounts:
-                    worksheet.write(row, 23, payment_dates[0].strftime('%d/%m/%Y') if payment_dates else '', center_style)  
-                    worksheet.write(row, 4, payment_amounts[0], center_style)  
+                    worksheet.write(row, 23, payment_dates[0].strftime('%d/%m/%Y') if payment_dates else '', style_normal)
+                    worksheet.write(row, 4, payment_amounts[0], style_normal)
 
-                worksheet.write(row, 28, move.partner_id.email or '', center_style)  
+             
+                bank_name = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.name or ''
+                ifsc = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.bic or ''
+                worksheet.write(row, 25, ifsc, style_normal)
+                worksheet.write(row, 26, bank_name, style_normal)
+                worksheet.write(row, 28, move.partner_id.email or '', style_normal)
+                combined_values = ','.join([str(v) if v else '' for v in values])
+                worksheet.write(row, 29, combined_values, style_normal)
                 row += 1
 
-        if self.start_date and self.end_date and self.start_date <= self.end_date:
-            move_records = self.env['account.move'].search([
-                ('invoice_date', '>=', self.start_date),
-                ('invoice_date', '<=', self.end_date),
-                ('move_type', '=', 'in_invoice'),  
-                ('state', '=', 'posted'),
-            ])
-        else:
-            move_records = self.env['account.move'].search([
-                ('move_type', '=', 'in_invoice'), 
-                ('state', '=', 'posted'),
-            ])
-
-        workbook, worksheet, output, center_style = setup_workbook()
-
-        write_transaction_details(move_records, worksheet, center_style)
 
         workbook.close()
         xlsx_data = output.getvalue()
-        output.close()
-
-        xls_file = base64.b64encode(xlsx_data)
-        self.write({
-            'xls_filename': f'Transaction_Details_Report.xlsx',
-            'xls_file': xls_file,
-        })
+        self.xls_file = base64.encodebytes(xlsx_data)
+        self.xls_filename = "payment_details.xlsx"
 
         return {
-            'type': 'ir.actions.act_url',
-            'url': f'/web/content/?model=transaction.details&id={self.id}&field=xls_file&download=true&filename={self.xls_filename}',
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'view_mode': 'form',
+            'res_id': self.id,
+            'views': [(False, 'form')],
             'target': 'new',
         }
-
+        
+    
