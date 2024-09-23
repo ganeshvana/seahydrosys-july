@@ -7,7 +7,7 @@
     'summary': 'Transaction Report',
     'author': "OODU IMPLEMENTERS PRIVATE LIMITED",
     'website': "https://www.odooimplementers.com/",
-    'depends': ['base', 'account', 'l10n_in_edi', 'payment'],
+    'depends': ['base', 'account', 'payment'],
     'data': [
         'security/ir.model.access.csv',
         'wizard/transaction.xml',
