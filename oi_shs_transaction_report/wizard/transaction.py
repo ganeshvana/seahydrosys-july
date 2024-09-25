@@ -56,6 +56,7 @@ class TransactioneDetails(models.TransientModel):
             worksheet.set_column(col, col, 14)
         
         row += 1
+        sn = 1  
 
         context = self._context
         active_ids = context.get('active_ids', [])
@@ -76,7 +77,6 @@ class TransactioneDetails(models.TransientModel):
                     partner_data[partner]['amount'] += sum(payment_amounts)
                 else:
                     partner_data[partner] = {
-                        'index': index,
                         'move': move,
                         'amount': sum(payment_amounts),
                         'payment_date': payments_vals[0].get('date') if payments_vals else None
@@ -85,7 +85,10 @@ class TransactioneDetails(models.TransientModel):
             for partner_id, data in partner_data.items():
                 move = data['move']
 
-                worksheet.write(row, 0, data['index'], style_normal)
+            
+                worksheet.write(row, 0, sn, style_normal) 
+                sn += 1 
+
                 values = [
                     dict(self._fields['transaction_type'].selection).get(self.transaction_type, '').split('-')[0],
                     '', 
@@ -127,4 +130,3 @@ class TransactioneDetails(models.TransientModel):
             'target': 'new',
         }
 
-        
