@@ -44,11 +44,11 @@ class TransactioneDetails(models.TransientModel):
             'Instruction Reference Number', 'Customer Reference Number', 'Payment details 1', 'Payment details 2',
             'Payment details 3', 'Payment details 4', 'Payment details 5', 'Payment details 6', 'Payment details 7',
             'Cheque Number', 'Chq / Trn Date', 'MICR Number', 'IFC Code', 'Beneficiary Bank Name', 'Beneficiary Bank Branch Name', 
-            'Beneficiary email id'
+            'Beneficiary email id','Format'
         ]
 
         row = 1
-        worksheet.merge_range(f'A{row}:T{row}', 'Payment Report', merge_formatb)
+        worksheet.merge_range(f'A{row}:T{row}', 'HDFC ENET UPLOAD', merge_formatb)
         row += 1
 
         for col, header in enumerate(headers):
@@ -60,59 +60,63 @@ class TransactioneDetails(models.TransientModel):
         context = self._context
         active_ids = context.get('active_ids', [])
         active_model = context.get('active_model')
-        
+
+        partner_data = {}
+
         if active_model == 'account.move':
             for index, val in enumerate(active_ids, start=1):
                 move = self.env['account.move'].browse(val)
 
-                worksheet.write(row, 0, index, style_normal)
+                partner = move.partner_id.id
 
+                payments_vals = move._get_reconciled_info_JSON_values()
+                payment_amounts = [payment.get('amount') for payment in payments_vals]
+
+                if partner in partner_data:
+                    partner_data[partner]['amount'] += sum(payment_amounts)
+                else:
+                    partner_data[partner] = {
+                        'index': index,
+                        'move': move,
+                        'amount': sum(payment_amounts),
+                        'payment_date': payments_vals[0].get('date') if payments_vals else None
+                    }
+
+            for partner_id, data in partner_data.items():
+                move = data['move']
+
+                worksheet.write(row, 0, data['index'], style_normal)
                 values = [
-                    dict(self._fields['transaction_type'].selection).get(self.transaction_type, ''),  # 
-                    '',  
-                    move.partner_id.bank_ids and move.partner_id.bank_ids[0].acc_number or '',  
+                    dict(self._fields['transaction_type'].selection).get(self.transaction_type, '').split('-')[0],
                     '', 
+                    move.partner_id.bank_ids and move.partner_id.bank_ids[0].acc_number or '',  
+                    data['amount'],  
                     move.partner_id.name or '',  
-                    '', '', '', '', '', '', '', '', 
+                    '', '', '', '', '', '', '', '',  
                     move.partner_id.ref or '', 
-                    '', '', '', '', '', '', '', '',   
+                    '', '', '', '', '', '', '', '',  
                 ]
 
                 for col, value in enumerate(values, start=1):
                     worksheet.write(row, col, value, style_normal)
 
-                payments_vals = move._get_reconciled_info_JSON_values()
-                payment_dates = []
-                payment_amounts = []
-                for payment in payments_vals:
-                    payment_dates.append(payment.get('date'))
-                    payment_amounts.append(payment.get('amount'))
-
-                if payment_dates and payment_amounts:
-                    worksheet.write(row, 23, payment_dates[0].strftime('%d/%m/%Y') if payment_dates else '', style_normal)
-                    worksheet.write(row, 4, payment_amounts[0], style_normal)
-
+                payment_date_str = data['payment_date'].strftime('%d/%m/%Y') if data['payment_date'] else ''
                 bank_name = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.name or ''
                 ifsc = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.bic or ''
+                worksheet.write(row, 23, payment_date_str, style_normal)
                 worksheet.write(row, 25, ifsc, style_normal)
                 worksheet.write(row, 26, bank_name, style_normal)
-
                 worksheet.write(row, 28, move.partner_id.email or '', style_normal)
 
-                payment_date_str = payment_dates[0].strftime('%d/%m/%Y') if payment_dates else ''  
-                combined_values = ','.join([str(v) if v else '' for v in values + [payment_date_str] + [''] + [ifsc] + [bank_name] + [''] + [bank_name] + [''] + [move.partner_id.email]]) 
-                
-                others_value = [payment_date_str, '', ifsc, bank_name, '', move.partner_id.email]
-                others_value_new = ','.join([str(v) if v else '' for v in others_value])
-
-                worksheet.write(row, 29, combined_values,  style_normal)
+                combined_values = ','.join([str(v) if v else '' for v in values + [payment_date_str, '', ifsc, bank_name, '', move.partner_id.email]])
+                worksheet.write(row, 29, combined_values, style_normal)
 
                 row += 1
 
         workbook.close()
         xlsx_data = output.getvalue()
         self.xls_file = base64.encodebytes(xlsx_data)
-        self.xls_filename = "payment_details.xlsx"
+        self.xls_filename = "hdsfc_enet_upload.xlsx"
 
         return {
             'type': 'ir.actions.act_window',
@@ -122,5 +126,5 @@ class TransactioneDetails(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
         
-    
