@@ -11,12 +11,43 @@ class ProductTemplate(models.Model):
     
     product_reference  = fields.Char("Product Reference")
     
+    # @api.model
+    # def create(self, vals):
+    #     res = super(ProductTemplate, self).create(vals)
+    #     sequence = self.env['ir.sequence'].next_by_code('product.seq')
+    #     res.product_reference = sequence
+    #     return res 
+    
     @api.model
     def create(self, vals):
-        res = super(ProductTemplate, self).create(vals)
-        sequence = self.env['ir.sequence'].next_by_code('product.seq')
-        res.product_reference = sequence
-        return res 
+        if vals.get('categ_id'):
+            category = self.env['product.category'].browse(vals['categ_id'])
+            vals['product_reference'] = self._generate_sequence(category)
+        return super(ProductTemplate, self).create(vals)
+
+    def write(self, vals):
+        if vals.get('categ_id'):
+            category = self.env['product.category'].browse(vals['categ_id'])
+            vals['product_reference'] = self._generate_sequence(category)
+        return super(ProductTemplate, self).write(vals)
+
+    def _generate_sequence(self, category):
+        if category.if_product_seq:
+            prefix = category.product_code or category.name[:3].upper()            
+            domain = [('categ_id', '=', category.id), ('product_reference', 'like', f'{prefix}%')]            
+            last_product = self.env['product.template'].search(domain, order="id desc", limit=1)
+            if last_product and last_product.product_reference:
+                match = re.search(rf'{prefix}(\d+)', last_product.product_reference)
+                if match:
+                    last_sequence_number = int(match.group(1))
+                    next_sequence_number = last_sequence_number + 1
+                else:
+                    next_sequence_number = 1
+            else:
+                next_sequence_number = 1            
+            next_reference = f"{prefix}{str(next_sequence_number).zfill(5)}"
+            return next_reference
+        return False
 
     @api.constrains('purchase_ok', 'seller_ids')
     def _check_seller_ids(self):
