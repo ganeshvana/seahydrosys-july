@@ -10,7 +10,7 @@ import re
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
-    product_reference  = fields.Char("Product Reference")
+    product_reference  = fields.Char("Model Number")
     
     # @api.model
     # def create(self, vals):

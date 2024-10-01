@@ -9,7 +9,7 @@ from odoo.exceptions import UserError, Warning, ValidationError
 
 class StockPickingStage(models.Model):
     _inherit = "stock.picking"
-
+    
     is_pc = fields.Boolean('Pc Id')
     show_allocation = fields.Boolean('Show Allocation')
     state = fields.Selection(selection_add=[
@@ -130,4 +130,18 @@ class StockPickingStage(models.Model):
                     action['context'] = {'default_picking_ids': self.ids}
                     return action
         return True
+    
 
+class StockMove(models.Model):
+    _inherit = "stock.move"
+    
+    product_reference  = fields.Char("Model Number")
+    
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        for rec in self:
+            if rec.product_id:
+               rec.product_reference=rec.product_id.product_reference
+    
+
+    
