@@ -135,13 +135,14 @@ class StockPickingStage(models.Model):
 class StockMove(models.Model):
     _inherit = "stock.move"
     
-    product_reference  = fields.Char("Model Number")
+    product_reference  = fields.Char("Model Number", compute="_compute_product_reference")
     
-    # @api.onchange('product_id')
-    # def _onchange_product_id(self):
-    #     for rec in self:
-    #         if rec.product_id:
-    #            rec.product_reference=rec.product_id.product_reference
-    
-
+               
+    @api.depends('product_id', 'product_reference')
+    def _compute_product_reference(self):
+        for rec in self:
+            if rec.product_id:
+                rec.product_reference = rec.product_id.product_reference
+            else:
+                rec.product_reference = False 
     
