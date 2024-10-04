@@ -2,7 +2,7 @@ from odoo import models, fields, _
 import io
 import base64
 import xlsxwriter
-
+from datetime import date
 
 class TransactioneDetails(models.TransientModel):
     _name = 'transaction.details'
@@ -71,23 +71,22 @@ class TransactioneDetails(models.TransientModel):
                 partner = move.partner_id.id
 
                 payments_vals = move._get_reconciled_info_JSON_values()
-                payment_amounts = [payment.get('amount') for payment in payments_vals]
+                payment_amount = move.amount_residual
 
                 if partner in partner_data:
-                    partner_data[partner]['amount'] += sum(payment_amounts)
+                    partner_data[partner]['amount'] += payment_amount 
                 else:
                     partner_data[partner] = {
                         'move': move,
-                        'amount': sum(payment_amounts),
+                        'amount': payment_amount,  
                         'payment_date': payments_vals[0].get('date') if payments_vals else None
                     }
 
             for partner_id, data in partner_data.items():
                 move = data['move']
 
-            
-                worksheet.write(row, 0, sn, style_normal) 
-                sn += 1 
+                worksheet.write(row, 0, sn, style_normal)
+                sn += 1
 
                 values = [
                     dict(self._fields['transaction_type'].selection).get(self.transaction_type, '').split('-')[0],
@@ -103,7 +102,7 @@ class TransactioneDetails(models.TransientModel):
                 for col, value in enumerate(values, start=1):
                     worksheet.write(row, col, value, style_normal)
 
-                payment_date_str = data['payment_date'].strftime('%d/%m/%Y') if data['payment_date'] else ''
+                payment_date_str = date.today().strftime('%d/%m/%Y')
                 bank_name = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.name or ''
                 ifsc = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.bic or ''
                 worksheet.write(row, 23, payment_date_str, style_normal)
@@ -115,6 +114,7 @@ class TransactioneDetails(models.TransientModel):
                 worksheet.write(row, 29, combined_values, style_normal)
 
                 row += 1
+
 
         workbook.close()
         xlsx_data = output.getvalue()
@@ -129,4 +129,5 @@ class TransactioneDetails(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
 
