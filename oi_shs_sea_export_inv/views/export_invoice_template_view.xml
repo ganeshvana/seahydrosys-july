@@ -3,8 +3,8 @@
     <data>
         <template id="report_export_invoice">
             <t t-call="web.external_layout">
-                <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
-                <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <!-- <t t-foreach="docs" t-as="o"> -->
                     <div class="page">
                       
                         <table>
@@ -408,15 +408,15 @@
                             </table>
 
                     </div>
-                </t>
+                <!-- </t> -->
             </t>
 
         </template>
 
         <template id="report_export">
             <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="doc">
-                    <t t-call="oi_shs_sea_export_inv.report_export_invoice" t-lang="doc.partner_id.lang"/>
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="oi_shs_sea_export_inv.report_export_invoice" t-lang="o.partner_id.lang"/>
                 </t>
             </t>
         </template>
