@@ -71,7 +71,7 @@ class TransactioneDetails(models.TransientModel):
                 partner = move.partner_id.id
 
                 payments_vals = move._get_reconciled_info_JSON_values()
-                payment_amount = move.amount_total  
+                payment_amount = move.amount_residual
 
                 if partner in partner_data:
                     partner_data[partner]['amount'] += payment_amount 
