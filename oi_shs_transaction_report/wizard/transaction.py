@@ -71,23 +71,22 @@ class TransactioneDetails(models.TransientModel):
                 partner = move.partner_id.id
 
                 payments_vals = move._get_reconciled_info_JSON_values()
-                payment_amounts = [payment.get('amount') for payment in payments_vals]
+                payment_amount = move.amount_total  
 
                 if partner in partner_data:
-                    partner_data[partner]['amount'] += sum(payment_amounts)
+                    partner_data[partner]['amount'] += payment_amount 
                 else:
                     partner_data[partner] = {
                         'move': move,
-                        'amount': sum(payment_amounts),
+                        'amount': payment_amount,  
                         'payment_date': payments_vals[0].get('date') if payments_vals else None
                     }
 
             for partner_id, data in partner_data.items():
                 move = data['move']
 
-            
-                worksheet.write(row, 0, sn, style_normal) 
-                sn += 1 
+                worksheet.write(row, 0, sn, style_normal)
+                sn += 1
 
                 values = [
                     dict(self._fields['transaction_type'].selection).get(self.transaction_type, '').split('-')[0],
@@ -116,6 +115,7 @@ class TransactioneDetails(models.TransientModel):
 
                 row += 1
 
+
         workbook.close()
         xlsx_data = output.getvalue()
         self.xls_file = base64.encodebytes(xlsx_data)
@@ -129,4 +129,6 @@ class TransactioneDetails(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
+
 
