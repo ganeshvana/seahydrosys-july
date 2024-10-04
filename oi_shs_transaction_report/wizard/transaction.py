@@ -2,6 +2,7 @@ from odoo import models, fields, _
 import io
 import base64
 import xlsxwriter
+from datetime import date
 
 
 class TransactioneDetails(models.TransientModel):
@@ -102,7 +103,7 @@ class TransactioneDetails(models.TransientModel):
                 for col, value in enumerate(values, start=1):
                     worksheet.write(row, col, value, style_normal)
 
-                payment_date_str = data['payment_date'].strftime('%d/%m/%Y') if data['payment_date'] else ''
+                payment_date_str = date.today().strftime('%d/%m/%Y')
                 bank_name = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.name or ''
                 ifsc = move.partner_id.bank_ids and move.partner_id.bank_ids[0].bank_id.bic or ''
                 worksheet.write(row, 23, payment_date_str, style_normal)
