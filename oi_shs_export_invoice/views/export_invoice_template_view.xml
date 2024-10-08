@@ -340,25 +340,28 @@
                             <table>
                                 <thead>
                                     <tr style="font-size:14px;">
-                                        <th class="text-center" style="width:60px; padding-top:10px">
+                                        <th class="text-center" style="width:60px; padding-top:10px;font-size:14px">
                                             <span>S.No</span>
                                         </th>
                                         
-                                        <th class="text-center" style="width:440px;text-transform:uppercase;font-size:12px">
-                                            <span>Model No</span>
+                                        <th class="text-center" style="width:220px;font-size:14px">
+                                            <span>Model NO</span>
                                         </th>
-                                        <th class="text-center" style="width:150px;text-transform:uppercase;font-size:12px">
+                                        <th class="text-center" style="width:220px;font-size:14px">
+                                            <span>Customer Reference</span>
+                                        </th>
+                                        <th class="text-center" style="width:150px;text-transform:uppercase;font-size:14px">
                                             <span>PO No</span>
                                         </th>
                                       
-                                        <th class="text-center" style="width:80px;">
+                                        <th class="text-center" style="width:80px;font-size:14px">
                                             <span>Qty</span>
                                         </th>
-                                        <th class="text-center" style="width:120px;">
+                                        <th class="text-center" style="width:120px;font-size:14px">
                                             <span>Rate in <span t-esc="o.currency_id.name"/> <span t-esc="o.currency_id.symbol"/></span>
                                         </th>
                                         
-                                         <th class="text-center" style="width:125px;">
+                                         <th class="text-center" style="width:125px;font-size:14px">
                                             <span>Amount in <span t-esc="o.currency_id.name"/> <span t-esc="o.currency_id.symbol"/></span>
                                         </th>
                                     </tr>
@@ -370,8 +373,11 @@
                                             <span t-esc="l_index+1"/>
                                         </td>
                                       
-                                        <td style="width:440px; text-align:left;">
-                                            <span t-field="l.product_id.name"/> 
+                                         <td style="width:220px; text-align:left;">
+                                            <span t-field="l.product_id.product_reference"/> 
+                                        </td>
+                                        <td style="width:220px; text-align:left;">
+                                            <span t-field="l.product_id"/> 
                                         </td>
                                         <td style="width:150px; text-align:left;">
                                             <span t-field="l.po_no"/>
@@ -394,7 +400,10 @@
                           
                                 <tr style="border-bottom:hidden">
                                     <td style="width:60px;">
-                                        <span></span>
+                                        <span/>
+                                    </td>
+                                    <td style="width:60px;">
+                                        <span/>
                                     </td>
 
                                     <td style="width:440px;text-transform:uppercase;text-align:center">
@@ -403,8 +412,9 @@
                                         
                                     </td>
                                     <td style="width:150px;">
-                                        <span></span>
+                                        <span/>
                                     </td>
+                                     
                                    
                                     <td style="width:80px;text-align:center">
                                             <t t-set="i" t-value="0"/>
@@ -412,12 +422,12 @@
                                                     <t t-if="not l.product_id.type == 'service'" t-set="i" t-value="i+l.quantity"/>
                                                 </t>
                                             <b>
-                                                <t t-esc="'%.0f'%(i)"></t>
+                                                <t t-esc="'%.0f'%(i)"/>
                                             </b>
                                     </td>
 
                                     <td style="width:120px;">
-                                        <span></span>
+                                        <span/>
                                     </td>
 
                                     <td style="width:125px;">
