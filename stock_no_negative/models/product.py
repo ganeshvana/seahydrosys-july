@@ -13,6 +13,8 @@ class ProductCategory(models.Model):
         "attached to this category. The options doesn't apply to products "
         "attached to sub-categories of this category.",
     )
+    product_code = fields.Char(string="Product Code",tracking=True,copy=False)
+    if_product_seq = fields.Boolean("If FG", copy=False)
 
 
 class ProductTemplate(models.Model):

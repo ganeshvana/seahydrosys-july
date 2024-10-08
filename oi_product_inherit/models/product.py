@@ -1,6 +1,8 @@
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, time
+import re
+
 
 
 
@@ -9,7 +11,46 @@ from datetime import datetime, time
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
+    product_reference  = fields.Char("Model Number")
+        
+    @api.model
+    def create(self, vals):
+        if vals.get('categ_id'):
+            category = self.env['product.category'].browse(vals['categ_id'])
+            vals['product_reference'] = self._generate_sequence(category)
+        return super(ProductTemplate, self).create(vals)
 
+    def write(self, vals):
+        if vals.get('categ_id'):
+            new_category = self.env['product.category'].browse(vals['categ_id'])
+            product_code_new = new_category.product_code or new_category.name[:3].upper()
+            for product in self:
+                current_category = product.categ_id
+                product_code_current = current_category.product_code or current_category.name[:3].upper()
+                if product_code_new != product_code_current:
+                    vals['product_reference'] = self._generate_sequence(new_category)
+                else:
+                    vals['product_reference'] = product.product_reference
+        return super(ProductTemplate, self).write(vals)
+
+    def _generate_sequence(self, category):
+        if category.if_product_seq:
+            prefix = category.product_code or category.name[:3].upper()
+            domain = [('product_reference', 'like', f'{prefix}%')]
+            last_product = self.env['product.template'].search(domain, order="id desc", limit=1)
+            if last_product and last_product.product_reference:
+                match = re.search(rf'{prefix}(\d+)', last_product.product_reference)
+                if match:
+                    last_sequence_number = int(match.group(1))
+                    next_sequence_number = last_sequence_number + 1
+                else:
+                    next_sequence_number = 1
+            else:
+                next_sequence_number = 1
+
+            next_reference = f"{prefix}{str(next_sequence_number).zfill(5)}"
+            return next_reference
+        return False
 
     @api.constrains('purchase_ok', 'seller_ids')
     def _check_seller_ids(self):

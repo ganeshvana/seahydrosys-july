@@ -8,19 +8,20 @@
             <field name="arch" type="xml">
            
                 <xpath expr="//field[@name='standard_price']" position="attributes">
-                <attribute name="required">True</attribute>
-
+                    <attribute name="required">True</attribute>
                 </xpath>
-
 
                 <xpath expr="//field[@name='sale_delay']" position="attributes">
-                <attribute name="required">True</attribute>
-
+                    <attribute name="required">True</attribute>
                 </xpath>
+
                 <xpath expr="//field[@name='produce_delay']" position="attributes">
                     <attribute name="required">True</attribute>
                 </xpath>
 
+                <xpath expr="//field[@name='barcode']" position="after">           
+                    <field name="product_reference"/>
+                </xpath> 
 
             </field>
         </record>
