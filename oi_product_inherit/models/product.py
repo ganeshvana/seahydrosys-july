@@ -24,6 +24,7 @@ class ProductTemplate(models.Model):
         if vals.get('categ_id'):
             new_category = self.env['product.category'].browse(vals['categ_id'])
             product_code_new = new_category.product_code or new_category.name[:3].upper()
+
             for product in self:
                 current_category = product.categ_id
                 product_code_current = current_category.product_code or current_category.name[:3].upper()
@@ -38,18 +39,15 @@ class ProductTemplate(models.Model):
             prefix = category.product_code or category.name[:3].upper()
             domain = [('product_reference', 'like', f'{prefix}%')]
             last_product = self.env['product.template'].search(domain, order="id desc", limit=1)
+            next_sequence_number = 1
             if last_product and last_product.product_reference:
                 match = re.search(rf'{prefix}(\d+)', last_product.product_reference)
                 if match:
                     last_sequence_number = int(match.group(1))
                     next_sequence_number = last_sequence_number + 1
-                else:
-                    next_sequence_number = 1
-            else:
-                next_sequence_number = 1
-
             next_reference = f"{prefix}{str(next_sequence_number).zfill(5)}"
             return next_reference
+        
         return False
 
     @api.constrains('purchase_ok', 'seller_ids')
