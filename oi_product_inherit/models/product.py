@@ -5,9 +5,6 @@ import re
 
 
 
-
-
-
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -18,47 +15,52 @@ class ProductTemplate(models.Model):
         categ_id = vals.get('categ_id')
         if categ_id:
             category = self.env['product.category'].browse(categ_id)
-            if category and category.if_product_seq:
-                prefix = self._get_prefix(category)
-                next_ref = self._generate_sequence(prefix)
-                vals['product_reference'] = next_ref
+            if category.if_product_seq:
+                prefix = category.product_code
+                vals['product_reference'] = self._generate_sequence(prefix)
         return super(ProductTemplate, self).create(vals)
 
     def write(self, vals):
         categ_id = vals.get('categ_id')
         if categ_id:
             category = self.env['product.category'].browse(categ_id)
-            if category and category.if_product_seq:
-                prefix_new = self._get_prefix(category)
+            if category.if_product_seq:
+                prefix_new = category.product_code
                 for product in self:
-                    prefix_current = self._get_prefix(product.categ_id)
+                    current_category = product.categ_id
+                    prefix_current = current_category.product_code
                     if prefix_new != prefix_current:
-                        new_product_reference = self._generate_sequence(prefix_new)
-                        product.product_reference = new_product_reference
+                        vals['product_reference'] = self._generate_sequence(prefix_new)
         return super(ProductTemplate, self).write(vals)
 
-    def _get_prefix(self, category):
-        return category.product_code 
-
     def _generate_sequence(self, prefix):
+        if not prefix:
+            return False
         prefix = prefix.upper().strip()
-        pattern = rf'^{re.escape(prefix)}(\d+)$'        
-        last_product = self.env['product.template'].search(
-            [('product_reference', '=like', f'{prefix}%')], 
-            order="product_reference desc", 
-            limit=1
-        )
+        domain = [('product_reference', '=ilike', f'{prefix}%')]
+        last_product = self.env['product.template'].search(domain, order="product_reference desc", limit=1)
+
         next_sequence_number = 1
+
         if last_product and last_product.product_reference:
+            pattern = rf'^{re.escape(prefix)}(\d+)$'
             match = re.match(pattern, last_product.product_reference)
+
             if match:
                 last_sequence_number = int(match.group(1))
                 next_sequence_number = last_sequence_number + 1
-
         next_reference = f"{prefix}{str(next_sequence_number).zfill(5)}"
         return next_reference
-        
-        
+
+    def copy(self, default=None):
+        if default is None:
+            default = {}
+        if self.categ_id and self.categ_id.if_product_seq:
+            prefix = self.categ_id.product_code
+            default['product_reference'] = self._generate_sequence(prefix)
+        return super(ProductTemplate, self).copy(default)
+
+
     @api.constrains('purchase_ok', 'seller_ids')
     def _check_seller_ids(self):
         for product in self:
