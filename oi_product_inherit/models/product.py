@@ -36,21 +36,10 @@ class ProductTemplate(models.Model):
     def _generate_sequence(self, prefix):
         if not prefix:
             return False
-        prefix = prefix.upper().strip()
-        domain = [('product_reference', '=ilike', f'{prefix}%')]
-        last_product = self.env['product.template'].search(domain, order="product_reference desc", limit=1)
-
-        next_sequence_number = 1
-
-        if last_product and last_product.product_reference:
-            pattern = rf'^{re.escape(prefix)}(\d+)$'
-            match = re.match(pattern, last_product.product_reference)
-
-            if match:
-                last_sequence_number = int(match.group(1))
-                next_sequence_number = last_sequence_number + 1
-        next_reference = f"{prefix}{str(next_sequence_number).zfill(5)}"
-        return next_reference
+        sequence = self.env['ir.sequence']
+        sequence_id = sequence.search([('prefix', '=', prefix)])
+        next_sequence_number = sequence.next_by_code(sequence_id.code)
+        return next_sequence_number
 
     def copy(self, default=None):
         if default is None:
