@@ -8,7 +8,6 @@ class MrpProduction(models.Model):
     sea_delivery_date = fields.Date(string="Delivery Date", tracking=True)
     sea_batch_no = fields.Text(string="Batch No", tracking=True)
     
-    @api.model
     def button_mark_done(self):
         for production in self:
             pickings = production.picking_ids.filtered(lambda p: p.state != 'done')
