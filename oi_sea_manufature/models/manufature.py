@@ -12,5 +12,6 @@ class MrpProduction(models.Model):
         for production in self:
             pickings = production.picking_ids.filtered(lambda p: p.state != 'done')
             if pickings:
-                raise ValidationError("You cannot validate the Manufacturing Order until all related stock transfers are in 'Done' state.")
+                # raise ValidationError("You cannot validate the Manufacturing Order until all related stock transfers are in 'Done' state.")
+                pickings.write({'state': 'done'})
             return super(MrpProduction, self).button_mark_done()

@@ -11,6 +11,7 @@
     'application': True,
     'data': [
         'views/manufature.xml',
+        'wizard/bom_structure_xl.xml',
     
     ],
 
