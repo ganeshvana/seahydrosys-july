@@ -98,7 +98,7 @@ class BOMStructureXl(models.TransientModel):
                                 line['bom_cost'] = 0.0
                             
                             # Add component cost to total BOM cost
-                            total_bom_cost += line['prod_cost']
+                            total_bom_cost += line['bom_cost']
                             print(line['prod_cost'] , line['bom_cost'],"line['prod_cost'] + line['bom_cost']")
                             # Collect component details for the report
                             product_ref = line['name'].split(']')
@@ -128,9 +128,9 @@ class BOMStructureXl(models.TransientModel):
                 rec.product_tmpl_id.categ_id.complete_name,  # Product category for parent BOM
                 str(rec.product_qty),  # Quantity
                 rec.product_uom_id.name,  # Unit of Measure
-                
+                currency.symbol + str("%.2f" % round(parent_bom_cost, 2)), # Parent product cost (standard price)
                 currency.symbol + str("%.2f" % round(total_bom_cost, 2)),  # Total BOM cost (Parent + Components)
-                currency.symbol + str("%.2f" % round(parent_bom_cost, 2)),  # Parent product cost (standard price)
+                
             ))
 
             # Write all collected data to the worksheet
