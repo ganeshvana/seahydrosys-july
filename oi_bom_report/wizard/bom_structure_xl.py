@@ -87,6 +87,8 @@ class BOMStructureXl(models.TransientModel):
             total_bom_cost = 0.0
             
             for a in vals['docs']:
+                if a['type'] == 'bom':
+                    total_bom_cost += a['prod_cost']
                 currency = a['currency']
                 first_bom_cost_included = False  # Flag to ensure only the first BOM cost is included
                 for line in a['lines']:
@@ -96,14 +98,7 @@ class BOMStructureXl(models.TransientModel):
                                 line['prod_cost'] = 0.0
                             if not 'bom_cost' in line:
                                 line['bom_cost'] = 0.0
-                            
-                            # Add the first component's BOM cost only
-                            if not first_bom_cost_included:
-                                total_bom_cost = line['bom_cost']  # Take only the first line's BOM cost
-                                first_bom_cost_included = True  # Set the flag to True after including the first BOM cost
-                                print(line['prod_cost'], line['bom_cost'], "First line ['prod_cost'] + ['bom_cost']")
-                            
-                            # Collect component details for the report
+                           
                             product_ref = line['name'].split(']')
                             ref = product_ref[0].replace('[', '')
                             
