@@ -94,7 +94,7 @@ class BOMStructureXl(models.TransientModel):
                     # str(rec['product_qty'])+'0',
                     rec['bom'].product_uom_id.name,
                     currency.symbol + str("%.2f" % round(parent_bom_cost, 2)),
-                    currency.symbol + str("%.2f" % round(product_cost,2))
+                   product_cost
                 ))
                 is_main_component = False  # Update flag after processing the main component
 
