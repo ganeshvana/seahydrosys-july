@@ -76,7 +76,7 @@ class BOMStructureXl(models.TransientModel):
             vals = self._get_report_values([rec.id], data=data)
             cost = 0.0
             rows = []
-
+            product_cost = 0.0
             for rec in vals['docs']:
                 parent_bom_cost = rec['product'].standard_price
                 product_cost += rec['prod_cost'] if 'prod_cost' in rec else 0.0
