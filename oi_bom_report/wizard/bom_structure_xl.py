@@ -92,7 +92,7 @@ class BOMStructureXl(models.TransientModel):
                 first_bom_cost_included = False  # Flag to ensure only the first BOM cost is included
                 for line in a['lines']:
                     if line['type'] == 'bom':
-                        total_bom_cost += line['prod_cost']
+                        total_bom_cost = line['prod_cost']
                     if line['type'] == 'bom' or line['type'] == 'component':
                         if line['type'] != 'subcontract':
                             if not 'prod_cost' in line:
