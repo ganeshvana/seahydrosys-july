@@ -78,7 +78,7 @@ class BOMStructureXl(models.TransientModel):
             rows = []
 
             for rec in vals['docs']:
-                parent_bom_cost = rec.product_tmpl_id.standard_price
+                parent_bom_cost = rec['product'].standard_price
                 currency = rec['currency']
                 split_ref = rec['code'].split(']')
                 ref = split_ref[0].replace('[','')
