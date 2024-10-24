@@ -86,9 +86,9 @@ class BOMStructureXl(models.TransientModel):
             # Initialize total BOM cost (parent + components)
             total_bom_cost = 0.0
             
-            # Process components of the BOM to calculate total cost
             for a in vals['docs']:
                 currency = a['currency']
+                first_bom_cost_included = False  # Flag to ensure only the first BOM cost is included
                 for line in a['lines']:
                     if line['type'] == 'bom' or line['type'] == 'component':
                         if line['type'] != 'subcontract':
@@ -97,9 +97,12 @@ class BOMStructureXl(models.TransientModel):
                             if not 'bom_cost' in line:
                                 line['bom_cost'] = 0.0
                             
-                            # Add component cost to total BOM cost
-                            total_bom_cost = line['bom_cost'][0]
-                            print(line['prod_cost'] , line['bom_cost'],"line['prod_cost'] + line['bom_cost']")
+                            # Add the first component's BOM cost only
+                            if not first_bom_cost_included:
+                                total_bom_cost = line['bom_cost']  # Take only the first line's BOM cost
+                                first_bom_cost_included = True  # Set the flag to True after including the first BOM cost
+                                print(line['prod_cost'], line['bom_cost'], "First line ['prod_cost'] + ['bom_cost']")
+                            
                             # Collect component details for the report
                             product_ref = line['name'].split(']')
                             ref = product_ref[0].replace('[', '')
@@ -119,7 +122,6 @@ class BOMStructureXl(models.TransientModel):
                                 currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),  # Product cost
                                 currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),  # BOM cost
                             ))
-
             # Adding parent BOM cost, product cost, and total BOM cost in the first row
             rows.insert(0, (
                 count,  # Serial number for parent
