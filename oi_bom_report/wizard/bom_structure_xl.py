@@ -79,6 +79,7 @@ class BOMStructureXl(models.TransientModel):
 
             for rec in vals['docs']:
                 parent_bom_cost = rec['product'].standard_price
+                product_cost = rec['prod_cost']
                 currency = rec['currency']
                 split_ref = rec['code'].split(']')
                 ref = split_ref[0].replace('[','')
@@ -93,7 +94,7 @@ class BOMStructureXl(models.TransientModel):
                     # str(rec['product_qty'])+'0',
                     rec['bom'].product_uom_id.name,
                     currency.symbol + str("%.2f" % round(parent_bom_cost, 2)),
-                    currency.symbol + str("%.2f" % round(rec['prod_cost'],2))
+                    currency.symbol + str("%.2f" % round(product_cost,2))
                 ))
                 is_main_component = False  # Update flag after processing the main component
 
