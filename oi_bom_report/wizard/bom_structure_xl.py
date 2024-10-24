@@ -65,74 +65,71 @@ class BOMStructureXl(models.TransientModel):
             worksheet.set_column(col, col, 10)
             col += 1       
         row += 1
+
         for rec in bom_ids:
             count += 1
-            col = 0
+            col = 0 
             is_main_component = True  # Flag to identify the main component
             worksheet.write(row, col, str(count), style_right)
             col += 1   
-
-            # Retrieve report values for the BOM
             data = {'context': {'tz': 'Asia/Kolkata', 'uid': 2, 'allowed_company_ids': [1]}, 'report_type': 'pdf'}
             vals = self._get_report_values([rec.id], data=data)
-            
             cost = 0.0
             rows = []
-            
-            # Get Parent BOM details
-            parent_bom_cost = rec.product_tmpl_id.standard_price  # Assuming this field holds the parent BOM cost
-            parent_bom_name = rec.product_tmpl_id.name
-            
-            # Initialize total BOM cost (parent + components)
-            total_bom_cost = 0.0
-            
-            for a in vals['docs']:
-                if a['type'] == 'component':
-                    total_bom_cost += a['prod_cost']
-             
-                currency = a['currency']
-                first_bom_cost_included = False  # Flag to ensure only the first BOM cost is included
-                for line in a['lines']:
-                   
-                    if line['type'] == 'bom' or line['type'] == 'component':
-                        if line['type'] != 'subcontract':
-                            if not 'prod_cost' in line:
-                                line['prod_cost'] = 0.0
-                            if not 'bom_cost' in line:
-                                line['bom_cost'] = 0.0
-                           
-                            product_ref = line['name'].split(']')
-                            ref = product_ref[0].replace('[', '')
-                            
-                            product = self.env['product.product'].search([('default_code', '=', ref)])
-                            product_on_hand = product.qty_available if product else ''
-                            categ = product.categ_id.complete_name if product else ''
-                            
-                            # Add component data to rows
-                            rows.append((
-                                '',  # Serial number is blank for components
-                                line['name'],  # Component name
-                                ref,  # Component internal reference
-                                categ,  # Component category
-                                str(line['quantity']) + '0',  # Component quantity
-                                line['uom'],  # Unit of measure
-                                currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),  # Product cost
-                                currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),  # BOM cost
-                            ))
-            # Adding parent BOM cost, product cost, and total BOM cost in the first row
-            rows.insert(0, (
-                count,  # Serial number for parent
-                parent_bom_name,  # Parent BOM product name
-                rec.product_tmpl_id.default_code,  # Internal reference for parent BOM
-                rec.product_tmpl_id.categ_id.complete_name,  # Product category for parent BOM
-                str(rec.product_qty),  # Quantity
-                rec.product_uom_id.name,  # Unit of Measure
-                currency.symbol + str("%.2f" % round(parent_bom_cost, 2)), # Parent product cost (standard price)
-                currency.symbol + str("%.2f" % round(total_bom_cost, 2)),  # Total BOM cost (Parent + Components)
-                
-            ))
+            product_cost = 0.0
+            for rec in vals['docs']:
+                parent_bom_cost = rec['product'].standard_price
+                product_cost = rec['total']
+                currency = rec['currency']
+                split_ref = rec['code'].split(']')
+                ref = split_ref[0].replace('[','')
+                # product_name = split_ref[1]
+                rows.append((
+                    count if is_main_component else '',  # Add sequence number only for the main component
+                    # product_name,
+                    rec['code'],
+                    ref,
+                    rec['product'].categ_id.complete_name,
+                    str(rec['bom'].product_qty)+'0',
+                    # str(rec['product_qty'])+'0',
+                    rec['bom'].product_uom_id.name,
+                    currency.symbol + str("%.2f" % round(parent_bom_cost, 2)),
+                    currency.symbol + str("%.2f" % round(product_cost,2))
+                ))
+                is_main_component = False  # Update flag after processing the main component
 
-            # Write all collected data to the worksheet
+            for a in vals['docs']:
+                for line in a['lines']:
+                    if not 'prod_cost' in line:
+                        line['prod_cost'] = 0.0
+                    if not 'bom_cost' in line:
+                        line['bom_cost'] = 0.0
+                    product_ref = line['name'].split(']')
+                    ref = product_ref[0].replace('[','')
+                    # if len(product_ref) >1:
+                    #     product_name = product_ref[1]
+                    # else:
+                    #     product_name = ''
+                    if ref:
+                        product = self.env['product.product'].search([('default_code', '=', ref)])
+                        if product:
+                            categ = product.categ_id[0].complete_name
+                        else:
+                            categ = ''
+                    rows.append((
+                        '',
+                        # product_name,
+                        line['name'],
+                        ref,
+                        categ,
+                        str(line['quantity']) + '0',
+                        line['uom'],
+                        currency.symbol + str("%.2f" % round(line['prod_cost'], 2)),
+                        currency.symbol + str("%.2f" % round(line['bom_cost'], 2)),
+                    ))
+
+            col = 0
+
             for lined in rows:
                 col = 0
                 for d in lined:
