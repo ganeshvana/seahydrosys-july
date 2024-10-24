@@ -98,7 +98,7 @@ class BOMStructureXl(models.TransientModel):
                                 line['bom_cost'] = 0.0
                             
                             # Add component cost to total BOM cost
-                            total_bom_cost += line['bom_cost']
+                            total_bom_cost = line['bom_cost'][0]
                             print(line['prod_cost'] , line['bom_cost'],"line['prod_cost'] + line['bom_cost']")
                             # Collect component details for the report
                             product_ref = line['name'].split(']')
